@@ -1,0 +1,22 @@
+# Skills/agents de IA instalados localmente (reinstalables con skills-lock.json)
+.agents/
+.claude/skills/
+.claude/agents/
+.claude/settings.local.json
+.codex/
+.impeccable/
+
+# Sistema / dependencias
+.DS_Store
+node_modules/
+dist/
+.env
+.env.*
+
+# Astro y verificaciones locales de la skill
+.astro/
+shots/
+.taste-skill/chrome-*/
+.taste-skill/gate/
+.taste-skill/*.json
+!.taste-skill/waivers.json

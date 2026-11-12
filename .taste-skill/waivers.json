@@ -1,0 +1,27 @@
+[
+  {
+    "check": "phone-number",
+    "target": "+591 63484622",
+    "reason": "the client's PDF gives both contact numbers to print (+591 63484622, +591 68496657); copy.md: what the brief gives is printed as given"
+  },
+  {
+    "check": "no-visual",
+    "target": "section#programa",
+    "reason": "the day's schedule is a specs-like table (sections.md allows one picture-less section of that kind); the client supplied five photographs, all used once"
+  },
+  {
+    "check": "no-visual",
+    "target": "section#speakers",
+    "reason": "the client supplied no more photographs; the section holds the speaker form's QR code; photographs of past editions requested from the client"
+  },
+  {
+    "check": "no-visual",
+    "target": "section#inscripcion",
+    "reason": "the section is the embedded Google Form the client asked for (a booking-form section, allowed picture-less)"
+  },
+  {
+    "check": "scroll-reveal",
+    "target": "close--type > a.btn.btn--primary",
+    "reason": "the colour change is the kit's own button transition (motion.css); the page adds no reveal, observer or transition of its own to the close button"
+  }
+]
