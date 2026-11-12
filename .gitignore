@@ -4,7 +4,8 @@
 .claude/agents/
 .claude/settings.local.json
 .codex/
-.impeccable/
+.impeccable/*
+!.impeccable/surfaces/
 
 # Sistema / dependencias
 .DS_Store
