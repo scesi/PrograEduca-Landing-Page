@@ -140,7 +140,12 @@ html { scrollbar-color: var(--mint-deep) var(--bg-deep); }
 }
 .snippet .k { color: #a9965a; }
 .snippet .s { color: #93a982; }
-.snippet .caret { display: inline-block; width: 0.6ch; background: var(--olive); animation: caret 1s steps(1) infinite; }
+/* cursor | que parpadea al final del código, como en una terminal */
+.cursor { display: inline-block; width: 2px; height: 1.15em; margin-left: 2px; vertical-align: -0.2em; background: var(--mint); }
+.snippet .cursor { background: var(--gold); opacity: 0.85; }
+@media (prefers-reduced-motion: no-preference) {
+  .cursor { animation: caret 1.1s steps(1) infinite; }
+}
 @keyframes caret { 50% { opacity: 0; } }
 @media (max-width: 720px) { .snippet { font-size: 12px; } .snippet--desk { display: none; } .hero__when { font-size: 13px; } }
 
@@ -189,7 +194,7 @@ html { scrollbar-color: var(--mint-deep) var(--bg-deep); }
 .console__body .k { color: var(--gold); }
 .console__body .s { color: var(--mint); }
 .console__body .n { color: #e9a87c; }
-.console__body .c { color: #7f9188; }
+.console__body .c { color: #9fb0a7; }
 .console__run { display: flex; align-items: center; gap: 14px; padding: 12px 22px 18px; flex-wrap: wrap; }
 .console__btn {
   font: 500 14px/1 var(--mono); color: var(--ink-on-light); background: var(--gold); border: 0; border-radius: 8px;
@@ -368,3 +373,15 @@ html, main, footer { overflow-x: clip; }
 /* nada sobresale por encima del inicio de la página (rebote al deslizar hacia arriba) */
 html { background: var(--bg); }
 .hero { clip-path: inset(0 -100vw -200vh -100vw); }
+
+/* consola: el cursor espera junto al prompt >>> */
+.console__prompt { display: inline-flex; align-items: center; min-height: 1.7em; }
+.console__out { min-height: 0; }
+/* inscripción: salida al formulario siempre visible, arriba del iframe */
+.form-window__top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; padding: 16px 22px; border-bottom: 1px solid rgb(242 240 230 / 0.1); }
+.form-window__top p { margin: 0; font-size: 15px; color: var(--muted); max-width: 34ch; }
+.form-window__top .btn { min-height: 44px; }
+@media (max-width: 720px) {
+  .form-window__top { padding: 16px; }
+  .form-window__top .btn { width: 100%; }
+}

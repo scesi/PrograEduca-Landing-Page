@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { INSCRIPCION_FORM_URL, CONTACTO, LUGAR_MAPA, INICIO_EVENTO } from '../config';
+import { INSCRIPCION_FORM_URL, SPEAKERS_FORM_URL, CONTACTO, LUGAR_MAPA, INICIO_EVENTO } from '../config';
 
 const titulo = 'PrograEduca 2026: charlas STEM y feria de pósters en la UMSS';
 const descripcion =
@@ -85,7 +85,7 @@ print(aprender())</pre>
     </div>
 
     <div class="wrap hero__inner">
-      <p class="hero__when" data-in style="--i: 0"><span class="when__part">Viernes 27 de noviembre</span> <span class="when__sep">·</span> <span class="when__part">Centro MEMI, UMSS</span></p>
+      <p class="hero__when" data-in style="--i: 0"><span class="when__part">Viernes 27 de noviembre, 9:30</span> <span class="when__sep">·</span> <span class="when__part">Centro MEMI, UMSS</span></p>
       <h1 id="hero-h" class="wordmark" data-in style="--i: 1">
         <span class="wordmark__name"><span class="mint">PROGRA</span><span class="gold">EDUCA</span></span>
         <span class="wordmark__year">2026</span>
@@ -124,7 +124,7 @@ evento = {"{"}
 print(aprender())</pre>
         <div class="console__run">
           <button class="console__btn" type="button" data-run><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.5v9l8-4.5z" fill="currentColor"/></svg>Ejecutar</button>
-          <output class="console__out" data-out aria-live="polite"></output>
+          <span class="console__prompt"><output class="console__out" data-out aria-live="polite"></output><span class="cursor" aria-hidden="true"></span></span>
         </div>
       </figure>
       </div>
@@ -143,19 +143,19 @@ print(aprender())</pre>
           <h3>Tecnología en diferentes áreas</h3>
           <p>Inteligencia artificial, ciencia de datos, desarrollo de software, ciberseguridad, redes, IoT, robótica y software libre, entre otras.</p>
           <pre class="eje__code" aria-hidden="true"><span class="k">areas</span> = [<span class="s">"IA"</span>, <span class="s">"datos"</span>,
-         <span class="s">"IoT"</span>, <span class="s">"robótica"</span>]</pre>
+         <span class="s">"IoT"</span>, <span class="s">"robótica"</span>]<span class="cursor" aria-hidden="true"></span></pre>
         </article>
         <article class="eje">
           <h3>Educación y tecnología</h3>
           <p>Cómo la tecnología transforma la enseñanza y el aprendizaje: herramientas educativas, STEM en el aula y experiencias de innovación educativa.</p>
           <pre class="eje__code" aria-hidden="true"><span class="k">for</span> estudiante <span class="k">in</span> aula:
-    aprender(estudiante)</pre>
+    aprender(estudiante)<span class="cursor" aria-hidden="true"></span></pre>
         </article>
         <article class="eje">
           <h3>Elaboración de pósters científicos</h3>
           <p>Cómo comunicar una investigación de forma visual: estructura de un póster, buenas prácticas de diseño y presentación. Va de la mano con la feria.</p>
           <pre class="eje__code" aria-hidden="true">poster = Poster(
-    titulo, resumen)</pre>
+    titulo, resumen)<span class="cursor" aria-hidden="true"></span></pre>
         </article>
       </div>
     </div>
@@ -212,9 +212,9 @@ postulacion = [
     <span class="s">"eje temático"</span>,
     <span class="s">"duración"</span>,
     <span class="s">"requerimientos técnicos"</span>,
-]</pre>
+]<span class="cursor" aria-hidden="true"></span></pre>
         <div class="console__run">
-          <a class="btn btn--primary" href="#inscripcion">Ir al formulario <Fragment set:html={arrow} /></a>
+          <a class="btn btn--primary" href={SPEAKERS_FORM_URL} target="_blank" rel="noopener">Postular mi charla <Fragment set:html={arrow} /></a>
           <div class="qr-card">
             <img class="qr-card__img" src="/assets/img/qr-speakers.svg" width="96" height="96" alt="Código QR del formulario de postulación">
             <p>O escanéalo desde tu celular.</p>
@@ -237,8 +237,11 @@ postulacion = [
       <div class="glass-stage"><span class="orb orb--gold" aria-hidden="true" style="--s: 260px; left: -70px; top: -60px"></span><span class="orb orb--mint" aria-hidden="true" style="--s: 240px; right: -60px; bottom: -50px"></span>
       <div class="form-window glass">
         <div class="console__bar" aria-hidden="true"><i style="--c: var(--mint)"></i><i style="--c: var(--gold)"></i><i style="--c: #4d6e64"></i><span>inscripcion.form</span></div>
+        <div class="form-window__top">
+          <p>El formulario pide iniciar sesión con tu cuenta de Google.</p>
+          <a class="btn btn--primary" href={INSCRIPCION_FORM_URL} target="_blank" rel="noopener">Abrir formulario <Fragment set:html={arrow} /></a>
+        </div>
         <iframe src={embed} title="Formulario de inscripción a PrograEduca 2026" loading="lazy">Cargando el formulario…</iframe>
-        <p class="form-window__fallback">¿No carga? <a class="link" href={INSCRIPCION_FORM_URL} target="_blank" rel="noopener">Abre el formulario en otra pestaña</a></p>
       </div>
       </div>
     </div>
@@ -292,6 +295,8 @@ postulacion = [
 
   // el código del hero se escribe solo
   const typed = document.querySelector<HTMLElement>('[data-type]');
+  const cursor = '<span class="cursor" aria-hidden="true"></span>';
+  if (typed && reduced) typed.insertAdjacentHTML('beforeend', cursor);
   if (typed && !reduced) {
     const src = document.createElement('div');
     src.innerHTML = typed.innerHTML;
@@ -315,9 +320,9 @@ postulacion = [
         }
       };
       walk(src, out);
-      typed.innerHTML = out.innerHTML + (n < total ? '<span class="caret">&nbsp;</span>' : '');
+      typed.innerHTML = out.innerHTML + cursor;
     };
-    typed.innerHTML = '<span class="caret">&nbsp;</span>';
+    typed.innerHTML = cursor;
     setTimeout(function tick() {
       n++;
       render();
