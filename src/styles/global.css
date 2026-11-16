@@ -84,10 +84,14 @@ html { scrollbar-color: var(--mint-deep) var(--bg-deep); }
 /* ---------- nav ---------- */
 .nav {
   position: fixed; inset: 0 0 auto; z-index: 40; height: var(--nav-h);
-  background: linear-gradient(rgb(17 37 32 / 0.7), rgb(17 37 32 / 0)); border-bottom: 1px solid transparent;
-  transition: background-color 300ms, border-color 300ms, backdrop-filter 300ms;
+  background: rgb(17 37 32 / 0.42);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  backdrop-filter: blur(16px) saturate(1.4);
+  border-bottom: 1px solid rgb(242 240 230 / 0.08);
+  box-shadow: inset 0 1px 0 rgb(242 240 230 / 0.06);
+  transition: background-color 300ms, border-color 300ms;
 }
-.nav.is-scrolled { background: rgb(17 37 32 / 0.82); border-color: var(--line); backdrop-filter: blur(14px) saturate(1.2); }
+.nav.is-scrolled { background-color: rgb(17 37 32 / 0.66); border-color: var(--line); }
 .nav__bar { height: 100%; display: flex; align-items: center; gap: 32px; }
 .logo { font: 700 20px/1 var(--font); letter-spacing: -0.01em; text-decoration: none; display: inline-flex; align-items: baseline; gap: 2px; }
 .logo small { font: 500 12px/1 var(--mono); color: var(--muted); margin-left: 6px; }
