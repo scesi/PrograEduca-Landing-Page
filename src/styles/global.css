@@ -394,3 +394,8 @@ html { background: var(--bg); }
 /* después del evento: sin botones de inscripción */
 [data-phase="post"] [data-cta] { display: none; }
 [data-phase="live"] .hero__actions .btn--ghost { display: none; }
+/* hero móvil: círculos de abajo de distinto tamaño y cortados por los bordes, como en el flyer */
+@media (max-width: 720px) {
+  .hero .orb--gold.orb--low { --s: 300px !important; left: -110px !important; bottom: -150px !important; }
+  .hero .orb--mint.orb--low { --s: 220px !important; right: -90px !important; left: auto !important; bottom: -30px !important; }
+}
