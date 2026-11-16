@@ -351,3 +351,11 @@ html, main, footer { overflow-x: clip; }
   .glass-stage:not(.agenda) > .orb:first-of-type { top: 24px !important; bottom: auto !important; }
   .glass-stage:not(.agenda) > .orb:last-of-type { bottom: 24px !important; top: auto !important; }
 }
+@media (max-width: 720px) {
+  .hero .orb--corner { --s: 200px !important; left: -110px !important; top: -60px !important; }
+}
+@media (max-width: 720px) {
+  .hero { padding-top: calc(var(--nav-h) + 140px); }
+  .hero .orb--corner { --s: 220px !important; left: -120px !important; top: -100px !important; }
+  .hero .snippet[data-type] { top: calc(var(--nav-h) + 60px) !important; }
+}
