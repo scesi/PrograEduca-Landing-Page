@@ -76,9 +76,9 @@ print(aprender())</pre>
 
       <span class="pixel pixel--desk" style="left: 4%; top: 38%; --t: 5s"></span>
       <span class="pixel pixel--gold pixel--desk" style="left: 6.5%; top: 44%; --p: 14px; --t: 6s; --d: 1s"></span>
-      <span class="pixel" style="left: 11%; top: 60%; --p: 18px; --t: 7s; --d: 2s"></span>
-      <span class="pixel pixel--gold" style="right: 17%; top: 26%; --t: 5.5s; --d: 0.5s"></span>
-      <span class="pixel" style="right: 13%; top: 31%; --p: 18px; --t: 6.5s; --d: 1.5s"></span>
+      <span class="pixel pixel--desk" style="left: 11%; top: 60%; --p: 18px; --t: 7s; --d: 2s"></span>
+      <span class="pixel pixel--gold pixel--m1" style="right: 17%; top: 26%; --t: 5.5s; --d: 0.5s"></span>
+      <span class="pixel pixel--m2" style="right: 13%; top: 31%; --p: 18px; --t: 6.5s; --d: 1.5s"></span>
       <span class="pixel pixel--desk" style="right: 15%; top: 56%; --p: 18px; --t: 4.5s; --d: 3s"></span>
       <span class="rule" style="left: 0; top: 64%; --w: 9%; --c: #2a5b4f"></span>
       <span class="rule" style="right: 0; top: 50%; --w: 6%"></span>
@@ -394,6 +394,61 @@ postulacion = [
     };
     mark();
     setInterval(mark, 60e3);
+  }
+  // círculos, pixeles y líneas aparecen al deslizar; los círculos derivan con el scroll
+  if (!reduced && 'IntersectionObserver' in window) {
+    document.documentElement.classList.add('reveal-ready');
+    const items = [...document.querySelectorAll<HTMLElement>('.orb, .pixel, .rule')].filter((el) => !el.closest('.hero'));
+    const groups = new Map<Element, number>();
+    const live = new Set<HTMLElement>();
+    const ro = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        const el = e.target as HTMLElement;
+        if (e.isIntersecting) {
+          if (!el.classList.contains('is-in')) {
+            const zone = el.closest('section') ?? document.body;
+            const i = groups.get(zone) ?? 0;
+            groups.set(zone, i + 1);
+            el.style.setProperty('--rd', `${Math.min(i, 5) * 110}ms`);
+            el.classList.add('is-in');
+          }
+          if (el.classList.contains('orb')) live.add(el);
+        } else live.delete(el);
+      }
+    }, { rootMargin: '0px 0px -12% 0px' });
+    items.forEach((el) => ro.observe(el));
+
+    // origen del crecimiento: el lado por donde entra el círculo
+    items.filter((el) => el.classList.contains('orb')).forEach((el) => {
+      const st = el.style;
+      if (st.right && !st.left) st.setProperty('--ox', '100%');
+      else if (st.left?.startsWith('-')) st.setProperty('--ox', '0%');
+    });
+
+    const orbs = [...document.querySelectorAll<HTMLElement>('.orb')];
+    const sy = new Map<HTMLElement, number>();
+    let ticking = false;
+    const parallax = () => {
+      ticking = false;
+      const mid = innerHeight / 2;
+      for (const el of orbs) {
+        if (!el.closest('.hero') && !live.has(el)) continue;
+        if (el.closest('.hero')) {
+          const next = Math.round(Math.min(scrollY, innerHeight * 1.5) * -0.16 * 10) / 10;
+          el.style.setProperty('--sy', String(next));
+          continue;
+        }
+        const cur = sy.get(el) ?? 0;
+        const r = el.getBoundingClientRect();
+        const off = r.top - cur + r.height / 2 - mid;
+        const speed = el.closest('.glass-stage') ? 0.1 : 0.08;
+        const next = Math.round(-off * speed * 10) / 10;
+        sy.set(el, next);
+        el.style.setProperty('--sy', String(next));
+      }
+    };
+    addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(parallax); } }, { passive: true });
+    parallax();
   }
 </script>
 </body>
