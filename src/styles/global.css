@@ -385,3 +385,7 @@ html { background: var(--bg); }
   .form-window__top { padding: 16px; }
   .form-window__top .btn { width: 100%; }
 }
+
+/* después del evento: sin botones de inscripción */
+[data-phase="post"] [data-cta] { display: none; }
+[data-phase="live"] .hero__actions .btn--ghost { display: none; }

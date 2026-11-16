@@ -52,7 +52,7 @@ const arrow = '<svg class="btn__arrow" width="16" height="16" viewBox="0 0 16 16
       <a href="#programa">Programa</a>
       <a href="#speakers">Speakers</a>
     </nav>
-    <a class="btn btn--primary" href="#inscripcion">Inscribirme</a>
+    <a class="btn btn--primary" href="#inscripcion" data-cta data-live="Programa"><span data-cta-label>Inscribirme</span></a>
   </div>
 </header>
 
@@ -92,7 +92,7 @@ print(aprender())</pre>
       </h1>
       <p class="hero__tagline" data-in style="--i: 2">La <span class="gold">programación</span> como herramienta transversal</p>
       <div class="hero__actions" data-in style="--i: 3">
-        <a class="btn btn--primary" href="#inscripcion">Inscribirme al evento <Fragment set:html={arrow} /></a>
+        <a class="btn btn--primary" href="#inscripcion" data-cta data-live="Ver el programa"><span data-cta-label>Inscribirme al evento</span> <Fragment set:html={arrow} /></a>
         <a class="btn btn--ghost" href="#programa">Ver el programa</a>
       </div>
       <p class="countdown" data-in style="--i: 4" data-countdown={INICIO_EVENTO}>charlas, feria de pósters y actividad para colegios</p>
@@ -230,11 +230,12 @@ postulacion = [
     <span class="pixel pixel--gold" aria-hidden="true" style="left: 4%; top: 20%; --t: 5s"></span>
     <div class="wrap split" style="align-items: start">
       <div class="stack inscripcion__text">
-        <h2 id="inscripcion-h" class="h2">Inscríbete al <span class="mint">evento</span></h2>
-        <p class="lead">Llena el formulario y nos vemos el <strong>viernes 27 de noviembre</strong> en el centro MEMI de la UMSS.</p>
+        <h2 id="inscripcion-h" class="h2"><span data-pre>Inscríbete al <span class="mint">evento</span></span><span data-post hidden>Inscripciones <span class="mint">cerradas</span></span></h2>
+        <p class="lead inscripcion__closed" data-post hidden>Gracias por venir a PrograEduca 2026. Nos vemos en la próxima edición.</p>
+        <p class="lead" data-pre>Llena el formulario y nos vemos el <strong>viernes 27 de noviembre</strong> en el centro MEMI de la UMSS.</p>
         <p class="lead">¿Dudas? Escríbenos a <a class="link" href={'mailto:' + CONTACTO.email}>{CONTACTO.email}</a></p>
       </div>
-      <div class="glass-stage"><span class="orb orb--gold" aria-hidden="true" style="--s: 260px; left: -70px; top: -60px"></span><span class="orb orb--mint" aria-hidden="true" style="--s: 240px; right: -60px; bottom: -50px"></span>
+      <div class="glass-stage" data-pre><span class="orb orb--gold" aria-hidden="true" style="--s: 260px; left: -70px; top: -60px"></span><span class="orb orb--mint" aria-hidden="true" style="--s: 240px; right: -60px; bottom: -50px"></span>
       <div class="form-window glass">
         <div class="console__bar" aria-hidden="true"><i style="--c: var(--mint)"></i><i style="--c: var(--gold)"></i><i style="--c: #4d6e64"></i><span>inscripcion.form</span></div>
         <div class="form-window__top">
@@ -259,9 +260,9 @@ postulacion = [
       <span class="rule" style="left: 0; top: 40%; --w: 8%; --c: #2a5b4f"></span>
     </div>
     <div class="wrap">
-      <h2 id="close-h" class="h2"><span class="mint">PROGRA</span><span class="gold">EDUCA</span> te espera</h2>
+      <h2 id="close-h" class="h2"><span class="mint">PROGRA</span><span class="gold">EDUCA</span> <span data-pre>te espera</span><span data-post hidden>gracias por venir</span></h2>
       <p class="closing__line"><span>viernes 27 de noviembre</span><i> · </i><span>9:30 a 17:00</span><i> · </i><span>centro MEMI, UMSS</span></p>
-      <a class="btn btn--primary" href="#inscripcion">Inscribirme al evento <Fragment set:html={arrow} /></a>
+      <a class="btn btn--primary" href="#inscripcion" data-cta data-live="Ver el programa"><span data-cta-label>Inscribirme al evento</span> <Fragment set:html={arrow} /></a>
       <div class="contact">
         <a href={'mailto:' + CONTACTO.email}>{CONTACTO.email}</a>
         {CONTACTO.telefonos.map((n) => (<a href={tel(n)}>{n}</a>))}
@@ -334,19 +335,45 @@ postulacion = [
   const cd = document.querySelector<HTMLElement>('[data-countdown]');
   if (cd) {
     const target = new Date(cd.dataset.countdown!).getTime();
-    const end = target + 7.5 * 3600e3;
+    const end = target + 7.5 * 3600e3; // 9:30 a 17:00
     const pad = (x: number) => String(x).padStart(2, '0');
+    // ?fase=live|post permite revisar los estados antes del evento
+    const forced = new URLSearchParams(location.search).get('fase');
+    const now = () => forced === 'live' ? target + 3600e3 : forced === 'post' ? end + 3600e3 : Date.now();
+    let phase = '';
+    const setPhase = (p: 'pre' | 'live' | 'post') => {
+      if (p === phase) return;
+      phase = p;
+      document.documentElement.dataset.phase = p;
+      document.querySelectorAll<HTMLAnchorElement>('[data-cta]').forEach((a) => {
+        a.dataset.label ??= a.querySelector('[data-cta-label]')!.textContent!;
+        a.querySelector('[data-cta-label]')!.textContent = p === 'live' ? a.dataset.live! : a.dataset.label!;
+        a.setAttribute('href', p === 'live' ? '#programa' : '#inscripcion');
+      });
+      document.querySelectorAll<HTMLElement>('[data-pre]:not([data-cta])').forEach((el) => (el.hidden = p === 'post'));
+      document.querySelectorAll<HTMLElement>('[data-post]').forEach((el) => (el.hidden = p !== 'post'));
+    };
+    let timer = 0;
     const update = () => {
-      const ms = target - Date.now();
+      const t = now();
+      const ms = target - t;
       if (ms <= 0) {
-        cd.innerHTML = Date.now() < end ? '<b>evento.en_curso()</b> · centro MEMI, UMSS' : 'gracias por venir a PrograEduca 2026';
+        if (t < end) {
+          setPhase('live');
+          cd.innerHTML = '<b>evento.en_curso()</b> · centro MEMI, UMSS';
+        } else {
+          setPhase('post');
+          cd.innerHTML = 'evento.terminado() · gracias por venir';
+          clearInterval(timer);
+        }
         return;
       }
+      setPhase('pre');
       const d = Math.floor(ms / 864e5), h = Math.floor(ms / 36e5) % 24, m = Math.floor(ms / 6e4) % 60, s = Math.floor(ms / 1e3) % 60;
       cd.innerHTML = `faltan(<b>${d}</b> días, <b>${pad(h)}:${pad(m)}:${pad(s)}</b>)`;
     };
+    timer = window.setInterval(update, 1000);
     update();
-    setInterval(update, 1000);
   }
 
   // consola: ejecutar print(aprender())
