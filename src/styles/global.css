@@ -399,3 +399,11 @@ html { background: var(--bg); }
   .hero .orb--gold.orb--low { --s: 300px !important; left: -110px !important; bottom: -150px !important; }
   .hero .orb--mint.orb--low { --s: 220px !important; right: -90px !important; left: auto !important; bottom: -30px !important; }
 }
+/* móvil: sin hueco entre el hero y la primera sección */
+@media (max-width: 720px) {
+  .hero { min-height: 0; padding-bottom: 170px; }
+  .hero .orb--gold.orb--low { --s: 260px !important; left: -120px !important; bottom: -110px !important; }
+  .hero .orb--mint.orb--low { --s: 200px !important; right: -80px !important; bottom: -20px !important; }
+  .section { padding-top: 72px; padding-bottom: 72px; }
+}
+@media (max-width: 720px) { .section > .orb { display: none; } }
