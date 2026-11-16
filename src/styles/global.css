@@ -364,3 +364,7 @@ html, main, footer { overflow-x: clip; }
   .hero .orb--corner { --s: 220px !important; left: -120px !important; top: -100px !important; }
   .hero .snippet[data-type] { top: calc(var(--nav-h) + 60px) !important; }
 }
+
+/* nada sobresale por encima del inicio de la página (rebote al deslizar hacia arriba) */
+html { background: var(--bg); }
+.hero { clip-path: inset(0 -100vw -200vh -100vw); }
