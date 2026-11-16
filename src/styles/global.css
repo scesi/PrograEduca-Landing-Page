@@ -407,3 +407,12 @@ html { background: var(--bg); }
   .section { padding-top: 72px; padding-bottom: 72px; }
 }
 @media (max-width: 720px) { .section > .orb { display: none; } }
+@media (max-width: 720px) {
+  .hero { padding-bottom: 96px; }
+  .hero .orb--gold.orb--low { --s: 220px !important; left: -110px !important; bottom: -60px !important; }
+  .hero .orb--mint.orb--low { --s: 170px !important; right: -70px !important; bottom: -70px !important; }
+}
+@media (max-width: 720px) {
+  .hero .orb--gold.orb--low { --s: 180px !important; left: -100px !important; bottom: -40px !important; }
+  .hero .orb--mint.orb--low { --s: 150px !important; right: -60px !important; bottom: -40px !important; }
+}
