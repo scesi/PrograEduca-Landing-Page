@@ -63,9 +63,9 @@ const arrow = '<svg class="btn__arrow" width="16" height="16" viewBox="0 0 16 16
       <span class="orb orb--deep" style="--s: clamp(220px, 28vw, 440px); left: 22%; top: -30%; --depth: 0.4"></span>
       <span class="orb orb--gold" style="--s: clamp(260px, 34vw, 500px); left: 48%; top: -28%; --depth: -0.8"></span>
       <span class="orb orb--teal" style="--s: clamp(260px, 32vw, 480px); right: -12%; top: -12%; --depth: 0.5"></span>
-      <span class="orb orb--gold" style="--s: clamp(260px, 34vw, 500px); left: 4%; bottom: -30%; --depth: 0.7"></span>
-      <span class="orb orb--deep" style="--s: clamp(240px, 30vw, 460px); left: 36%; bottom: -34%; --depth: -0.4"></span>
-      <span class="orb orb--mint" style="--s: clamp(260px, 32vw, 480px); right: -6%; bottom: -26%; --depth: -0.6"></span>
+      <span class="orb orb--gold orb--low" style="--s: clamp(260px, 34vw, 500px); left: 4%; bottom: -30%; --depth: 0.7"></span>
+      <span class="orb orb--deep orb--low" style="--s: clamp(240px, 30vw, 460px); left: 36%; bottom: -34%; --depth: -0.4"></span>
+      <span class="orb orb--mint orb--low" style="--s: clamp(260px, 32vw, 480px); right: -6%; bottom: -26%; --depth: -0.6"></span>
 
       <pre class="snippet" style="left: 7.5%; top: calc(var(--nav-h) + 9%)" data-type><span class="k">def</span> aprender():
     <span class="k">return</span> [<span class="s">"progra"</span>,<span class="s">"educa"</span>]
@@ -74,12 +74,12 @@ print(aprender())</pre>
 <span class="k">for</span> idea <span class="k">in</span> conocimientos:
     print(idea)</pre>
 
-      <span class="pixel" style="left: 4%; top: 38%; --t: 5s"></span>
-      <span class="pixel pixel--gold" style="left: 6.5%; top: 44%; --p: 14px; --t: 6s; --d: 1s"></span>
+      <span class="pixel pixel--desk" style="left: 4%; top: 38%; --t: 5s"></span>
+      <span class="pixel pixel--gold pixel--desk" style="left: 6.5%; top: 44%; --p: 14px; --t: 6s; --d: 1s"></span>
       <span class="pixel" style="left: 11%; top: 60%; --p: 18px; --t: 7s; --d: 2s"></span>
       <span class="pixel pixel--gold" style="right: 17%; top: 26%; --t: 5.5s; --d: 0.5s"></span>
       <span class="pixel" style="right: 13%; top: 31%; --p: 18px; --t: 6.5s; --d: 1.5s"></span>
-      <span class="pixel" style="right: 15%; top: 56%; --p: 18px; --t: 4.5s; --d: 3s"></span>
+      <span class="pixel pixel--desk" style="right: 15%; top: 56%; --p: 18px; --t: 4.5s; --d: 3s"></span>
       <span class="rule" style="left: 0; top: 64%; --w: 9%; --c: #2a5b4f"></span>
       <span class="rule" style="right: 0; top: 50%; --w: 6%"></span>
       <span class="rule" style="right: 7%; top: 61%; --w: 9%; --c: #2a5b4f"></span>
@@ -87,7 +87,7 @@ print(aprender())</pre>
     </div>
 
     <div class="wrap hero__inner">
-      <p class="hero__when" data-in style="--i: 0">Viernes 27 de noviembre <span>·</span> Centro MEMI, UMSS</p>
+      <p class="hero__when" data-in style="--i: 0"><span class="when__part">Viernes 27 de noviembre</span> <span class="when__sep">·</span> <span class="when__part">Centro MEMI, UMSS</span></p>
       <h1 id="hero-h" class="wordmark" data-in style="--i: 1">
         <span class="wordmark__name"><span class="mint">PROGRA</span><span class="gold">EDUCA</span></span>
         <span class="wordmark__year">2026</span>
@@ -110,7 +110,8 @@ print(aprender())</pre>
         <p class="lead">PrograEduca conecta la tecnología con la educación con <strong>charlas</strong> y una <strong>feria de pósters científicos</strong>. Busca promover el aprendizaje con tecnologías STEM: ciencia, tecnología, ingeniería y matemáticas.</p>
         <p class="lead">Este año llega a su <strong>tercera versión</strong> y, por primera vez, suma una <strong>actividad para colegios</strong>.</p>
       </div>
-      <figure class="console" style="margin: 0">
+      <div class="glass-stage"><span class="orb orb--gold" aria-hidden="true" style="--s: 240px; right: -50px; top: -70px"></span><span class="orb orb--mint" aria-hidden="true" style="--s: 200px; left: -60px; bottom: -40px"></span>
+      <figure class="console glass" style="margin: 0">
         <div class="console__bar" aria-hidden="true"><i style="--c: var(--mint)"></i><i style="--c: var(--gold)"></i><i style="--c: #4d6e64"></i><span>prograeduca.py</span></div>
         <pre class="console__body" aria-label="Código de ejemplo con los datos del evento"><span class="k">def</span> aprender():
     <span class="k">return</span> [<span class="s">"progra"</span>, <span class="s">"educa"</span>]
@@ -128,6 +129,7 @@ print(aprender())</pre>
           <output class="console__out" data-out aria-live="polite"></output>
         </div>
       </figure>
+      </div>
     </div>
   </section>
 
@@ -166,14 +168,14 @@ print(aprender())</pre>
     <div class="wrap">
       <h2 id="programa-h" class="h2">Programa del <span class="mint">27 de noviembre</span></h2>
       <p class="lead" style="margin-top: 20px">Un solo día, de 9:30 a 17:00. La feria de pósters corre en paralelo a las charlas.</p>
-      <div class="agenda">
+      <div class="agenda glass-stage"><span class="orb orb--gold agenda__orb-a" aria-hidden="true" style="--s: 240px"></span><span class="orb orb--mint agenda__orb-b" aria-hidden="true" style="--s: 220px"></span>
         <div class="timeline" data-timeline data-day="2026-11-27">
           <div class="timeline__scale" aria-hidden="true">
             {ticks.map((h) => (<span class="timeline__tick" style={`left: ${pct(h, 0)}%`}><span>{h}:00</span></span>))}
           </div>
           <ol style="list-style: none; margin: 0; padding: 0; display: grid; gap: 14px">
             {programa.map((p) => (
-              <li class="slot" style={`--start: ${pct(p.desde[0], p.desde[1])}%; --len: ${pct(p.hasta[0], p.hasta[1]) - pct(p.desde[0], p.desde[1])}%; --c: ${p.color}`} data-from={hhmm(p.desde)} data-to={hhmm(p.hasta)}>
+              <li class="slot glass" style={`--start: ${pct(p.desde[0], p.desde[1])}%; --len: ${pct(p.hasta[0], p.hasta[1]) - pct(p.desde[0], p.desde[1])}%; --c: ${p.color}`} data-from={hhmm(p.desde)} data-to={hhmm(p.hasta)}>
                 <time>{p.soloInicio ? hhmm(p.desde) : `${hhmm(p.desde)} – ${hhmm(p.hasta)}`}</time>
                 <strong>{p.nombre}</strong>
               </li>
@@ -200,7 +202,8 @@ print(aprender())</pre>
           <li>Aporta a la educación y a la difusión de la tecnología en Cochabamba.</li>
         </ul>
       </div>
-      <figure class="console" style="margin: 0">
+      <div class="glass-stage"><span class="orb orb--mint" aria-hidden="true" style="--s: 230px; left: -60px; top: -50px"></span><span class="orb orb--gold" aria-hidden="true" style="--s: 210px; right: -40px; bottom: -60px"></span>
+      <figure class="console glass" style="margin: 0">
         <div class="console__bar" aria-hidden="true"><i style="--c: var(--mint)"></i><i style="--c: var(--gold)"></i><i style="--c: #4d6e64"></i><span>postulacion.py</span></div>
         <pre class="console__body" aria-label="Datos que pide el formulario de postulación"><span class="c"># datos que pide el formulario</span>
 postulacion = [
@@ -220,6 +223,7 @@ postulacion = [
           </div>
         </div>
       </figure>
+      </div>
     </div>
   </section>
 
@@ -232,10 +236,12 @@ postulacion = [
         <p class="lead">Llena el formulario y nos vemos el <strong>viernes 27 de noviembre</strong> en el centro MEMI de la UMSS.</p>
         <p class="lead">¿Dudas? Escríbenos a <a class="link" href={'mailto:' + CONTACTO.email}>{CONTACTO.email}</a></p>
       </div>
-      <div class="form-window">
+      <div class="glass-stage"><span class="orb orb--gold" aria-hidden="true" style="--s: 260px; left: -70px; top: -60px"></span><span class="orb orb--mint" aria-hidden="true" style="--s: 240px; right: -60px; bottom: -50px"></span>
+      <div class="form-window glass">
         <div class="console__bar" aria-hidden="true"><i style="--c: var(--mint)"></i><i style="--c: var(--gold)"></i><i style="--c: #4d6e64"></i><span>inscripcion.form</span></div>
         <iframe src={embed} title="Formulario de inscripción a PrograEduca 2026" loading="lazy">Cargando el formulario…</iframe>
         <p class="form-window__fallback">¿No carga? <a class="link" href={INSCRIPCION_FORM_URL} target="_blank" rel="noopener">Abre el formulario en otra pestaña</a></p>
+      </div>
       </div>
     </div>
   </section>
@@ -247,13 +253,13 @@ postulacion = [
       <span class="orb orb--gold" style="--s: clamp(260px, 32vw, 460px); left: -6%; bottom: -40%; --depth: 0.6"></span>
       <span class="orb orb--deep" style="--s: clamp(240px, 30vw, 420px); left: 30%; bottom: -46%; --depth: -0.4"></span>
       <span class="orb orb--mint" style="--s: clamp(260px, 32vw, 460px); right: -8%; bottom: -36%; --depth: -0.6"></span>
-      <span class="pixel" style="left: 12%; top: 22%; --t: 6s"></span>
-      <span class="pixel pixel--gold" style="right: 14%; top: 30%; --t: 5s; --d: 1s"></span>
+      <span class="pixel pixel--desk" style="left: 12%; top: 22%; --t: 6s"></span>
+      <span class="pixel pixel--gold pixel--desk" style="right: 14%; top: 30%; --t: 5s; --d: 1s"></span>
       <span class="rule" style="left: 0; top: 40%; --w: 8%; --c: #2a5b4f"></span>
     </div>
     <div class="wrap">
       <h2 id="close-h" class="h2"><span class="mint">PROGRA</span><span class="gold">EDUCA</span> te espera</h2>
-      <p class="closing__line">viernes 27 de noviembre · 9:30 a 17:00 · centro MEMI, UMSS</p>
+      <p class="closing__line"><span>viernes 27 de noviembre</span><i> · </i><span>9:30 a 17:00</span><i> · </i><span>centro MEMI, UMSS</span></p>
       <a class="btn btn--primary" href="#inscripcion">Inscribirme al evento <Fragment set:html={arrow} /></a>
       <div class="contact">
         <a href={'mailto:' + CONTACTO.email}>{CONTACTO.email}</a>
