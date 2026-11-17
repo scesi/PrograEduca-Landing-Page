@@ -459,3 +459,33 @@ html { background: var(--bg); }
 
 /* táctil: sin destello gris al tocar; la respuesta la da :active */
 a, button { -webkit-tap-highlight-color: transparent; }
+
+/* ventana de formularios con pestañas, como un editor */
+.form-tabs { gap: 0; padding: 0 0 0 16px; align-items: stretch; }
+.form-tabs__dots { display: flex; align-items: center; gap: 8px; padding-right: 14px; }
+.form-tabs__dots i { width: 10px; height: 10px; background: var(--c); }
+.form-tabs [role="tablist"] { display: flex; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+.form-tabs [role="tab"] {
+  position: relative; flex: none; min-height: 44px; padding: 0 16px; border: 0; border-left: 1px solid rgb(242 240 230 / 0.08);
+  background: transparent; color: var(--muted); font: 400 13px/1 var(--mono); cursor: pointer;
+  transition: color 160ms, background-color 160ms;
+}
+.form-tabs [role="tab"] span { color: inherit; opacity: 0.6; margin: 0; }
+.form-tabs [role="tab"][aria-selected="true"] { color: var(--cream); background: rgb(242 240 230 / 0.06); }
+.form-tabs [role="tab"][aria-selected="true"]::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2px; background: var(--gold); }
+.form-tabs [role="tab"]:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
+@media (hover: hover) and (pointer: fine) { .form-tabs [role="tab"]:hover { color: var(--cream); } }
+.form-window__top .link { font-size: 15px; white-space: nowrap; }
+.form-window__speakers { display: grid; gap: 18px; justify-items: start; padding: 8px 22px 28px; }
+.form-window__speakers .console__body { padding: 18px 0 0; }
+.form-window__speakers p { margin: 0; color: var(--muted); font-size: 16px; }
+@media (max-width: 720px) {
+  .form-tabs { padding-left: 0; }
+  .form-tabs__dots { display: none; }
+  .form-tabs [role="tab"] span { display: none; }
+  .form-tabs [role="tablist"] { width: 100%; }
+  .form-tabs [role="tab"] { flex: 1; padding: 0 8px; }
+  .form-tabs [role="tab"]:first-child { border-left: 0; }
+  .form-window__speakers { padding: 4px 16px 20px; }
+  .form-window__speakers .btn { width: 100%; }
+}

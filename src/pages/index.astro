@@ -1,14 +1,12 @@
 ---
 import '../styles/global.css';
-import { INSCRIPCION_FORM_URL, SPEAKERS_FORM_URL, CONTACTO, LUGAR_MAPA, LUGAR_MAPA_EMBED, INICIO_EVENTO } from '../config';
+import { FORMS, CONTACTO, LUGAR_MAPA, LUGAR_MAPA_EMBED, INICIO_EVENTO } from '../config';
 
 const titulo = 'PrograEduca 2026: charlas STEM y feria de pósters en la UMSS';
 const descripcion =
   'La programación como herramienta transversal. Tercera versión de PrograEduca, viernes 27 de noviembre en el centro MEMI de la Facultad de Tecnología, UMSS, Cochabamba.';
 const tel = (n: string) => 'tel:' + n.replace(/\s+/g, '');
-const embed = INSCRIPCION_FORM_URL
-  ? INSCRIPCION_FORM_URL + (INSCRIPCION_FORM_URL.includes('?') ? '&' : '?') + 'embedded=true'
-  : '';
+const embed = (url: string) => url + (url.includes('?') ? '&' : '?') + 'embedded=true';
 
 // Programa: posición en la línea de tiempo de 9:00 a 17:30
 const DIA_INI = 9 * 60, DIA_FIN = 17 * 60 + 30;
@@ -233,7 +231,7 @@ postulacion = [
     <span class="s">"requerimientos técnicos"</span>,
 ]<span class="cursor" aria-hidden="true"></span></pre>
         <div class="console__run">
-          <a class="btn btn--primary" href={SPEAKERS_FORM_URL} target="_blank" rel="noopener">Postular mi charla <Fragment set:html={arrow} /></a>
+          <a class="btn btn--primary" href={FORMS.speakers} target="_blank" rel="noopener">Postular mi charla <Fragment set:html={arrow} /></a>
           <div class="qr-card">
             <img class="qr-card__img" src="/assets/img/qr-speakers.svg" width="96" height="96" alt="Código QR del formulario de postulación">
             <p>O escanéalo desde tu celular.</p>
@@ -249,19 +247,38 @@ postulacion = [
     <span class="pixel pixel--gold" aria-hidden="true" style="left: 4%; top: 20%; --t: 5s"></span>
     <div class="wrap split" style="align-items: start">
       <div class="stack inscripcion__text">
-        <h2 id="inscripcion-h" class="h2"><span data-pre>Inscríbete al <span class="mint">evento</span></span><span data-post hidden>Inscripciones <span class="mint">cerradas</span></span></h2>
+        <h2 id="inscripcion-h" class="h2"><span data-pre>Súmate al <span class="mint">evento</span></span><span data-post hidden>Inscripciones <span class="mint">cerradas</span></span></h2>
         <p class="lead inscripcion__closed" data-post hidden>Gracias por venir a PrograEduca 2026. Nos vemos en la próxima edición.</p>
-        <p class="lead" data-pre>Llena el formulario y nos vemos el <strong>viernes 27 de noviembre</strong> en el centro MEMI de la UMSS.</p>
+        <p class="lead" data-pre>Hay tres formas de participar el <strong>viernes 27 de noviembre</strong>: con tu <strong>colegio</strong>, como <strong>speaker</strong> o como <strong>sponsor</strong>.</p>
         <p class="lead">¿Dudas? Escríbenos a <a class="link" href={'mailto:' + CONTACTO.email}>{CONTACTO.email}</a></p>
       </div>
       <div class="glass-stage" data-pre><span class="orb orb--gold" aria-hidden="true" style="--s: 260px; left: -70px; top: -60px"></span><span class="orb orb--mint" aria-hidden="true" style="--s: 240px; right: -60px; bottom: -50px"></span>
-      <div class="form-window glass">
-        <div class="console__bar" aria-hidden="true"><i style="--c: var(--mint)"></i><i style="--c: var(--gold)"></i><i style="--c: #4d6e64"></i><span>inscripcion.form</span></div>
-        <div class="form-window__top">
-          <p>El formulario pide iniciar sesión con tu cuenta de Google.</p>
-          <a class="btn btn--primary" href={INSCRIPCION_FORM_URL} target="_blank" rel="noopener">Abrir formulario <Fragment set:html={arrow} /></a>
+      <div class="form-window glass" data-tabs>
+        <div class="console__bar form-tabs">
+          <span class="form-tabs__dots" aria-hidden="true"><i style="--c: var(--mint)"></i><i style="--c: var(--gold)"></i><i style="--c: #4d6e64"></i></span>
+          <div role="tablist" aria-label="Formularios">
+            <button role="tab" type="button" id="tab-colegios" aria-controls="panel-colegios" aria-selected="true" data-tab="colegios">colegios<span>.form</span></button>
+            <button role="tab" type="button" id="tab-speakers" aria-controls="panel-speakers" aria-selected="false" tabindex="-1" data-tab="speakers">speakers<span>.form</span></button>
+            <button role="tab" type="button" id="tab-sponsors" aria-controls="panel-sponsors" aria-selected="false" tabindex="-1" data-tab="sponsors">sponsors<span>.form</span></button>
+          </div>
         </div>
-        <iframe src={embed} title="Formulario de inscripción a PrograEduca 2026" loading="lazy">Cargando el formulario…</iframe>
+        <div role="tabpanel" id="panel-colegios" aria-labelledby="tab-colegios" data-panel="colegios">
+          <div class="form-window__top"><p>Inscribe a tu colegio en la actividad para colegios (14:30 a 16:00).</p><a class="link" href={FORMS.colegios} target="_blank" rel="noopener">Abrir en otra pestaña</a></div>
+          <iframe src={embed(FORMS.colegios)} title="Formulario Call for Schools, PrograEduca 2026" loading="lazy">Cargando…</iframe>
+        </div>
+        <div role="tabpanel" id="panel-speakers" aria-labelledby="tab-speakers" data-panel="speakers" hidden>
+          <div class="form-window__speakers">
+            <pre class="console__body" aria-hidden="true"><span class="c"># el formulario pide subir archivos,</span>
+<span class="c"># por eso se abre en Google Forms</span>
+abrir(<span class="s">"call_for_speakers"</span>)<span class="cursor"></span></pre>
+            <p>Google te pedirá iniciar sesión para adjuntar tus archivos.</p>
+            <a class="btn btn--primary" href={FORMS.speakers} target="_blank" rel="noopener">Postular mi charla <Fragment set:html={arrow} /></a>
+          </div>
+        </div>
+        <div role="tabpanel" id="panel-sponsors" aria-labelledby="tab-sponsors" data-panel="sponsors" hidden>
+          <div class="form-window__top"><p>Apoya PrograEduca y llega a estudiantes, docentes e investigadores.</p><a class="link" href={FORMS.sponsors} target="_blank" rel="noopener">Abrir en otra pestaña</a></div>
+          <iframe data-src={embed(FORMS.sponsors)} title="Formulario Call for Sponsors, PrograEduca 2026">Cargando…</iframe>
+        </div>
       </div>
       </div>
     </div>
@@ -312,6 +329,34 @@ postulacion = [
     for (const e of entries) if (e.isIntersecting) links.forEach((a) => a.setAttribute('aria-current', String(a.hash === '#' + e.target.id)));
   }, { rootMargin: '-45% 0px -50% 0px' });
   document.querySelectorAll('main section[id]').forEach((s) => io.observe(s));
+
+  // pestañas de formularios (colegios, speakers, sponsors)
+  const tabsRoot = document.querySelector<HTMLElement>('[data-tabs]');
+  if (tabsRoot) {
+    const tabs = [...tabsRoot.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const select = (name: string, focus = false) => {
+      tabs.forEach((t) => {
+        const on = t.dataset.tab === name;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        if (on && focus) t.focus();
+      });
+      tabsRoot.querySelectorAll<HTMLElement>('[data-panel]').forEach((p) => {
+        p.hidden = p.dataset.panel !== name;
+        const f = p.querySelector<HTMLIFrameElement>('iframe[data-src]');
+        if (!p.hidden && f) { f.src = f.dataset.src!; f.removeAttribute('data-src'); }
+      });
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => select(t.dataset.tab!));
+      t.addEventListener('keydown', (e) => {
+        const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (d) select(tabs[(i + d + tabs.length) % tabs.length].dataset.tab!, true);
+      });
+    });
+    // cualquier enlace con data-open-form="sponsors" abre esa pestaña
+    document.querySelectorAll<HTMLElement>('[data-open-form]').forEach((a) => a.addEventListener('click', () => select(a.dataset.openForm!)));
+  }
 
   // menú móvil
   const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]')!;

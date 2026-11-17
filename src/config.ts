@@ -1,14 +1,16 @@
 // Datos del evento que pueden cambiar sin tocar el diseño.
 
-/** Formulario de Google que se inserta en la sección de inscripción.
- *  Por ahora es el de postulación de speakers. Para cambiarlo, pega el enlace del formulario
- *  (viewform); la página le agrega ?embedded=true. */
-export const INSCRIPCION_FORM_URL =
-  'https://docs.google.com/forms/d/e/1FAIpQLSfHJq9y9j2kE1cWlKjG4_ymcgVxGBLH0gE9oMoKZs_32D4U4w/viewform';
-
-/** Formulario de postulación de speakers (el del QR del PDF). */
-export const SPEAKERS_FORM_URL =
-  'https://docs.google.com/forms/d/e/1FAIpQLSfHJq9y9j2kE1cWlKjG4_ymcgVxGBLH0gE9oMoKZs_32D4U4w/viewform';
+/** Formularios de Google. Pega el enlace público del formulario (termina en /viewform);
+ *  la página le agrega ?embedded=true para insertarlo. */
+export const FORMS = {
+  /** Call for Schools: se inserta en la página. */
+  colegios: 'https://docs.google.com/forms/d/e/1FAIpQLSdaTgy2ZDhr0U7f8J7sqIHrRE_7TmvGN-wT7Ls3fQKXWC6gVQ/viewform',
+  /** Call for Sponsors: se inserta en la página. */
+  sponsors: 'https://docs.google.com/forms/d/e/1FAIpQLSfY_0ddwEFIHdqHSpN5_TFnOrodMoaRU3xsSVVoKgPw5nbehg/viewform',
+  /** Call for Speakers: tiene subida de archivos (Google exige iniciar sesión),
+   *  así que no se inserta: se abre en otra pestaña. */
+  speakers: 'https://docs.google.com/forms/d/1rNzFY5zuiKt0vFyi1iDR5zMr-UyMvnGIFvWmI8LGeAQ/viewform',
+};
 
 export const CONTACTO = {
   email: 'contacto@scesi.org',
