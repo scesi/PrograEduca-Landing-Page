@@ -462,17 +462,9 @@ a, button { -webkit-tap-highlight-color: transparent; }
 .eje-node p { color: var(--muted); }
 .eje-node .eje__code { margin-top: 4px; padding-top: 14px; border-top: 1px solid rgb(242 240 230 / 0.1); }
 @media (max-width: 900px) {
-    .ejes-map__nodes { grid-template-columns: 1fr; gap: 16px; position: relative; padding: 0 0 0 28px; }
-  .ejes-map__nodes::before { content: ""; position: absolute; left: 10px; top: 30px; bottom: 40px; width: 1.5px; background: rgb(242 240 230 / 0.22); }
-  .ejes-map__nodes::after { content: ""; position: absolute; left: 9px; top: 30px; width: 3.5px; height: 18px; border-radius: 2px; background: var(--gold); opacity: 0; }
+    .ejes-map__nodes { grid-template-columns: 1fr; gap: 16px; }
   .eje-node { position: relative; padding: 20px; }
-  .eje-node::before { content: ""; position: absolute; left: -18px; top: 30px; width: 18px; height: 1.5px; background: rgb(242 240 230 / 0.22); }
-  .eje-node::after { content: ""; position: absolute; left: -22px; top: 26px; width: 9px; height: 9px; background: var(--gold); }
 }
-@media (max-width: 900px) and (prefers-reduced-motion: no-preference) {
-  .ejes-map__nodes::after { animation: spine-run 3s var(--ease-out) infinite; }
-}
-@keyframes spine-run { 0% { top: 30px; opacity: 0; } 10% { opacity: 1; } 85% { opacity: 1; } 100% { top: calc(100% - 58px); opacity: 0; } }
 
 /* consola: la salida puede tener varias líneas */
 .console__prompt { align-items: flex-end; }
@@ -496,25 +488,6 @@ a, button { -webkit-tap-highlight-color: transparent; }
 /* 8 enlaces en la barra */
 .nav__links { gap: 22px; }
 
-/* escritorio: los 3 ejes en fila, unidos por cables con un pulso que va de uno al siguiente */
-@media (min-width: 901px) {
-  .ejes-map__nodes { --gap: clamp(48px, 5vw, 72px); column-gap: var(--gap); }
-  .eje-node:not(:last-of-type)::before {
-    content: ""; position: absolute; top: 34px; left: 100%; width: var(--gap); height: 1.5px;
-    background: rgb(242 240 230 / 0.28);
-  }
-  .eje-node:not(:last-of-type)::after {
-    content: ""; position: absolute; top: 30px; left: calc(100% + var(--gap) / 2 - 4.5px); width: 9px; height: 9px; background: var(--gold);
-  }
-  .eje-node:not(:last-of-type) .eje-node__id::after {
-    content: ""; position: absolute; top: 33.5px; left: 100%; width: 14px; height: 2.5px; border-radius: 2px; background: var(--gold); opacity: 0;
-  }
-}
-@media (min-width: 901px) and (prefers-reduced-motion: no-preference) {
-  .eje-node:not(:last-of-type) .eje-node__id::after { animation: link-run 2.4s var(--ease-out) infinite; }
-  .eje-node:nth-of-type(2) .eje-node__id::after { animation-delay: 1.2s; }
-}
-@keyframes link-run { 0% { translate: 0 0; opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { translate: calc(var(--gap) - 14px) 0; opacity: 0; } }
 
 /* cuenta regresiva más visible */
 .countdown {
@@ -526,17 +499,12 @@ a, button { -webkit-tap-highlight-color: transparent; }
 }
 .countdown b { font-weight: 600; color: var(--gold); }
 
-/* jerarquía del hero: nombre > lema > fecha y lugar > botones > contador */
-.hero__when { font: 400 clamp(17px, 1.6vw, 20px)/1.4 var(--font); letter-spacing: 0; color: var(--muted); margin-top: 4px; }
-.hero__when .when__part:first-child { color: var(--cream); font-weight: 600; }
-.hero__when .when__part + .when__sep, .hero__when .when__sep { color: var(--muted); }
+/* contador discreto, debajo de los botones */
 .countdown {
   font: 400 clamp(15px, 1.2vw, 17px)/1.3 var(--mono); color: var(--muted);
   padding: 8px 16px; margin-top: 2px;
   background: rgb(13 29 25 / 0.35); border-color: rgb(242 240 230 / 0.1); box-shadow: none;
 }
 .countdown b { font-weight: 500; }
-@media (max-width: 720px) { .hero__when { font-size: 17px; } }
 
-@media (min-width: 721px) { .hero__inner { padding-top: 48px; } }
 @media (max-width: 1199px) { .snippet--desk { display: none; } }
