@@ -453,16 +453,16 @@ a, button { -webkit-tap-highlight-color: transparent; }
 /* ejes: diagrama de vidrio (hub + 3 nodos con cables y pulsos) */
 .ejes-map { margin-top: clamp(48px, 6vw, 72px); }
 .ejes-map > .orb { z-index: -1; }
-.ejes-map__hub { display: grid; justify-items: center; gap: 6px; width: fit-content; margin: 0 auto; padding: 20px 36px; border-radius: 999px; text-align: center; }
-.ejes-map__hub code { font: 500 14px/1 var(--mono); color: var(--mint); }
-.ejes-map__hub strong { font-size: clamp(20px, 2.2vw, 28px); font-weight: 600; letter-spacing: -0.015em; }
-.ejes-map__wires { display: block; width: 100%; height: 90px; overflow: visible; }
+.ejes-map__wires { display: block; width: 100%; height: 110px; overflow: visible; }
 .ejes-map__wires path { fill: none; stroke: rgb(242 240 230 / 0.22); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
 .ejes-map__wires .pulse { stroke: var(--gold); stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 8 92; stroke-dashoffset: 100; }
 @media (prefers-reduced-motion: no-preference) {
   .ejes-map__wires .pulse { animation: pulse-run 2.4s linear infinite; }
 }
 @keyframes pulse-run { to { stroke-dashoffset: 0; } }
+/* puntos donde los cables entran a cada eje */
+.eje-node { position: relative; }
+@media (min-width: 901px) { .eje-node::before { content: ""; position: absolute; left: 50%; top: -5px; width: 9px; height: 9px; translate: -50% 0; background: var(--gold); } }
 .ejes-map__nodes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2.4vw, 32px); }
 .eje-node { display: grid; gap: 12px; align-content: start; padding: 24px; border-radius: var(--radius); }
 .eje-node__id { font: 500 12px/1 var(--mono); color: var(--gold); }
@@ -470,11 +470,15 @@ a, button { -webkit-tap-highlight-color: transparent; }
 .eje-node p { color: var(--muted); }
 .eje-node .eje__code { margin-top: 4px; padding-top: 14px; border-top: 1px solid rgb(242 240 230 / 0.1); }
 @media (max-width: 900px) {
-  .ejes-map__hub { margin: 0; }
-  .ejes-map__wires { display: none; }
-  .ejes-map__nodes { grid-template-columns: 1fr; gap: 16px; position: relative; padding: 24px 0 0 28px; }
-  .ejes-map__nodes::before { content: ""; position: absolute; left: 10px; top: 0; bottom: 40px; width: 1.5px; background: rgb(242 240 230 / 0.22); }
+    .ejes-map__wires { display: none; }
+  .ejes-map__nodes { grid-template-columns: 1fr; gap: 16px; position: relative; padding: 0 0 0 28px; }
+  .ejes-map__nodes::before { content: ""; position: absolute; left: 10px; top: 30px; bottom: 40px; width: 1.5px; background: rgb(242 240 230 / 0.22); }
+  .ejes-map__nodes::after { content: ""; position: absolute; left: 9px; top: 30px; width: 3.5px; height: 18px; border-radius: 2px; background: var(--gold); opacity: 0; }
   .eje-node { position: relative; padding: 20px; }
   .eje-node::before { content: ""; position: absolute; left: -18px; top: 30px; width: 18px; height: 1.5px; background: rgb(242 240 230 / 0.22); }
   .eje-node::after { content: ""; position: absolute; left: -22px; top: 26px; width: 9px; height: 9px; background: var(--gold); }
 }
+@media (max-width: 900px) and (prefers-reduced-motion: no-preference) {
+  .ejes-map__nodes::after { animation: spine-run 3s var(--ease-out) infinite; }
+}
+@keyframes spine-run { 0% { top: 30px; opacity: 0; } 10% { opacity: 1; } 85% { opacity: 1; } 100% { top: calc(100% - 58px); opacity: 0; } }
