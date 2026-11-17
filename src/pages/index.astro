@@ -161,7 +161,7 @@ print(aprender())</pre>
         </article>
         <article class="eje">
           <h3>Elaboración de pósters científicos</h3>
-          <p>Cómo comunicar una investigación de forma visual: estructura de un póster, buenas prácticas de diseño y presentación. Va de la mano con la feria.</p>
+          <p>Cómo comunicar una investigación de forma visual: estructura de un póster, buenas prácticas de diseño y presentación. Va de la mano con la feria. <a class="link" href="#inscripcion" data-open-form="posters">Postula tu póster</a></p>
           <pre class="eje__code" aria-hidden="true">poster = Poster(
     titulo, resumen)<span class="cursor" aria-hidden="true"></span></pre>
         </article>
@@ -249,7 +249,7 @@ postulacion = [
       <div class="stack inscripcion__text">
         <h2 id="inscripcion-h" class="h2"><span data-pre>Súmate al <span class="mint">evento</span></span><span data-post hidden>Inscripciones <span class="mint">cerradas</span></span></h2>
         <p class="lead inscripcion__closed" data-post hidden>Gracias por venir a PrograEduca 2026. Nos vemos en la próxima edición.</p>
-        <p class="lead" data-pre>Hay tres formas de participar el <strong>viernes 27 de noviembre</strong>: con tu <strong>colegio</strong>, como <strong>speaker</strong> o como <strong>sponsor</strong>.</p>
+        <p class="lead" data-pre>Hay cuatro formas de participar el <strong>viernes 27 de noviembre</strong>: con tu <strong>colegio</strong>, como <strong>speaker</strong>, presentando un <strong>póster</strong> en la feria o como <strong>sponsor</strong>.</p>
         <p class="lead">¿Dudas? Escríbenos a <a class="link" href={'mailto:' + CONTACTO.email}>{CONTACTO.email}</a></p>
       </div>
       <div class="glass-stage" data-pre><span class="orb orb--gold" aria-hidden="true" style="--s: 260px; left: -70px; top: -60px"></span><span class="orb orb--mint" aria-hidden="true" style="--s: 240px; right: -60px; bottom: -50px"></span>
@@ -259,6 +259,7 @@ postulacion = [
           <div role="tablist" aria-label="Formularios">
             <button role="tab" type="button" id="tab-colegios" aria-controls="panel-colegios" aria-selected="true" data-tab="colegios">colegios<span>.form</span></button>
             <button role="tab" type="button" id="tab-speakers" aria-controls="panel-speakers" aria-selected="false" tabindex="-1" data-tab="speakers">speakers<span>.form</span></button>
+            <button role="tab" type="button" id="tab-posters" aria-controls="panel-posters" aria-selected="false" tabindex="-1" data-tab="posters">posters<span>.form</span></button>
             <button role="tab" type="button" id="tab-sponsors" aria-controls="panel-sponsors" aria-selected="false" tabindex="-1" data-tab="sponsors">sponsors<span>.form</span></button>
           </div>
         </div>
@@ -273,6 +274,15 @@ postulacion = [
 abrir(<span class="s">"call_for_speakers"</span>)<span class="cursor"></span></pre>
             <p>Google te pedirá iniciar sesión para adjuntar tus archivos.</p>
             <a class="btn btn--primary" href={FORMS.speakers} target="_blank" rel="noopener">Postular mi charla <Fragment set:html={arrow} /></a>
+          </div>
+        </div>
+        <div role="tabpanel" id="panel-posters" aria-labelledby="tab-posters" data-panel="posters" hidden>
+          <div class="form-window__speakers">
+            <pre class="console__body" aria-hidden="true"><span class="c"># feria de pósters, 10:00 a 12:00</span>
+<span class="c"># el formulario pide subir archivos</span>
+abrir(<span class="s">"call_for_posters"</span>)<span class="cursor"></span></pre>
+            <p>Google te pedirá iniciar sesión para adjuntar tus archivos.</p>
+            <a class="btn btn--primary" href={FORMS.posters} target="_blank" rel="noopener">Postular mi póster <Fragment set:html={arrow} /></a>
           </div>
         </div>
         <div role="tabpanel" id="panel-sponsors" aria-labelledby="tab-sponsors" data-panel="sponsors" hidden>

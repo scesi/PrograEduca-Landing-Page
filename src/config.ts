@@ -10,6 +10,8 @@ export const FORMS = {
   /** Call for Speakers: tiene subida de archivos (Google exige iniciar sesión),
    *  así que no se inserta: se abre en otra pestaña. */
   speakers: 'https://docs.google.com/forms/d/1rNzFY5zuiKt0vFyi1iDR5zMr-UyMvnGIFvWmI8LGeAQ/viewform',
+  /** Call for Posters: igual que speakers, pide iniciar sesión; se abre en otra pestaña. */
+  posters: 'https://docs.google.com/forms/d/18TsOPY_BW50OGfL41wgs3xdsKeZxhyhRPCX-cYDE2gg/viewform',
 };
 
 export const CONTACTO = {
