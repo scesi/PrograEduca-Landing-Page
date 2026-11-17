@@ -638,3 +638,6 @@ button.speaker .speaker__initials { display: flex; }
 
 .speaker-dialog { position: fixed; inset: 0; }
 button.speaker .speaker__initials { align-items: center; align-content: center; }
+
+/* formularios en el celular: más bajos (antes ~82% de la pantalla) */
+@media (max-width: 720px) { .form-window iframe { height: clamp(380px, 58svh, 520px); } }
