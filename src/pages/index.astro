@@ -65,7 +65,7 @@ const arrow = '<svg class="btn__arrow" width="16" height="16" viewBox="0 0 16 16
       <a href="#cronograma">Cronograma</a>
       <a href="#ubicacion">Ubicación</a>
       <a href="#speakers">Speakers</a>
-      <a href="#posters">Participa</a>
+      <a href="#participa">Participa</a>
     </nav>
     <a class="btn btn--primary" href="#colegios" data-cta data-live="Cronograma"><span data-cta-label>Inscribirme</span></a>
     <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú" data-menu-toggle><span></span><span></span></button>
@@ -76,7 +76,7 @@ const arrow = '<svg class="btn__arrow" width="16" height="16" viewBox="0 0 16 16
       <li><a href="#cronograma">Cronograma</a></li>
       <li><a href="#ubicacion">Ubicación</a></li>
       <li><a href="#speakers">Speakers</a></li>
-      <li><a href="#posters">Participa</a></li>
+      <li><a href="#participa">Participa</a></li>
     </ul>
   </nav>
 </header>
@@ -276,9 +276,23 @@ print(aprender())</pre>
       ) : (
         <p class="lead speakers__soon">Pronto anunciaremos a los speakers de esta edición.</p>
       )}
-      <div class="speakers__cta" data-pre>
+      <div class="speakers__cta" id="postular-charla" data-pre>
         <a class="btn btn--primary" href={FORMS.speakers} target="_blank" rel="noopener">Postular mi charla <Fragment set:html={arrow} /></a>
         <p class="form-note">Google te pedirá iniciar sesión para adjuntar tus archivos.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="participa" aria-labelledby="participa-h">
+    <div class="wrap">
+      <h2 id="participa-h" class="h2">Participa en <span class="gold">PrograEduca</span></h2>
+      <div class="glass-stage ways-stage"><span class="orb orb--gold" aria-hidden="true" style="--s: 260px; left: 18%; top: -40px"></span><span class="orb orb--mint" aria-hidden="true" style="--s: 240px; right: 12%; bottom: -60px"></span>
+      <ul class="ways">
+        <li><a class="way glass" href="#postular-charla"><code>charla</code><strong>Postula una charla</strong><span>Comparte tu experiencia con estudiantes, docentes e investigadores.</span><Fragment set:html={arrow} /></a></li>
+        <li><a class="way glass" href="#posters"><code>póster</code><strong>Presenta tu póster</strong><span>Muestra tu investigación en la feria. Hasta el 21 de noviembre.</span><Fragment set:html={arrow} /></a></li>
+        <li><a class="way glass" href="#colegios"><code>colegio</code><strong>Ven con tu colegio</strong><span>Para estudiantes de 4.º a 6.º de secundaria, de 14:30 a 16:00.</span><Fragment set:html={arrow} /></a></li>
+        <li><a class="way glass" href="#sponsors"><code>sponsor</code><strong>Auspicia el evento</strong><span>Llega a estudiantes, docentes y comunidades tecnológicas.</span><Fragment set:html={arrow} /></a></li>
+      </ul>
       </div>
     </div>
   </section>
@@ -381,7 +395,7 @@ print(aprender())</pre>
   const links = [...document.querySelectorAll<HTMLAnchorElement>('.nav__links a, .nav__menu a')];
   const io = new IntersectionObserver((entries) => {
     // secciones que se agrupan bajo un mismo enlace
-    const grupo: Record<string, string> = { ejes: 'evento', colegios: 'posters', sponsors: 'posters' };
+    const grupo: Record<string, string> = { ejes: 'evento', posters: 'participa', colegios: 'participa', sponsors: 'participa' };
     for (const e of entries) if (e.isIntersecting) {
       const id = grupo[e.target.id] ?? e.target.id;
       links.forEach((a) => a.setAttribute('aria-current', String(a.hash === '#' + id)));
