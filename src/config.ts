@@ -26,3 +26,9 @@ export const LUGAR_MAPA_EMBED =
 
 /** Inicio del evento (hora de Bolivia, UTC-4) para la cuenta regresiva. */
 export const INICIO_EVENTO = '2026-11-27T09:30:00-04:00';
+
+/** Speakers confirmados. Agrega uno por objeto; la foto va en public/assets/speakers/
+ *  (cuadrada, mínimo 600×600). Mientras la lista esté vacía, la página muestra un aviso. */
+export const SPEAKERS: { nombre: string; charla: string; foto: string }[] = [
+  // { nombre: 'Nombre Apellido', charla: 'Título de la charla', foto: '/assets/speakers/nombre.jpg' },
+];

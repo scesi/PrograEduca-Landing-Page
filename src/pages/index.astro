@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { FORMS, CONTACTO, LUGAR_MAPA, LUGAR_MAPA_EMBED, INICIO_EVENTO } from '../config';
+import { FORMS, SPEAKERS, CONTACTO, LUGAR_MAPA, LUGAR_MAPA_EMBED, INICIO_EVENTO } from '../config';
 
 const titulo = 'PrograEduca 2026: charlas STEM y feria de pósters en la UMSS';
 const descripcion =
@@ -222,35 +222,23 @@ print(aprender())</pre>
   </section>
 
   <section class="section" id="speakers" aria-labelledby="speakers-h">
-    <span class="orb orb--gold" aria-hidden="true" style="--s: 320px; left: -160px; top: -100px; opacity: .6"></span>
-    <div class="wrap split">
-      <div class="stack">
-        <h2 id="speakers-h" class="h2">Postula una <span class="gold">charla</span></h2>
-        <ul class="reasons">
-          <li>Comparte tu experiencia con estudiantes, docentes e investigadores.</li>
-          <li>Da visibilidad a tu trabajo, proyecto o comunidad.</li>
-          <li>Conecta con otros profesionales y talento joven.</li>
-          <li>Aporta a la educación y a la difusión de la tecnología en Cochabamba.</li>
+    <div class="wrap speakers">
+      <h2 id="speakers-h" class="h2">Speakers <span class="gold">2026</span></h2>
+      {SPEAKERS.length > 0 ? (
+        <ul class="speakers__grid">
+          {SPEAKERS.map((sp) => (
+            <li class="speaker glass">
+              <img src={sp.foto} alt={sp.nombre} width="600" height="600" loading="lazy" decoding="async" />
+              <div class="speaker__info"><strong>{sp.nombre}</strong><span>{sp.charla}</span></div>
+            </li>
+          ))}
         </ul>
-      </div>
-      <div class="glass-stage"><span class="orb orb--mint" aria-hidden="true" style="--s: 230px; left: -60px; top: -50px"></span><span class="orb orb--gold" aria-hidden="true" style="--s: 210px; right: -40px; bottom: -60px"></span>
-      <figure class="console glass" style="margin: 0">
-        <div class="console__bar" aria-hidden="true"><i style="--c: var(--mint)"></i><i style="--c: var(--gold)"></i><i style="--c: #4d6e64"></i><span>postulacion.py</span></div>
-        <pre class="console__body" aria-label="Datos que pide el formulario de postulación"><span class="c"># datos que pide el formulario</span>
-postulacion = [
-    <span class="s">"nombre"</span>,
-    <span class="s">"perfil breve"</span>,
-    <span class="s">"título de la charla"</span>,
-    <span class="s">"resumen"</span>,
-    <span class="s">"eje temático"</span>,
-    <span class="s">"duración"</span>,
-    <span class="s">"requerimientos técnicos"</span>,
-]<span class="cursor" aria-hidden="true"></span></pre>
-        <div class="console__run">
-          <a class="btn btn--primary" href={FORMS.speakers} target="_blank" rel="noopener" data-pre>Postular mi charla <Fragment set:html={arrow} /></a>
-        </div>
-      </figure>
-      <p class="form-note" data-pre>Google te pedirá iniciar sesión para adjuntar tus archivos.</p>
+      ) : (
+        <p class="lead speakers__soon">Pronto anunciaremos a los speakers de esta edición.</p>
+      )}
+      <div class="speakers__cta" data-pre>
+        <a class="btn btn--primary" href={FORMS.speakers} target="_blank" rel="noopener">Postular mi charla <Fragment set:html={arrow} /></a>
+        <p class="form-note">Google te pedirá iniciar sesión para adjuntar tus archivos.</p>
       </div>
     </div>
   </section>
