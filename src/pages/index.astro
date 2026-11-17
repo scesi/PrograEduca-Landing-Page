@@ -118,23 +118,23 @@ print(aprender())</pre>
     <div class="wrap split">
       <div class="stack">
         <h2 id="evento-h" class="h2">Tecnología y educación desde <span class="gold">2024</span></h2>
-        <p class="lead">PrograEduca conecta la tecnología con la educación con <strong>charlas</strong> y una <strong>feria de pósters científicos</strong>. Busca promover el aprendizaje con tecnologías STEM: ciencia, tecnología, ingeniería y matemáticas.</p>
+        <p class="lead">PrograEduca conecta la tecnología con la educación mediante <strong>charlas</strong> y una <strong>feria de pósters científicos</strong>. Busca promover el aprendizaje con tecnologías STEM: ciencia, tecnología, ingeniería y matemáticas.</p>
         <p class="lead">Este año llega a su <strong>tercera versión</strong> y, por primera vez, suma una <strong>actividad para colegios</strong>.</p>
       </div>
       <div class="glass-stage"><span class="orb orb--gold" aria-hidden="true" style="--s: 240px; right: -50px; top: -70px"></span><span class="orb orb--mint" aria-hidden="true" style="--s: 200px; left: -60px; bottom: -40px"></span>
       <figure class="console glass" style="margin: 0">
         <div class="console__bar" aria-hidden="true"><i style="--c: var(--mint)"></i><i style="--c: var(--gold)"></i><i style="--c: #4d6e64"></i><span>prograeduca.py</span></div>
-        <pre class="console__body" aria-label="Código de ejemplo con los datos del evento"><span class="k">def</span> aprender():
-    <span class="k">return</span> [<span class="s">"progra"</span>, <span class="s">"educa"</span>]
-
-evento = {"{"}
+        <pre class="console__body" aria-label="Código de ejemplo con los datos del evento">evento = {"{"}
     <span class="s">"edicion"</span>: <span class="n">3</span>,
     <span class="s">"desde"</span>: <span class="n">2024</span>,
-    <span class="s">"ciudad"</span>: <span class="s">"Cochabamba"</span>,
     <span class="s">"novedad"</span>: <span class="s">"actividad para colegios"</span>,
 {"}"}
 
-print(aprender())</pre>
+<span class="k">def</span> aprender(e):
+    anio = e[<span class="s">"desde"</span>] + e[<span class="s">"edicion"</span>] - <span class="n">1</span>
+    <span class="k">return</span> <span class="s">f"{"{"}anio{"}"}: {"{"}e['novedad']{"}"}"</span>
+
+print(aprender(evento))</pre>
         <div class="console__run">
           <button class="console__btn" type="button" data-run><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.5v9l8-4.5z" fill="currentColor"/></svg>Ejecutar</button>
           <span class="console__prompt"><output class="console__out" data-out aria-live="polite"></output><span class="cursor" aria-hidden="true"></span></span>
@@ -151,25 +151,41 @@ print(aprender())</pre>
     <div class="wrap">
       <h2 id="ejes-h" class="h2">Tres ejes temáticos</h2>
       <p class="lead" style="margin-top: 20px">Cada charla se ubica en uno. Se buscan aplicaciones reales y tendencias.</p>
-      <div class="ejes">
-        <article class="eje">
-          <h3>Tecnología en diferentes áreas</h3>
-          <p>Inteligencia artificial, ciencia de datos, desarrollo de software, ciberseguridad, redes, IoT, robótica y software libre, entre otras.</p>
-          <pre class="eje__code" aria-hidden="true"><span class="k">areas</span> = [<span class="s">"IA"</span>, <span class="s">"datos"</span>,
+      <div class="ejes-map glass-stage">
+        <span class="orb orb--gold" aria-hidden="true" style="--s: 260px; left: 6%; top: 150px"></span>
+        <span class="orb orb--mint" aria-hidden="true" style="--s: 300px; right: 4%; top: 220px"></span>
+        <div class="ejes-map__hub glass">
+          <code>programacion()</code>
+          <strong>herramienta <span class="gold">transversal</span></strong>
+        </div>
+        <svg class="ejes-map__wires" viewBox="0 0 300 100" preserveAspectRatio="none" aria-hidden="true">
+          <g class="wire"><path d="M150 0 C150 55 50 45 50 100" /><path class="pulse" pathLength="100" d="M150 0 C150 55 50 45 50 100" /></g>
+          <g class="wire"><path d="M150 0 L150 100" /><path class="pulse" pathLength="100" d="M150 0 L150 100" style="animation-delay: .8s" /></g>
+          <g class="wire"><path d="M150 0 C150 55 250 45 250 100" /><path class="pulse" pathLength="100" d="M150 0 C150 55 250 45 250 100" style="animation-delay: 1.6s" /></g>
+        </svg>
+        <div class="ejes-map__nodes">
+          <article class="eje-node glass">
+            <code class="eje-node__id">eje[0]</code>
+            <h3>Tecnología en diferentes áreas</h3>
+            <p>Inteligencia artificial, ciencia de datos, desarrollo de software, ciberseguridad, redes, IoT, robótica y software libre, entre otras.</p>
+            <pre class="eje__code" aria-hidden="true"><span class="k">areas</span> = [<span class="s">"IA"</span>, <span class="s">"datos"</span>,
          <span class="s">"IoT"</span>, <span class="s">"robótica"</span>]<span class="cursor" aria-hidden="true"></span></pre>
-        </article>
-        <article class="eje">
-          <h3>Educación y tecnología</h3>
-          <p>Cómo la tecnología transforma la enseñanza y el aprendizaje: herramientas educativas, STEM en el aula y experiencias de innovación educativa.</p>
-          <pre class="eje__code" aria-hidden="true"><span class="k">for</span> estudiante <span class="k">in</span> aula:
+          </article>
+          <article class="eje-node glass">
+            <code class="eje-node__id">eje[1]</code>
+            <h3>Educación y tecnología</h3>
+            <p>Cómo la tecnología transforma la enseñanza y el aprendizaje: herramientas educativas, STEM en el aula y experiencias de innovación educativa.</p>
+            <pre class="eje__code" aria-hidden="true"><span class="k">for</span> estudiante <span class="k">in</span> aula:
     aprender(estudiante)<span class="cursor" aria-hidden="true"></span></pre>
-        </article>
-        <article class="eje">
-          <h3>Elaboración de pósters científicos</h3>
-          <p>Cómo comunicar una investigación de forma visual: estructura de un póster, buenas prácticas de diseño y presentación. Va de la mano con la feria. <a class="link" href="#posters">Postula tu póster</a></p>
-          <pre class="eje__code" aria-hidden="true">poster = Poster(
+          </article>
+          <article class="eje-node glass">
+            <code class="eje-node__id">eje[2]</code>
+            <h3>Elaboración de pósters científicos</h3>
+            <p>Cómo comunicar una investigación de forma visual: estructura de un póster, buenas prácticas de diseño y presentación. Va de la mano con la feria. <a class="link" href="#posters">Postula tu póster</a></p>
+            <pre class="eje__code" aria-hidden="true">poster = Poster(
     titulo, resumen)<span class="cursor" aria-hidden="true"></span></pre>
-        </article>
+          </article>
+        </div>
       </div>
     </div>
   </section>
@@ -195,7 +211,7 @@ print(aprender())</pre>
         </div>
         <div class="venue">
           <dl class="venue__facts">
-            <div><dt>Lugar</dt><dd>Centro MEMI, Facultad de Tecnología, UMSS, Cochabamba</dd></div>
+            <div><dt>Ubicación</dt><dd>Centro MEMI, Facultad de Tecnología, UMSS, Cochabamba</dd></div>
             <div><dt>Público</dt><dd>Estudiantes universitarios, docentes, investigadores y aficionados a la tecnología.</dd></div>
             <a class="btn btn--ghost" href={LUGAR_MAPA} target="_blank" rel="noopener">Abrir en Google Maps <Fragment set:html={arrow} /></a>
           </dl>
@@ -451,7 +467,7 @@ feria = {"{"}
   const out = document.querySelector<HTMLOutputElement>('[data-out]');
   if (run && out) {
     run.addEventListener('click', () => {
-      const msg = "['progra', 'educa']";
+      const msg = '2026: actividad para colegios';
       let i = 0;
       run.disabled = true;
       out.textContent = '';
