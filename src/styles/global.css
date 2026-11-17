@@ -556,3 +556,30 @@ p, dd, li { text-wrap: pretty; }
 .posters__window img { display: block; width: 100%; height: auto; padding: 12px; border-radius: calc(var(--radius) + 2px); }
 .posters__cta { display: grid; justify-items: center; gap: 4px; text-align: center; max-width: 520px; }
 .posters__cta .form-note { margin-top: 8px; }
+
+/* tarjetas de speakers */
+.speakers__grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); align-items: stretch; }
+.speaker { display: flex; flex-direction: column; }
+.speaker__media { aspect-ratio: 4 / 3; overflow: hidden; border-bottom: 1px solid rgb(242 240 230 / 0.1); }
+.speaker__media img { width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; }
+.speaker__initials {
+  height: 100%; display: flex; flex-wrap: wrap; align-content: center; justify-content: center; gap: 10px; padding: 24px;
+  background: radial-gradient(120% 90% at 20% 10%, rgb(111 199 161 / 0.22), transparent 60%), radial-gradient(90% 80% at 90% 100%, rgb(231 199 107 / 0.18), transparent 60%);
+}
+.speaker__initials span {
+  display: grid; place-items: center; width: 84px; height: 84px;
+  font: 600 30px/1 var(--mono); color: var(--cream); letter-spacing: 0.02em;
+  background: rgb(13 29 25 / 0.55); border: 1px solid rgb(242 240 230 / 0.16);
+}
+.speaker__initials span:nth-child(even) { color: var(--gold); }
+.speaker__initials span:nth-child(odd) { color: var(--mint); }
+.speaker__initials span:only-child { width: 120px; height: 120px; font-size: 42px; }
+.speaker__info { display: grid; gap: 6px; align-content: start; padding: 20px 22px 24px; }
+.speaker__name { margin: 0; font-size: 18px; font-weight: 600; color: var(--cream); }
+.speaker__rol { margin: 0; font: 400 13px/1.45 var(--mono); color: var(--muted); }
+.speaker__talk { margin: 10px 0 0; font-size: 20px; line-height: 1.25; letter-spacing: -0.01em; color: var(--gold); }
+.speaker__summary { margin: 4px 0 0; font-size: 15px; line-height: 1.55; color: var(--muted); }
+@media (max-width: 720px) { .speaker__initials span { width: 64px; height: 64px; font-size: 24px; } .speaker__initials span:only-child { width: 96px; height: 96px; font-size: 34px; } }
+/* grupo de 4 speakers: iniciales en una fila */
+.speaker__initials span:first-child:nth-last-child(n + 3), .speaker__initials span:first-child:nth-last-child(n + 3) ~ span { width: 64px; height: 64px; font-size: 22px; }
+.speaker__initials { flex-wrap: nowrap; }

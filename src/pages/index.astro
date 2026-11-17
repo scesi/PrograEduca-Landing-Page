@@ -13,6 +13,7 @@ const titulo = 'PrograEduca 2026: charlas STEM y feria de pósters en la UMSS';
 const descripcion =
   'La programación como herramienta transversal. Tercera versión de PrograEduca, viernes 27 de noviembre en el centro MEMI de la Facultad de Tecnología, UMSS, Cochabamba.';
 const tel = (n: string) => 'tel:' + n.replace(/\s+/g, '');
+const iniciales = (n: string) => n.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
 const embed = (url: string) => url + (url.includes('?') ? '&' : '?') + 'embedded=true';
 
 // Cronograma: posición en la línea de tiempo de 9:00 a 18:30 (deja espacio al bloque de cierre)
@@ -237,8 +238,21 @@ print(aprender())</pre>
         <ul class="speakers__grid">
           {SPEAKERS.map((sp) => (
             <li class="speaker glass">
-              <img src={sp.foto} alt={sp.nombre} width="600" height="600" loading="lazy" decoding="async" />
-              <div class="speaker__info"><strong>{sp.nombre}</strong><span>{sp.charla}</span></div>
+              <div class="speaker__media">
+                {sp.foto ? (
+                  <img src={sp.foto} alt={sp.nombres.join(', ')} width="600" height="600" loading="lazy" decoding="async" />
+                ) : (
+                  <div class="speaker__initials" aria-hidden="true">
+                    {sp.nombres.map((n) => <span>{iniciales(n)}</span>)}
+                  </div>
+                )}
+              </div>
+              <div class="speaker__info">
+                <p class="speaker__name">{sp.nombres.join(', ')}</p>
+                <p class="speaker__rol">{sp.rol}</p>
+                <h3 class="speaker__talk">{sp.charla}</h3>
+                <p class="speaker__summary">{sp.resumen}</p>
+              </div>
             </li>
           ))}
         </ul>
