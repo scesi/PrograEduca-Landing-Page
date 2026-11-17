@@ -257,21 +257,14 @@ print(aprender())</pre>
       <div class="stack">
         <h2 id="posters-h" class="h2">Presenta tu <span class="mint">póster</span></h2>
         <p class="lead">La <strong>feria de pósters científicos</strong> corre de <strong>10:00 a 12:00</strong>, en paralelo a las charlas. Muestra tu investigación o proyecto de forma visual.</p>
-        <div class="stack form-action" data-pre>
-          <a class="btn btn--primary" href={FORMS.posters} target="_blank" rel="noopener">Postular mi póster <Fragment set:html={arrow} /></a>
-          <p class="form-note">Google te pedirá iniciar sesión para adjuntar tus archivos.</p>
-        </div>
       </div>
-      <div class="glass-stage"><span class="orb orb--gold" aria-hidden="true" style="--s: 220px; right: -50px; top: -60px"></span><span class="orb orb--mint" aria-hidden="true" style="--s: 200px; left: -50px; bottom: -50px"></span>
-      <figure class="console glass" style="margin: 0">
-        <div class="console__bar" aria-hidden="true"><i style="--c: var(--mint)"></i><i style="--c: var(--gold)"></i><i style="--c: #4d6e64"></i><span>feria.py</span></div>
-        <pre class="console__body" aria-label="Datos de la feria de pósters"><span class="c"># feria de pósters científicos</span>
-feria = {"{"}
-    <span class="s">"dia"</span>: <span class="s">"viernes 27 de noviembre"</span>,
-    <span class="s">"hora"</span>: <span class="s">"10:00 a 12:00"</span>,
-    <span class="s">"lugar"</span>: <span class="s">"centro MEMI, UMSS"</span>,
-{"}"}<span class="cursor" aria-hidden="true"></span></pre>
-      </figure>
+      <div class="posters__media">
+        <img src="/assets/img/call-for-posters.webp" width="1080" height="1080" loading="lazy" decoding="async"
+          alt="Call for posters, PrograEduca 2026: ¿Desarrollaste algo interesante? ¡Compártelo y dale visibilidad! Postula hasta el 21 de noviembre.">
+        <div class="posters__cta" data-pre>
+          <a class="btn btn--primary" href={FORMS.posters} target="_blank" rel="noopener">Postular mi póster <Fragment set:html={arrow} /></a>
+          <p class="form-note">Postula hasta el 21 de noviembre. Google te pedirá iniciar sesión para adjuntar tus archivos.</p>
+        </div>
       </div>
     </div>
   </section>
