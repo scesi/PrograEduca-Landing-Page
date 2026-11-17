@@ -259,8 +259,13 @@ print(aprender())</pre>
         <p class="lead">La <strong>feria de pósters científicos</strong> corre de <strong>10:00 a 12:00</strong>, en paralelo a las charlas. Muestra tu investigación o proyecto de forma visual.</p>
       </div>
       <div class="posters__media">
-        <img src="/assets/img/call-for-posters.webp" width="1080" height="1080" loading="lazy" decoding="async"
-          alt="Call for posters, PrograEduca 2026: ¿Desarrollaste algo interesante? ¡Compártelo y dale visibilidad! Postula hasta el 21 de noviembre.">
+        <div class="glass-stage posters__stage"><span class="orb orb--gold" aria-hidden="true" style="--s: 240px; right: -70px; top: -60px"></span><span class="orb orb--mint" aria-hidden="true" style="--s: 220px; left: -70px; bottom: -40px"></span>
+        <figure class="console glass posters__window">
+          <div class="console__bar" aria-hidden="true"><i style="--c: var(--mint)"></i><i style="--c: var(--gold)"></i><i style="--c: #4d6e64"></i><span>call_for_posters.png</span></div>
+          <img src="/assets/img/call-for-posters.webp" width="1080" height="1080" loading="lazy" decoding="async"
+            alt="Call for posters, PrograEduca 2026: ¿Desarrollaste algo interesante? ¡Compártelo y dale visibilidad! Postula hasta el 21 de noviembre.">
+        </figure>
+        </div>
         <div class="posters__cta" data-pre>
           <a class="btn btn--primary" href={FORMS.posters} target="_blank" rel="noopener">Postular mi póster <Fragment set:html={arrow} /></a>
           <p class="form-note">Postula hasta el 21 de noviembre. Google te pedirá iniciar sesión para adjuntar tus archivos.</p>

@@ -551,6 +551,8 @@ p, dd, li { text-wrap: pretty; }
 
 /* pósters: arte del call for posters con el botón debajo */
 .posters__media { display: grid; justify-items: center; gap: 20px; }
-.posters__media img { display: block; width: 100%; max-width: 520px; height: auto; border-radius: var(--radius); border: 1px solid var(--line); box-shadow: 0 30px 60px -30px rgb(0 0 0 / 0.6); }
+.posters__stage { width: 100%; max-width: 520px; }
+.posters__window { margin: 0; }
+.posters__window img { display: block; width: 100%; height: auto; padding: 12px; border-radius: calc(var(--radius) + 2px); }
 .posters__cta { display: grid; justify-items: center; gap: 4px; text-align: center; max-width: 520px; }
 .posters__cta .form-note { margin-top: 8px; }
