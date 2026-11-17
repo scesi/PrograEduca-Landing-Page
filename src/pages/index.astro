@@ -47,6 +47,12 @@ const arrow = '<svg class="btn__arrow" width="16" height="16" viewBox="0 0 16 16
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta name="theme-color" content="#17302a">
 <link rel="preload" href={outfit700} as="font" type="font/woff2" crossorigin>
+<script is:inline>
+  // al cargar o recargar, siempre desde el inicio: sin #sección en el link ni scroll recordado
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+  addEventListener('load', () => scrollTo(0, 0));
+</script>
 </head>
 <body>
 <a class="skip" href="#contenido">Saltar al contenido</a>
