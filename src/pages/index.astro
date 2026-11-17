@@ -126,18 +126,18 @@ print(aprender())</pre>
       <div class="glass-stage"><span class="orb orb--gold" aria-hidden="true" style="--s: 240px; right: -50px; top: -70px"></span><span class="orb orb--mint" aria-hidden="true" style="--s: 200px; left: -60px; bottom: -40px"></span>
       <figure class="console glass" style="margin: 0">
         <div class="console__bar" aria-hidden="true"><i style="--c: var(--mint)"></i><i style="--c: var(--gold)"></i><i style="--c: #4d6e64"></i><span>prograeduca.py</span></div>
-        <pre class="console__body" aria-label="Código de ejemplo: la programación aplicada a distintas áreas">areas = [<span class="s">"IA"</span>, <span class="s">"datos"</span>,
-         <span class="s">"robótica"</span>, <span class="s">"educación"</span>]
+        <pre class="console__body" aria-label="Código de ejemplo: un saludo con tu nombre">nombre = input(<span class="s">"¿Cómo te llamas? "</span>)
 
-<span class="k">def</span> aprender(area):
-    <span class="k">return</span> <span class="s">f"programación + {"{"}area{"}"}"</span>
+<span class="k">def</span> invitar(nombre):
+    <span class="k">return</span> (<span class="s">f"Hola {"{"}nombre{"}"}, te esperamos"</span>
+            <span class="s">" el viernes 27 en el MEMI"</span>)
 
-<span class="k">for</span> area <span class="k">in</span> areas:
-    print(aprender(area))</pre>
-        <div class="console__run">
-          <button class="console__btn" type="button" data-run><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.5v9l8-4.5z" fill="currentColor"/></svg>Ejecutar</button>
+print(invitar(nombre))</pre>
+        <form class="console__run" data-run-form>
+          <label class="console__ask"><span>¿Cómo te llamas?</span><input type="text" name="nombre" maxlength="24" autocomplete="given-name" placeholder="tu nombre" enterkeyhint="go" spellcheck="false" data-name></label>
+          <button class="console__btn" type="submit" data-run><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.5v9l8-4.5z" fill="currentColor"/></svg>Ejecutar</button>
           <span class="console__prompt"><output class="console__out" data-out aria-live="polite"></output><span class="cursor" aria-hidden="true"></span></span>
-        </div>
+        </form>
       </figure>
       </div>
     </div>
@@ -459,18 +459,29 @@ feria = {"{"}
     update();
   }
 
-  // consola: ejecutar print(aprender())
+  // consola: input() con tu nombre y print(invitar(nombre))
+  const runForm = document.querySelector<HTMLFormElement>('[data-run-form]');
   const run = document.querySelector<HTMLButtonElement>('[data-run]');
   const out = document.querySelector<HTMLOutputElement>('[data-out]');
-  if (run && out) {
-    run.addEventListener('click', () => {
-      const msg = 'programación + IA\nprogramación + datos\nprogramación + robótica\nprogramación + educación';
+  const nameInput = document.querySelector<HTMLInputElement>('[data-name]');
+  if (runForm && run && out && nameInput) {
+    runForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const nombre = nameInput.value.trim();
+      if (!nombre) {
+        nameInput.focus();
+        nameInput.classList.remove('is-empty');
+        void nameInput.offsetWidth;
+        nameInput.classList.add('is-empty');
+        return;
+      }
+      const msg = `Hola ${nombre}, te esperamos el viernes 27 en el MEMI`;
       let i = 0;
       run.disabled = true;
       out.textContent = '';
       const step = () => {
         out.textContent = msg.slice(0, ++i);
-        if (i < msg.length) setTimeout(step, reduced ? 0 : 35);
+        if (i < msg.length) setTimeout(step, reduced ? 0 : 30);
         else run.disabled = false;
       };
       step();
