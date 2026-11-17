@@ -62,13 +62,10 @@ const arrow = '<svg class="btn__arrow" width="16" height="16" viewBox="0 0 16 16
     <a class="logo" href="#top" aria-label="PrograEduca 2026, inicio"><span class="mint">Progra</span><span class="gold">Educa</span><small>2026</small></a>
     <nav class="nav__links" aria-label="Principal">
       <a href="#evento">Evento</a>
-      <a href="#ejes">Ejes</a>
       <a href="#cronograma">Cronograma</a>
       <a href="#ubicacion">Ubicación</a>
       <a href="#speakers">Speakers</a>
-      <a href="#posters">Pósters</a>
-      <a href="#colegios">Colegios</a>
-      <a href="#sponsors">Sponsors</a>
+      <a href="#posters">Participa</a>
     </nav>
     <a class="btn btn--primary" href="#colegios" data-cta data-live="Cronograma"><span data-cta-label>Inscribirme</span></a>
     <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú" data-menu-toggle><span></span><span></span></button>
@@ -76,13 +73,10 @@ const arrow = '<svg class="btn__arrow" width="16" height="16" viewBox="0 0 16 16
   <nav class="nav__menu" id="menu" aria-label="Secciones" data-menu inert>
     <ul class="wrap">
       <li><a href="#evento">Evento</a></li>
-      <li><a href="#ejes">Ejes</a></li>
       <li><a href="#cronograma">Cronograma</a></li>
       <li><a href="#ubicacion">Ubicación</a></li>
       <li><a href="#speakers">Speakers</a></li>
-      <li><a href="#posters">Pósters</a></li>
-      <li><a href="#colegios">Colegios</a></li>
-      <li><a href="#sponsors">Sponsors</a></li>
+      <li><a href="#posters">Participa</a></li>
     </ul>
   </nav>
 </header>
@@ -386,7 +380,12 @@ print(aprender())</pre>
   addEventListener('scroll', onScroll, { passive: true });
   const links = [...document.querySelectorAll<HTMLAnchorElement>('.nav__links a, .nav__menu a')];
   const io = new IntersectionObserver((entries) => {
-    for (const e of entries) if (e.isIntersecting) links.forEach((a) => a.setAttribute('aria-current', String(a.hash === '#' + e.target.id)));
+    // secciones que se agrupan bajo un mismo enlace
+    const grupo: Record<string, string> = { ejes: 'evento', colegios: 'posters', sponsors: 'posters' };
+    for (const e of entries) if (e.isIntersecting) {
+      const id = grupo[e.target.id] ?? e.target.id;
+      links.forEach((a) => a.setAttribute('aria-current', String(a.hash === '#' + id)));
+    }
   }, { rootMargin: '-45% 0px -50% 0px' });
   document.querySelectorAll('main section[id]').forEach((s) => io.observe(s));
 
@@ -415,7 +414,7 @@ print(aprender())</pre>
     if (e.key === 'Escape' && nav.classList.contains('is-open')) { setMenu(false); toggle.focus(); }
   });
   document.addEventListener('click', (e) => { if (!nav.contains(e.target as Node)) setMenu(false); });
-  matchMedia('(min-width: 1101px)').addEventListener('change', (m) => { if (m.matches) setMenu(false); });
+  matchMedia('(min-width: 961px)').addEventListener('change', (m) => { if (m.matches) setMenu(false); });
 
   // el código del hero se escribe solo
   const typed = document.querySelector<HTMLElement>('[data-type]');
