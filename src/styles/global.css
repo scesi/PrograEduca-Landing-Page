@@ -7,11 +7,11 @@
   --line-strong: rgb(242 240 230 / 0.24);
   --cream: #f2f0e6;
   --paper: #f3f6f2;
-  --muted: #a9bab2;
+  --muted: #cfdad3;
   --mint: #6fc7a1;
   --mint-deep: #2f7d6a;
   --gold: #e7c76b;
-  --olive: #8d9670;
+  --olive: #b4bd93;
   --ink-on-light: #17302a;
 
   --font: "Outfit", system-ui, sans-serif;
@@ -180,8 +180,8 @@ html { scrollbar-color: var(--mint-deep) var(--bg-deep); }
   position: absolute; z-index: 0; margin: 0; pointer-events: none;
   font: 400 15px/1.55 var(--mono); color: var(--olive); white-space: pre;
 }
-.snippet .k { color: #a9965a; }
-.snippet .s { color: #93a982; }
+.snippet .k { color: #cdb874; }
+.snippet .s { color: #b3c9a1; }
 /* cursor | que parpadea al final del código, como en una terminal */
 .cursor { display: inline-block; width: 2px; height: 1.15em; margin-left: 2px; vertical-align: -0.2em; background: var(--mint); }
 .snippet .cursor { background: var(--gold); opacity: 0.85; }
@@ -236,7 +236,7 @@ html { scrollbar-color: var(--mint-deep) var(--bg-deep); }
 .console__body .k { color: var(--gold); }
 .console__body .s { color: var(--mint); }
 .console__body .n { color: #e9a87c; }
-.console__body .c { color: #9fb0a7; }
+.console__body .c { color: #b9c7bf; }
 .console__run { display: flex; align-items: center; gap: 14px; padding: 12px 22px 18px; flex-wrap: wrap; }
 .console__btn {
   font: 500 14px/1 var(--mono); color: var(--ink-on-light); background: var(--gold); border: 0; border-radius: 8px;
@@ -250,8 +250,8 @@ html { scrollbar-color: var(--mint-deep) var(--bg-deep); }
 
 /* ---------- ejes ---------- */
 .eje__code { margin: 0; font: 400 14px/1.6 var(--mono); color: var(--olive); white-space: pre; overflow-x: auto; }
-.eje__code .k { color: #a9965a; }
-.eje__code .s { color: #93a982; }
+.eje__code .k { color: #d6c07a; }
+.eje__code .s { color: #a9d6b8; }
 
 /* ---------- programa ---------- */
 .agenda { margin-top: clamp(48px, 6vw, 72px); }
@@ -482,3 +482,20 @@ a, button { -webkit-tap-highlight-color: transparent; }
   .ejes-map__nodes::after { animation: spine-run 3s var(--ease-out) infinite; }
 }
 @keyframes spine-run { 0% { top: 30px; opacity: 0; } 10% { opacity: 1; } 85% { opacity: 1; } 100% { top: calc(100% - 58px); opacity: 0; } }
+
+/* escritorio: los 3 ejes en triángulo, unidos por cables detrás del vidrio */
+.ejes-map__mesh { display: none; }
+@media (min-width: 901px) {
+  .ejes-map__wires { display: none; }
+  .eje-node::before { content: none; }
+  .ejes-map__nodes { position: relative; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(64px, 8vw, 120px); row-gap: clamp(64px, 7vw, 96px); }
+  .ejes-map__nodes > .eje-node { z-index: 1; }
+  .ejes-map__nodes > .eje-node:nth-of-type(3) { grid-column: 1 / -1; justify-self: center; width: calc(50% - clamp(32px, 4vw, 60px)); }
+  .ejes-map__mesh { display: block; position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; overflow: visible; }
+  .ejes-map__mesh path { fill: none; stroke: rgb(242 240 230 / 0.28); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+  .ejes-map__mesh .pulse { stroke: var(--gold); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 10 90; stroke-dashoffset: 100; }
+  .ejes-map__mesh circle { fill: var(--gold); }
+}
+@media (min-width: 901px) and (prefers-reduced-motion: no-preference) {
+  .ejes-map__mesh .pulse { animation: pulse-run 2.8s linear infinite; }
+}
