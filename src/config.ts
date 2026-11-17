@@ -3,6 +3,8 @@
 /** Formularios de Google. Pega el enlace público del formulario (termina en /viewform);
  *  la página le agrega ?embedded=true para insertarlo. */
 export const FORMS = {
+  /** Inscripciones generales (asistentes): se inserta en la página. */
+  inscripcion: 'https://docs.google.com/forms/d/e/1FAIpQLSfShA3-pwYzT5kON5NIZsjQr6STFGUBQmOAzd4p6C9Xd-CvcA/viewform',
   /** Call for Schools: se inserta en la página. */
   colegios: 'https://docs.google.com/forms/d/e/1FAIpQLSdaTgy2ZDhr0U7f8J7sqIHrRE_7TmvGN-wT7Ls3fQKXWC6gVQ/viewform',
   /** Call for Sponsors: se inserta en la página. */

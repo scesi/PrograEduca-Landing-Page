@@ -65,9 +65,9 @@ const arrow = '<svg class="btn__arrow" width="16" height="16" viewBox="0 0 16 16
       <a href="#cronograma">Cronograma</a>
       <a href="#ubicacion">Ubicación</a>
       <a href="#speakers">Speakers</a>
-      <a href="#participa">Participa</a>
+      <a href="#posters">Participa</a>
     </nav>
-    <a class="btn btn--primary" href="#colegios" data-cta data-live="Cronograma"><span data-cta-label>Inscribirme</span></a>
+    <a class="btn btn--primary" href="#inscripcion" data-cta data-live="Cronograma"><span data-cta-label>Inscribirme</span></a>
     <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú" data-menu-toggle><span></span><span></span></button>
   </div>
   <nav class="nav__menu" id="menu" aria-label="Secciones" data-menu inert>
@@ -76,7 +76,7 @@ const arrow = '<svg class="btn__arrow" width="16" height="16" viewBox="0 0 16 16
       <li><a href="#cronograma">Cronograma</a></li>
       <li><a href="#ubicacion">Ubicación</a></li>
       <li><a href="#speakers">Speakers</a></li>
-      <li><a href="#participa">Participa</a></li>
+      <li><a href="#posters">Participa</a></li>
     </ul>
   </nav>
 </header>
@@ -117,7 +117,7 @@ print(aprender())</pre>
       </h1>
       <p class="hero__tagline" data-in style="--i: 2">La <span class="gold">programación</span> como herramienta transversal</p>
       <div class="hero__actions" data-in style="--i: 3">
-        <a class="btn btn--primary" href="#colegios" data-cta data-live="Ver el cronograma"><span data-cta-label>Inscribirme al evento</span> <Fragment set:html={arrow} /></a>
+        <a class="btn btn--primary" href="#inscripcion" data-cta data-live="Ver el cronograma"><span data-cta-label>Inscribirme al evento</span> <Fragment set:html={arrow} /></a>
         <a class="btn btn--ghost" href="#cronograma">Ver el cronograma</a>
       </div>
       <p class="countdown" data-in style="--i: 4" data-countdown={INICIO_EVENTO}>charlas, feria de pósters y actividad para colegios</p>
@@ -231,6 +231,22 @@ print(aprender())</pre>
     </div>
   </section>
 
+  <section class="section section--deep" id="inscripcion" aria-labelledby="inscripcion-h">
+    <div class="wrap split" style="align-items: start">
+      <div class="stack sticky-text">
+        <h2 id="inscripcion-h" class="h2"><span data-pre>Inscríbete al <span class="mint">evento</span></span><span data-post hidden>Inscripciones <span class="mint">cerradas</span></span></h2>
+        <p class="lead" data-pre>Llena el formulario y te esperamos el <strong>viernes 27 de noviembre</strong> en el centro MEMI de la UMSS.</p>
+        <p class="lead" data-post hidden>Gracias por venir a PrograEduca 2026. Nos vemos en la próxima edición.</p>
+      </div>
+      <div class="glass-stage" data-pre><span class="orb orb--mint" aria-hidden="true" style="--s: 260px; left: -70px; top: -60px"></span><span class="orb orb--gold" aria-hidden="true" style="--s: 240px; right: -60px; bottom: -50px"></span>
+      <div class="form-window glass">
+        <div class="console__bar" aria-hidden="true"><i style="--c: var(--mint)"></i><i style="--c: var(--gold)"></i><i style="--c: #4d6e64"></i><span>inscripcion.form</span></div>
+        <iframe src={embed(FORMS.inscripcion)} title="Formulario de inscripción a PrograEduca 2026" loading="lazy">Cargando…</iframe>
+      </div>
+      </div>
+    </div>
+  </section>
+
   <section class="section" id="speakers" aria-labelledby="speakers-h">
     <div class="wrap speakers">
       <h2 id="speakers-h" class="h2">Speakers <span class="gold">2026</span></h2>
@@ -279,20 +295,6 @@ print(aprender())</pre>
       <div class="speakers__cta" id="postular-charla" data-pre>
         <a class="btn btn--primary" href={FORMS.speakers} target="_blank" rel="noopener">Postular mi charla <Fragment set:html={arrow} /></a>
         <p class="form-note">Google te pedirá iniciar sesión para adjuntar tus archivos.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="participa" aria-labelledby="participa-h">
-    <div class="wrap">
-      <h2 id="participa-h" class="h2">Participa en <span class="gold">PrograEduca</span></h2>
-      <div class="glass-stage ways-stage"><span class="orb orb--gold" aria-hidden="true" style="--s: 260px; left: 18%; top: -40px"></span><span class="orb orb--mint" aria-hidden="true" style="--s: 240px; right: 12%; bottom: -60px"></span>
-      <ul class="ways">
-        <li><a class="way glass" href="#postular-charla"><code>charla</code><strong>Postula una charla</strong><span>Comparte tu experiencia con estudiantes, docentes e investigadores.</span><Fragment set:html={arrow} /></a></li>
-        <li><a class="way glass" href="#posters"><code>póster</code><strong>Presenta tu póster</strong><span>Muestra tu investigación en la feria. Hasta el 21 de noviembre.</span><Fragment set:html={arrow} /></a></li>
-        <li><a class="way glass" href="#colegios"><code>colegio</code><strong>Ven con tu colegio</strong><span>Para estudiantes de 4.º a 6.º de secundaria, de 14:30 a 16:00.</span><Fragment set:html={arrow} /></a></li>
-        <li><a class="way glass" href="#sponsors"><code>sponsor</code><strong>Auspicia el evento</strong><span>Llega a estudiantes, docentes y comunidades tecnológicas.</span><Fragment set:html={arrow} /></a></li>
-      </ul>
       </div>
     </div>
   </section>
@@ -364,7 +366,7 @@ print(aprender())</pre>
     <div class="wrap">
       <h2 id="close-h" class="h2"><span class="mint">PROGRA</span><span class="gold">EDUCA</span> <span data-pre>te espera</span><span data-post hidden>gracias por venir</span></h2>
       <p class="closing__line"><span>viernes 27 de noviembre</span><i> · </i><span>9:30 a 17:00</span><i> · </i><span>centro MEMI, UMSS</span></p>
-      <a class="btn btn--primary" href="#colegios" data-cta data-live="Ver el cronograma"><span data-cta-label>Inscribirme al evento</span> <Fragment set:html={arrow} /></a>
+      <a class="btn btn--primary" href="#inscripcion" data-cta data-live="Ver el cronograma"><span data-cta-label>Inscribirme al evento</span> <Fragment set:html={arrow} /></a>
       <div class="contact">
         <a href={'mailto:' + CONTACTO.email}>{CONTACTO.email}</a>
         {CONTACTO.telefonos.map((n) => (<a href={tel(n)}>{n}</a>))}
@@ -395,7 +397,7 @@ print(aprender())</pre>
   const links = [...document.querySelectorAll<HTMLAnchorElement>('.nav__links a, .nav__menu a')];
   const io = new IntersectionObserver((entries) => {
     // secciones que se agrupan bajo un mismo enlace
-    const grupo: Record<string, string> = { ejes: 'evento', posters: 'participa', colegios: 'participa', sponsors: 'participa' };
+    const grupo: Record<string, string> = { ejes: 'evento', colegios: 'posters', sponsors: 'posters' };
     for (const e of entries) if (e.isIntersecting) {
       const id = grupo[e.target.id] ?? e.target.id;
       links.forEach((a) => a.setAttribute('aria-current', String(a.hash === '#' + id)));
@@ -484,7 +486,7 @@ print(aprender())</pre>
       document.querySelectorAll<HTMLAnchorElement>('[data-cta]').forEach((a) => {
         a.dataset.label ??= a.querySelector('[data-cta-label]')!.textContent!;
         a.querySelector('[data-cta-label]')!.textContent = p === 'live' ? a.dataset.live! : a.dataset.label!;
-        a.setAttribute('href', p === 'live' ? '#cronograma' : '#colegios');
+        a.setAttribute('href', p === 'live' ? '#cronograma' : '#inscripcion');
       });
       document.querySelectorAll<HTMLElement>('[data-pre]:not([data-cta])').forEach((el) => (el.hidden = p === 'post'));
       document.querySelectorAll<HTMLElement>('[data-post]').forEach((el) => (el.hidden = p !== 'post'));

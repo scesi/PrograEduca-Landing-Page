@@ -642,29 +642,3 @@ button.speaker .speaker__initials { align-items: center; align-content: center; 
 /* formularios en el celular: más bajos (antes ~82% de la pantalla) */
 @media (max-width: 720px) { .form-window iframe { height: clamp(380px, 58svh, 520px); } }
 
-/* participa: las 4 formas de sumarse */
-.ways { list-style: none; margin: clamp(32px, 4vw, 48px) 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(12px, 1.6vw, 20px); }
-.ways > li { display: flex; }
-.way {
-  position: relative; display: grid; align-content: start; gap: 8px; width: 100%; padding: 22px 22px 56px; border-radius: var(--radius);
-  color: var(--cream); text-decoration: none; transition: transform 160ms var(--ease-out), border-color 200ms ease;
-}
-.way code { font: 500 13px/1 var(--mono); color: var(--mint); }
-.ways li:nth-child(even) .way code { color: var(--gold); }
-.way strong { font-size: clamp(19px, 1.6vw, 22px); font-weight: 600; letter-spacing: -0.01em; line-height: 1.2; }
-.way span { color: var(--muted); font-size: 15px; line-height: 1.5; }
-.way .btn__arrow { position: absolute; left: 22px; bottom: 22px; color: var(--gold); }
-.way:active { transform: scale(0.98); }
-.way:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
-@media (hover: hover) and (pointer: fine) {
-  .way:hover { transform: translateY(-3px); border-color: rgb(242 240 230 / 0.28); }
-  .way:hover .btn__arrow { transform: translateX(4px); }
-}
-@media (max-width: 900px) { .ways { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 720px) {
-  .way { padding: 16px 14px 44px; gap: 6px; }
-  .way strong { font-size: 17px; }
-  .way span { font-size: 13px; }
-  .way .btn__arrow { left: 14px; bottom: 16px; }
-}
-@media (max-width: 720px) { .ways-stage > .orb:first-of-type { left: -60px !important; } .ways-stage > .orb:last-of-type { right: -50px !important; } }
