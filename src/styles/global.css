@@ -515,18 +515,3 @@ a, button { -webkit-tap-highlight-color: transparent; }
   .eje-node:nth-of-type(2) .eje-node__id::after { animation-delay: 1.2s; }
 }
 @keyframes link-run { 0% { translate: 0 0; opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { translate: calc(var(--gap) - 14px) 0; opacity: 0; } }
-
-/* consola: input() con tu nombre */
-.console__ask { display: flex; align-items: center; gap: 10px; flex: 1 1 260px; min-width: 0; font: 400 15px/1 var(--mono); color: var(--muted); }
-.console__ask span { flex: none; }
-.console__ask input {
-  flex: 1; min-width: 0; height: 40px; padding: 0 2px; border: 0; border-bottom: 1.5px solid var(--line-strong); border-radius: 0;
-  background: transparent; color: var(--cream); font: 400 16px/1 var(--mono); caret-color: var(--gold); outline: none;
-  transition: border-color 160ms;
-}
-.console__ask input::placeholder { color: rgb(207 218 211 / 0.45); }
-.console__ask input:focus { border-color: var(--gold); }
-.console__ask input.is-empty { border-color: var(--gold); animation: nudge 360ms var(--ease-out); }
-@keyframes nudge { 25% { translate: -4px 0; } 75% { translate: 4px 0; } }
-.console__prompt { flex-basis: 100%; }
-@media (max-width: 720px) { .console__ask { flex-basis: 100%; font-size: 13px; } }
