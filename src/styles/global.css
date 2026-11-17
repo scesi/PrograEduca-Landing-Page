@@ -499,3 +499,25 @@ a, button { -webkit-tap-highlight-color: transparent; }
 @media (min-width: 901px) and (prefers-reduced-motion: no-preference) {
   .ejes-map__mesh .pulse { animation: pulse-run 2.8s linear infinite; }
 }
+
+/* consola: la salida puede tener varias líneas */
+.console__prompt { align-items: flex-end; }
+.console__out { white-space: pre-line; }
+
+/* público, debajo del cronograma */
+.audience { margin: 48px 0 0; padding-top: 32px; border-top: 1px solid var(--line); }
+.audience dt { font: 500 13px/1 var(--mono); color: var(--gold); margin-bottom: 10px; }
+.audience dd { margin: 0; font-size: 19px; line-height: 1.5; max-width: 52ch; }
+
+/* sección ubicación */
+#ubicacion .venue { margin-top: 0; border-top: 0; padding-top: 0; }
+.venue__facts dl { margin: 0; display: grid; gap: 24px; }
+@media (max-width: 900px) {
+  #ubicacion .venue { display: grid; }
+  #ubicacion .venue__facts { display: contents; }
+  #ubicacion .venue__facts h2 { order: -2; }
+  #ubicacion .venue > .glass-stage { order: -1; }
+}
+
+/* 8 enlaces en la barra */
+.nav__links { gap: 22px; }
