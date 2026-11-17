@@ -29,46 +29,54 @@ export const INICIO_EVENTO = '2026-11-27T09:30:00-04:00';
 
 /** Speakers confirmados. La foto va en public/assets/speakers/ (cuadrada, mínimo 600×600);
  *  mientras `foto` esté vacía, la tarjeta muestra las iniciales. No publicar emails ni teléfonos. */
-export type Speaker = { nombres: string[]; rol: string; charla: string; resumen: string; foto?: string };
+export type Speaker = { nombres: string[]; corto?: string; org: string; rol: string; charla: string; resumen: string; foto?: string };
 export const SPEAKERS: Speaker[] = [
   {
     nombres: ['Adrian Rafael Camara Reque'],
+    org: 'UMSS',
     rol: 'Estudiante de Ingeniería Informática, UMSS',
     charla: 'Dos cerebros piensan mejor que uno: métodos de estudio con Obsidian e IA',
     resumen: '¿Cómo convertir apuntes dispersos en una ruta de estudio? Un prototipo que combina Obsidian, IA y revisión humana para conectar conceptos, generar prácticas y mejorar los materiales mediante comentarios, conservando las fuentes originales.',
   },
   {
     nombres: ['Tania Fernanda Ugarte Guzmán'],
+    org: 'KU Leuven',
     rol: 'Doctoranda en Ciencias de la Computación, KU Leuven',
     charla: 'Amplía tu futuro académico en el exterior: cómo postular a becas en Bélgica',
     resumen: '¿Quieres estudiar un máster o un doctorado en Bélgica? Paso a paso para encontrar una beca, preparar tus documentos y postular, a partir de su experiencia como estudiante de doctorado en la KU Leuven.',
   },
   {
     nombres: ['Mairon Henry Fernandez Orellana'],
+    org: 'UMSS',
     rol: 'Estudiante de Ingeniería Informática, UMSS',
     charla: 'Sistema local de recuperación inteligente de información académica mediante bases de datos relacionales',
     resumen: 'Un sistema de consulta documental para cargar PDF académicos, organizar su contenido en una base de datos relacional y hacer preguntas en lenguaje natural, sin depender de Internet, servicios de pago ni modelos de IA pesados.',
   },
   {
     nombres: ['Juan Pablo Taya F.'],
+    org: 'Docente de posgrado',
     rol: 'Docente de posgrado en innovación y emprendimiento',
     charla: 'UX en educación: gamificación',
     resumen: 'Design Thinking y su uso en UX/UI: conocer los segmentos, crear necesidades a partir de la investigación y los prototipos.',
   },
   {
     nombres: ['Sara Quispe Choque', 'Nicole Geraldine Rodas Cornejo', 'Mateo Alejandro Merino Vidal', 'Israel Gonzalo Orosco Zeballos'],
+    corto: 'Sara, Nicole, Mateo e Israel',
+    org: 'UMSS · KU Leuven',
     rol: 'Estudiantes de Ingeniería Informática, UMSS',
     charla: 'De la UMSS a Bélgica: nuestro proyecto de grado con KU Leuven',
     resumen: '¿Cómo se investiga cuando tus tutores están en Bélgica? Cuatro estudiantes de la UMSS comparten los retos, aprendizajes y la nueva forma de trabajar que descubrieron haciendo su proyecto de grado junto a KU Leuven.',
   },
   {
     nombres: ['Claudia Ureña Hinojosa'],
+    org: 'Docente',
     rol: 'Docente con más de 15 años de experiencia',
     charla: 'El currículo oscuro y la línea macabra',
     resumen: 'Una reflexión crítica sobre los márgenes de la enseñanza en STEM y la delgada línea que cruzan los docentes entre la exigencia institucional, el mito del «buen profesor» y los temas que solo se susurran en los pasillos.',
   },
   {
     nombres: ['Irvin Cossio Chavalier'],
+    org: 'GDG Cochabamba',
     rol: 'GDG Organizer Cochabamba, 9 años en desarrollo móvil y frontend',
     charla: 'Por qué SDD no debería aplicarse a proyectos personales',
     resumen: 'Cuándo usar SDD con spec-kit y cuándo conviene usar specs de forma más ágil e iterativa, sin invertir de más en tokens.',

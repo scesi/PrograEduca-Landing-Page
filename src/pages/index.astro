@@ -235,27 +235,44 @@ print(aprender())</pre>
     <div class="wrap speakers">
       <h2 id="speakers-h" class="h2">Speakers <span class="gold">2026</span></h2>
       {SPEAKERS.length > 0 ? (
+        <>
         <ul class="speakers__grid">
-          {SPEAKERS.map((sp) => (
-            <li class="speaker glass">
-              <div class="speaker__media">
-                {sp.foto ? (
-                  <img src={sp.foto} alt={sp.nombres.join(', ')} width="600" height="600" loading="lazy" decoding="async" />
-                ) : (
-                  <div class="speaker__initials" aria-hidden="true">
-                    {sp.nombres.map((n) => <span>{iniciales(n)}</span>)}
-                  </div>
-                )}
-              </div>
-              <div class="speaker__info">
-                <p class="speaker__name">{sp.nombres.join(', ')}</p>
-                <p class="speaker__rol">{sp.rol}</p>
-                <h3 class="speaker__talk">{sp.charla}</h3>
-                <p class="speaker__summary">{sp.resumen}</p>
-              </div>
+          {SPEAKERS.map((sp, i) => (
+            <li>
+              <button class="speaker glass" type="button" data-speaker={`speaker-${i}`} aria-haspopup="dialog">
+                <span class="speaker__media">
+                  {sp.foto ? (
+                    <img src={sp.foto} alt="" width="600" height="600" loading="lazy" decoding="async" />
+                  ) : (
+                    <span class="speaker__initials" aria-hidden="true">{sp.nombres.map((n) => <span>{iniciales(n)}</span>)}</span>
+                  )}
+                </span>
+                <span class="speaker__info">
+                  <span class="speaker__name">{sp.corto ?? sp.nombres[0]}</span>
+                  <span class="speaker__rol">{sp.org}</span>
+                  <span class="speaker__talk">{sp.charla}</span>
+                </span>
+              </button>
             </li>
           ))}
         </ul>
+        {SPEAKERS.map((sp, i) => (
+          <dialog class="speaker-dialog glass" id={`speaker-${i}`} aria-labelledby={`speaker-${i}-t`} closedby="any">
+            <div class="console__bar">
+              <i style="--c: var(--mint)"></i><i style="--c: var(--gold)"></i><i style="--c: #4d6e64"></i><span>charla.md</span>
+              <button class="speaker-dialog__close" type="button" data-close aria-label="Cerrar">
+                <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+            <div class="speaker-dialog__body">
+              <p class="speaker__rol">{sp.rol}</p>
+              <h3 id={`speaker-${i}-t`} class="speaker-dialog__talk">{sp.charla}</h3>
+              <p class="speaker-dialog__names">{sp.nombres.join(', ')}</p>
+              <p class="speaker-dialog__summary">{sp.resumen}</p>
+            </div>
+          </dialog>
+        ))}
+        </>
       ) : (
         <p class="lead speakers__soon">Pronto anunciaremos a los speakers de esta edición.</p>
       )}
@@ -368,6 +385,16 @@ print(aprender())</pre>
     for (const e of entries) if (e.isIntersecting) links.forEach((a) => a.setAttribute('aria-current', String(a.hash === '#' + e.target.id)));
   }, { rootMargin: '-45% 0px -50% 0px' });
   document.querySelectorAll('main section[id]').forEach((s) => io.observe(s));
+
+  // speakers: cada tarjeta abre su ventana con el resumen
+  document.querySelectorAll<HTMLButtonElement>('[data-speaker]').forEach((b) => {
+    const d = document.getElementById(b.dataset.speaker!) as HTMLDialogElement | null;
+    if (!d) return;
+    b.addEventListener('click', () => d.showModal());
+    d.querySelector('[data-close]')?.addEventListener('click', () => d.close());
+    // cerrar al tocar fuera (respaldo para navegadores sin closedby)
+    d.addEventListener('click', (e) => { if (e.target === d) d.close(); });
+  });
 
   // menú móvil
   const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]')!;
