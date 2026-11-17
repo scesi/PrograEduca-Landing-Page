@@ -516,3 +516,35 @@ a, button { -webkit-tap-highlight-color: transparent; }
 .speaker__info span { color: var(--muted); font-size: 15px; line-height: 1.45; }
 .speakers__cta { display: grid; justify-items: center; gap: 4px; text-align: center; }
 .speakers__cta .form-note { margin-top: 8px; }
+
+/* ---------- pasada de calidad (evaluación con 4 skills) ---------- */
+/* 4. entrada del hero más corta y sin desenfoque: el botón aparece antes */
+@media (prefers-reduced-motion: no-preference) {
+  .hero [data-in] { filter: none; translate: 0 12px; animation-duration: 600ms; animation-delay: calc(var(--i, 0) * 70ms + 80ms); }
+}
+@keyframes rise { to { opacity: 1; translate: 0 0; } }
+/* respuesta al presionar más rápida */
+.btn { transition: transform 140ms var(--ease-out), background-color 200ms ease, color 200ms ease, box-shadow 200ms ease; }
+/* 7. objetivos táctiles de 44px y foco visible */
+.console__btn { min-height: 44px; }
+.console__btn:focus-visible { outline: 2px solid var(--cream); outline-offset: 3px; }
+.logo { min-height: 44px; align-items: center; }
+.contact a { display: inline-flex; align-items: center; min-height: 44px; }
+@media (max-width: 1100px) { .nav .btn { min-height: 44px; } }
+.nav__toggle { font: inherit; }
+/* 8. menú: el 8.º ítem también entra escalonado */
+.nav.is-open .nav__menu li:nth-child(8) a { transition-delay: 210ms; }
+/* 9. el cierre se ancla en su hora exacta */
+.slot:last-child { margin-left: var(--start); width: max-content; min-width: 0; }
+@media (max-width: 760px) { .slot:last-child { margin-left: 0; width: 100%; } }
+/* 10. speakers sin hueco mientras no hay fotos */
+#speakers.section { padding-bottom: clamp(64px, 8vw, 104px); }
+/* palabras sueltas al final de párrafo */
+p, dd, li { text-wrap: pretty; }
+/* barra un poco más opaca: el texto se lee sobre los círculos */
+.nav::before { background-color: rgb(17 37 32 / 0.55); }
+/* reducir movimiento = menos movimiento, no cero: el menú aparece con un fundido */
+@media (prefers-reduced-motion: reduce) {
+  .nav__menu { clip-path: none !important; opacity: 0; transition: opacity 150ms ease, visibility 0s linear 150ms !important; }
+  .nav.is-open .nav__menu { opacity: 1; transition: opacity 150ms ease, visibility 0s !important; }
+}

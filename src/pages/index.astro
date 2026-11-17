@@ -1,4 +1,11 @@
 ---
+import '@fontsource/outfit/latin-400.css';
+import '@fontsource/outfit/latin-500.css';
+import '@fontsource/outfit/latin-600.css';
+import '@fontsource/outfit/latin-700.css';
+import '@fontsource/jetbrains-mono/latin-400.css';
+import '@fontsource/jetbrains-mono/latin-500.css';
+import outfit700 from '@fontsource/outfit/files/outfit-latin-700-normal.woff2?url';
 import '../styles/global.css';
 import { FORMS, SPEAKERS, CONTACTO, LUGAR_MAPA, LUGAR_MAPA_EMBED, INICIO_EVENTO } from '../config';
 
@@ -8,8 +15,8 @@ const descripcion =
 const tel = (n: string) => 'tel:' + n.replace(/\s+/g, '');
 const embed = (url: string) => url + (url.includes('?') ? '&' : '?') + 'embedded=true';
 
-// Programa: posición en la línea de tiempo de 9:00 a 17:30
-const DIA_INI = 9 * 60, DIA_FIN = 17 * 60 + 30;
+// Cronograma: posición en la línea de tiempo de 9:00 a 18:30 (deja espacio al bloque de cierre)
+const DIA_INI = 9 * 60, DIA_FIN = 18 * 60 + 30;
 const pct = (h: number, m: number) => (((h * 60 + m) - DIA_INI) / (DIA_FIN - DIA_INI)) * 100;
 const programa = [
   { nombre: 'Charlas', desde: [9, 30], hasta: [12, 0], color: 'var(--mint)' },
@@ -18,7 +25,7 @@ const programa = [
   { nombre: 'Cierre del evento', desde: [17, 0], hasta: [17, 30], color: 'var(--cream)', soloInicio: true },
 ];
 const hhmm = ([h, m]: number[]) => `${h}:${String(m).padStart(2, '0')}`;
-const ticks = [9, 10, 11, 12, 13, 14, 15, 16, 17];
+const ticks = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
 const arrow = '<svg class="btn__arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 ---
 <!doctype html>
@@ -31,12 +38,14 @@ const arrow = '<svg class="btn__arrow" width="16" height="16" viewBox="0 0 16 16
 <meta property="og:type" content="website">
 <meta property="og:title" content={titulo}>
 <meta property="og:description" content={descripcion}>
+<meta property="og:image" content="/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta name="theme-color" content="#17302a">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" href={outfit700} as="font" type="font/woff2" crossorigin>
 </head>
 <body>
 <a class="skip" href="#contenido">Saltar al contenido</a>
@@ -323,10 +332,10 @@ feria = {"{"}
   </section>
   <div class="orgs">
     <ul class="wrap" aria-label="Organizan">
-      <li><img src="/assets/logos/umss.png" alt="Universidad Mayor de San Simón" loading="lazy"></li>
-      <li><img src="/assets/logos/ai.png" alt="Organización co-organizadora" loading="lazy"></li>
-      <li><img src="/assets/logos/kul.png" alt="KU Leuven" loading="lazy"></li>
-      <li><img src="/assets/logos/scesi.png" alt="SCESI UMSS" loading="lazy"></li>
+      <li><img src="/assets/logos/umss.png" width="320" height="120" alt="Universidad Mayor de San Simón" loading="lazy"></li>
+      <li><img src="/assets/logos/ai.png" width="208" height="120" alt="Organización co-organizadora" loading="lazy"></li>
+      <li><img src="/assets/logos/kul.png" width="245" height="120" alt="KU Leuven" loading="lazy"></li>
+      <li><img src="/assets/logos/scesi.png" width="179" height="120" alt="SCESI UMSS" loading="lazy"></li>
     </ul>
   </div>
   <p class="legal">© 2026 PrograEduca · Organiza SCESI UMSS</p>
@@ -334,6 +343,8 @@ feria = {"{"}
 
 <script>
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // iOS Safari solo aplica :active si hay un listener de toque
+  document.addEventListener('touchstart', () => {}, { passive: true });
 
   // nav: fondo al hacer scroll y sección actual
   const nav = document.querySelector<HTMLElement>('[data-nav]')!;
@@ -445,19 +456,19 @@ feria = {"{"}
     update();
   }
 
-  // consola: ejecutar print(aprender())
+  // consola: Ejecutar escribe la salida; se puede volver a tocar en cualquier momento
   const run = document.querySelector<HTMLButtonElement>('[data-run]');
   const out = document.querySelector<HTMLOutputElement>('[data-out]');
   if (run && out) {
+    let timer = 0;
     run.addEventListener('click', () => {
       const msg = 'programación + IA\nprogramación + datos\nprogramación + robótica\nprogramación + educación';
+      clearTimeout(timer);
       let i = 0;
-      run.disabled = true;
       out.textContent = '';
       const step = () => {
         out.textContent = msg.slice(0, ++i);
-        if (i < msg.length) setTimeout(step, reduced ? 0 : 35);
-        else run.disabled = false;
+        if (i < msg.length) timer = window.setTimeout(step, reduced ? 0 : 14);
       };
       step();
     });
