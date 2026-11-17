@@ -638,3 +638,13 @@ button.speaker .speaker__initials { display: flex; }
 
 .speaker-dialog { position: fixed; inset: 0; }
 button.speaker .speaker__initials { align-items: center; align-content: center; }
+
+/* formularios: en el celular, botón en vez del formulario insertado */
+.form-window__mobile { display: none; }
+@media (max-width: 720px) {
+  .form-window iframe { display: none; }
+  .form-window__mobile { display: grid; gap: 14px; padding: 18px 16px 20px; }
+  .form-window__mobile p { margin: 0; color: var(--muted); font-size: 15px; }
+  .form-window__mobile .btn { width: 100%; }
+}
+@media (max-width: 720px) { .only-desk { display: none; } }

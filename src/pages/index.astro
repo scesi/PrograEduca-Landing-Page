@@ -316,12 +316,16 @@ print(aprender())</pre>
       <div class="stack sticky-text">
         <h2 id="colegios-h" class="h2">Ven con tu <span class="gold">colegio</span></h2>
         <p class="lead">Por primera vez, PrograEduca tiene una <strong>actividad para colegios</strong>: el viernes 27 de noviembre, de <strong>14:30 a 16:00</strong>. Invitamos a estudiantes de <strong>4.º a 6.º de secundaria</strong>.</p>
-        <p class="lead" data-pre>Inscribe a tu unidad educativa con este formulario. <a class="link" href={FORMS.colegios} target="_blank" rel="noopener">Abrir en otra pestaña</a></p>
+        <p class="lead" data-pre>Inscribe a tu unidad educativa con este formulario. <a class="link only-desk" href={FORMS.colegios} target="_blank" rel="noopener">Abrir en otra pestaña</a></p>
       </div>
       <div class="glass-stage" data-pre><span class="orb orb--gold" aria-hidden="true" style="--s: 260px; left: -70px; top: -60px"></span><span class="orb orb--mint" aria-hidden="true" style="--s: 240px; right: -60px; bottom: -50px"></span>
       <div class="form-window glass">
         <div class="console__bar" aria-hidden="true"><i style="--c: var(--mint)"></i><i style="--c: var(--gold)"></i><i style="--c: #4d6e64"></i><span>colegios.form</span></div>
         <iframe src={embed(FORMS.colegios)} title="Formulario Call for Schools, PrograEduca 2026" loading="lazy">Cargando…</iframe>
+        <div class="form-window__mobile">
+          <p>Formulario para inscribir a tu unidad educativa.</p>
+          <a class="btn btn--primary" href={FORMS.colegios} target="_blank" rel="noopener">Inscribir mi colegio <Fragment set:html={arrow} /></a>
+        </div>
       </div>
       </div>
     </div>
@@ -332,13 +336,17 @@ print(aprender())</pre>
       <div class="stack sticky-text">
         <h2 id="sponsors-h" class="h2">Auspicia <span class="mint">PrograEduca</span></h2>
         <p class="lead">Buscamos aliados que compartan la visión del evento. Tu marca llega a <strong>estudiantes universitarios y de secundaria</strong>, <strong>docentes</strong> y <strong>comunidades tecnológicas</strong> de Cochabamba.</p>
-        <p class="lead" data-pre>Déjanos tus datos y te contactamos. <a class="link" href={FORMS.sponsors} target="_blank" rel="noopener">Abrir en otra pestaña</a></p>
+        <p class="lead" data-pre>Déjanos tus datos y te contactamos. <a class="link only-desk" href={FORMS.sponsors} target="_blank" rel="noopener">Abrir en otra pestaña</a></p>
         <p class="lead">¿Dudas? Escríbenos a <a class="link" href={'mailto:' + CONTACTO.email}>{CONTACTO.email}</a></p>
       </div>
       <div class="glass-stage" data-pre><span class="orb orb--mint" aria-hidden="true" style="--s: 260px; right: -70px; top: -60px"></span><span class="orb orb--gold" aria-hidden="true" style="--s: 240px; left: -60px; bottom: -50px"></span>
       <div class="form-window glass">
         <div class="console__bar" aria-hidden="true"><i style="--c: var(--mint)"></i><i style="--c: var(--gold)"></i><i style="--c: #4d6e64"></i><span>sponsors.form</span></div>
         <iframe src={embed(FORMS.sponsors)} title="Formulario Call for Sponsors, PrograEduca 2026" loading="lazy">Cargando…</iframe>
+        <div class="form-window__mobile">
+          <p>Formulario para empresas e instituciones que quieran auspiciar.</p>
+          <a class="btn btn--primary" href={FORMS.sponsors} target="_blank" rel="noopener">Quiero auspiciar <Fragment set:html={arrow} /></a>
+        </div>
       </div>
       </div>
     </div>
