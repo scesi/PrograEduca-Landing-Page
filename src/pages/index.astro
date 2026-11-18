@@ -574,9 +574,10 @@ print(aprender())</pre>
       if (on) { c.className = 'on'; c.style.setProperty('--d', `${col * 22 + r * 10}ms`); }
       return c;
     };
+    // la matriz apagada se arma al cargar: reserva el espacio y la ventana no salta al ejecutar
+    art.replaceChildren(palabra('PROGRA', 'var(--mint)'), palabra('EDUCA', 'var(--gold)'));
     run.addEventListener('click', () => {
       out.textContent = "['PROGRA', 'EDUCA']";
-      art.replaceChildren(palabra('PROGRA', 'var(--mint)'), palabra('EDUCA', 'var(--gold)'));
       art.classList.remove('is-drawn');
       void art.offsetWidth;
       art.classList.add('is-drawn');

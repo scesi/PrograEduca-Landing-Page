@@ -700,3 +700,7 @@ button.speaker .speaker__initials { align-items: center; align-content: center; 
 @media (min-width: 961px) { .nav__bar > .btn[data-cta] { display: none; } }
 .nav__links .nav__cta-inline, .nav__links .nav__cta-inline[aria-current="true"] { color: var(--ink-on-light); }
 @media (hover: hover) and (pointer: fine) { .nav__links .nav__cta-inline:hover { color: var(--ink-on-light); } }
+
+/* matriz apagada hasta ejecutar */
+.pixlogo:not(.is-drawn) i.on { background: rgb(242 240 230 / 0.05); }
+@media (max-width: 720px) { .console__prompt { flex-basis: 100%; } }
