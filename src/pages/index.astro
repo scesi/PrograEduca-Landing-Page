@@ -64,8 +64,8 @@ const arrow = '<svg class="btn__arrow" width="16" height="16" viewBox="0 0 16 16
       <a href="#evento">Evento</a>
       <a href="#cronograma">Cronograma</a>
       <a href="#ubicacion">Ubicación</a>
-      <a class="btn btn--primary nav__cta-inline" href="#inscripcion" data-cta data-live="Cronograma"><span data-cta-label>Inscribirme</span></a>
       <a href="#speakers">Speakers</a>
+      <a class="btn btn--primary nav__cta-inline" href="#inscripcion" data-cta data-live="Cronograma"><span data-cta-label>Inscribirme</span></a>
       <div class="nav__drop" data-drop>
         <button class="nav__drop-btn" type="button" aria-expanded="false" aria-controls="participa-menu" data-drop-btn>Participa<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <div class="nav__drop-panel glass" id="participa-menu" data-drop-panel hidden>
@@ -83,8 +83,8 @@ const arrow = '<svg class="btn__arrow" width="16" height="16" viewBox="0 0 16 16
       <li><a href="#evento">Evento</a></li>
       <li><a href="#cronograma">Cronograma</a></li>
       <li><a href="#ubicacion">Ubicación</a></li>
-      <li><a href="#inscripcion">Inscribirme</a></li>
       <li><a href="#speakers">Speakers</a></li>
+      <li><a href="#inscripcion">Inscribirme</a></li>
       <li class="nav__menu-group"><span>Participa</span>
         <ul>
           <li><a href="#posters">Presenta tu póster</a></li>
@@ -243,22 +243,6 @@ print(aprender())</pre>
     </div>
   </section>
 
-  <section class="section section--deep" id="inscripcion" aria-labelledby="inscripcion-h">
-    <div class="wrap split" style="align-items: start">
-      <div class="stack sticky-text">
-        <h2 id="inscripcion-h" class="h2"><span data-pre>Inscríbete al <span class="mint">evento</span></span><span data-post hidden>Inscripciones <span class="mint">cerradas</span></span></h2>
-        <p class="lead" data-pre>Llena el formulario y te esperamos el <strong>viernes 27 de noviembre</strong> en el centro MEMI de la UMSS.</p>
-        <p class="lead" data-post hidden>Gracias por venir a PrograEduca 2026. Nos vemos en la próxima edición.</p>
-      </div>
-      <div class="glass-stage" data-pre><span class="orb orb--mint" aria-hidden="true" style="--s: 260px; left: -70px; top: -60px"></span><span class="orb orb--gold" aria-hidden="true" style="--s: 240px; right: -60px; bottom: -50px"></span>
-      <div class="form-window glass">
-        <div class="console__bar" aria-hidden="true"><i style="--c: var(--mint)"></i><i style="--c: var(--gold)"></i><i style="--c: #4d6e64"></i><span>inscripcion.form</span></div>
-        <iframe src={embed(FORMS.inscripcion)} title="Formulario de inscripción a PrograEduca 2026" loading="lazy">Cargando…</iframe>
-      </div>
-      </div>
-    </div>
-  </section>
-
   <section class="section" id="speakers" aria-labelledby="speakers-h">
     <div class="wrap speakers">
       <h2 id="speakers-h" class="h2">Speakers <span class="gold">2026</span></h2>
@@ -304,6 +288,22 @@ print(aprender())</pre>
       ) : (
         <p class="lead speakers__soon">Pronto anunciaremos a los speakers de esta edición.</p>
       )}
+    </div>
+  </section>
+
+  <section class="section section--deep" id="inscripcion" aria-labelledby="inscripcion-h">
+    <div class="wrap split" style="align-items: start">
+      <div class="stack sticky-text">
+        <h2 id="inscripcion-h" class="h2"><span data-pre>Inscríbete al <span class="mint">evento</span></span><span data-post hidden>Inscripciones <span class="mint">cerradas</span></span></h2>
+        <p class="lead" data-pre>Llena el formulario y te esperamos el <strong>viernes 27 de noviembre</strong> en el centro MEMI de la UMSS.</p>
+        <p class="lead" data-post hidden>Gracias por venir a PrograEduca 2026. Nos vemos en la próxima edición.</p>
+      </div>
+      <div class="glass-stage" data-pre><span class="orb orb--mint" aria-hidden="true" style="--s: 260px; left: -70px; top: -60px"></span><span class="orb orb--gold" aria-hidden="true" style="--s: 240px; right: -60px; bottom: -50px"></span>
+      <div class="form-window glass">
+        <div class="console__bar" aria-hidden="true"><i style="--c: var(--mint)"></i><i style="--c: var(--gold)"></i><i style="--c: #4d6e64"></i><span>inscripcion.form</span></div>
+        <iframe src={embed(FORMS.inscripcion)} title="Formulario de inscripción a PrograEduca 2026" loading="lazy">Cargando…</iframe>
+      </div>
+      </div>
     </div>
   </section>
 
