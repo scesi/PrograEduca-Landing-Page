@@ -653,3 +653,40 @@ button.speaker .speaker__initials { align-items: center; align-content: center; 
   .pixlogo.is-drawn i.on { animation: pix-in 320ms steps(3, end) both; animation-delay: var(--d); }
 }
 @keyframes pix-in { from { scale: 0; opacity: 0; } to { scale: 1; opacity: 1; } }
+
+/* barra: desplegable Participa */
+.nav__drop { position: relative; display: flex; }
+.nav__drop-btn {
+  display: inline-flex; align-items: center; gap: 6px; padding: 8px 0; border: 0; background: none; cursor: pointer;
+  font: 500 15px/1 var(--font); color: var(--cream); text-shadow: 0 1px 12px rgb(17 37 32 / 0.8); position: relative;
+}
+.nav__drop-btn svg { transition: transform 200ms var(--ease-out); }
+.nav__drop.is-open .nav__drop-btn svg { transform: rotate(180deg); }
+.nav__drop-btn::after { content: ""; position: absolute; left: 0; right: 16px; bottom: 2px; height: 1.5px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 250ms var(--ease-out); }
+.nav__drop-btn[data-current], .nav__drop.is-open .nav__drop-btn { color: var(--gold); }
+.nav__drop-btn[data-current]::after { transform: scaleX(1); }
+.nav__drop-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; border-radius: 4px; }
+.nav__drop-panel {
+  position: absolute; top: calc(100% + 14px); right: -16px; min-width: 280px; padding: 8px; border-radius: var(--radius);
+  display: grid; gap: 2px; transform-origin: top right;
+  background: rgb(17 37 32 / 0.92);
+}
+.nav__drop-panel::before { content: ""; position: absolute; inset: -16px 0 auto; height: 16px; }
+.nav__drop-panel a { display: grid; gap: 2px; padding: 10px 12px; border-radius: 10px; text-decoration: none; color: var(--cream); }
+.nav__drop-panel strong { font-size: 15px; font-weight: 600; }
+.nav__drop-panel span { font-size: 13px; color: var(--muted); }
+.nav__drop-panel a:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
+@media (hover: hover) and (pointer: fine) { .nav__drop-panel a:hover { background: rgb(242 240 230 / 0.07); } .nav__drop-panel a:hover strong { color: var(--gold); } }
+@media (prefers-reduced-motion: no-preference) {
+  .nav__drop-panel:not([hidden]) { animation: drop-in 180ms var(--ease-out); }
+}
+@keyframes drop-in { from { opacity: 0; scale: 0.97; translate: 0 -4px; } }
+
+/* menú móvil: Participa con sub-ítems */
+.nav__menu-group > span { display: block; padding: 14px 0 6px; font: 500 13px/1 var(--mono); color: var(--gold); }
+.nav__menu-group ul { list-style: none; margin: 0 0 6px; padding: 0 0 0 14px; border-left: 1.5px solid var(--line); }
+.nav__menu-group ul a { min-height: 48px; padding: 10px 0; font-size: 20px; border-bottom: 0; }
+.nav.is-open .nav__menu-group ul a { transition-delay: 150ms; }
+.nav__menu { max-height: calc(100svh - var(--nav-h) - env(safe-area-inset-top, 0px)); overflow-y: auto; overscroll-behavior: contain; }
+.nav__drop-panel a::after { content: none; }
+.nav__drop-panel a[aria-current="true"] strong { color: var(--gold); }

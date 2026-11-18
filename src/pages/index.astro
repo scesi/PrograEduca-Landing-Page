@@ -65,7 +65,15 @@ const arrow = '<svg class="btn__arrow" width="16" height="16" viewBox="0 0 16 16
       <a href="#cronograma">Cronograma</a>
       <a href="#ubicacion">Ubicación</a>
       <a href="#speakers">Speakers</a>
-      <a href="#posters">Participa</a>
+      <div class="nav__drop" data-drop>
+        <button class="nav__drop-btn" type="button" aria-expanded="false" aria-controls="participa-menu" data-drop-btn>Participa<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="nav__drop-panel glass" id="participa-menu" data-drop-panel hidden>
+          <a href="#postular-charla"><strong>Postula una charla</strong><span>Sé speaker</span></a>
+          <a href="#posters"><strong>Presenta tu póster</strong><span>Hasta el 21 de noviembre</span></a>
+          <a href="#colegios"><strong>Ven con tu colegio</strong><span>De 4.º a 6.º de secundaria</span></a>
+          <a href="#sponsors"><strong>Auspicia el evento</strong><span>Para empresas e instituciones</span></a>
+        </div>
+      </div>
     </nav>
     <a class="btn btn--primary" href="#inscripcion" data-cta data-live="Cronograma"><span data-cta-label>Inscribirme</span></a>
     <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú" data-menu-toggle><span></span><span></span></button>
@@ -76,7 +84,14 @@ const arrow = '<svg class="btn__arrow" width="16" height="16" viewBox="0 0 16 16
       <li><a href="#cronograma">Cronograma</a></li>
       <li><a href="#ubicacion">Ubicación</a></li>
       <li><a href="#speakers">Speakers</a></li>
-      <li><a href="#posters">Participa</a></li>
+      <li class="nav__menu-group"><span>Participa</span>
+        <ul>
+          <li><a href="#postular-charla">Postula una charla</a></li>
+          <li><a href="#posters">Presenta tu póster</a></li>
+          <li><a href="#colegios">Ven con tu colegio</a></li>
+          <li><a href="#sponsors">Auspicia el evento</a></li>
+        </ul>
+      </li>
     </ul>
   </nav>
 </header>
@@ -393,10 +408,13 @@ print(aprender())</pre>
   const links = [...document.querySelectorAll<HTMLAnchorElement>('.nav__links a, .nav__menu a')];
   const io = new IntersectionObserver((entries) => {
     // secciones que se agrupan bajo un mismo enlace
-    const grupo: Record<string, string> = { ejes: 'evento', colegios: 'posters', sponsors: 'posters' };
+    const grupo: Record<string, string> = { ejes: 'evento' };
+    const dropBtn = document.querySelector<HTMLElement>('[data-drop-btn]');
+    const enParticipa = ['posters', 'colegios', 'sponsors'];
     for (const e of entries) if (e.isIntersecting) {
       const id = grupo[e.target.id] ?? e.target.id;
       links.forEach((a) => a.setAttribute('aria-current', String(a.hash === '#' + id)));
+      dropBtn?.toggleAttribute('data-current', enParticipa.includes(id));
     }
   }, { rootMargin: '-45% 0px -50% 0px' });
   document.querySelectorAll('main section[id]').forEach((s) => io.observe(s));
@@ -410,6 +428,23 @@ print(aprender())</pre>
     // cerrar al tocar fuera (respaldo para navegadores sin closedby)
     d.addEventListener('click', (e) => { if (e.target === d) d.close(); });
   });
+
+  // desplegable "Participa" en la barra de escritorio
+  const drop = document.querySelector<HTMLElement>('[data-drop]');
+  if (drop) {
+    const btn = drop.querySelector<HTMLButtonElement>('[data-drop-btn]')!;
+    const panel = drop.querySelector<HTMLElement>('[data-drop-panel]')!;
+    const setDrop = (open: boolean) => { btn.setAttribute('aria-expanded', String(open)); panel.hidden = !open; drop.classList.toggle('is-open', open); };
+    btn.addEventListener('click', () => setDrop(panel.hidden));
+    panel.addEventListener('click', (e) => { if ((e.target as HTMLElement).closest('a')) setDrop(false); });
+    document.addEventListener('click', (e) => { if (!drop.contains(e.target as Node)) setDrop(false); });
+    addEventListener('keydown', (e) => { if (e.key === 'Escape' && !panel.hidden) { setDrop(false); btn.focus(); } });
+    if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      let t = 0;
+      drop.addEventListener('pointerenter', () => { clearTimeout(t); setDrop(true); });
+      drop.addEventListener('pointerleave', () => { t = window.setTimeout(() => setDrop(false), 180); });
+    }
+  }
 
   // menú móvil
   const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]')!;
