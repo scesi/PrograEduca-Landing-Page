@@ -136,17 +136,15 @@ print(aprender())</pre>
       <div class="glass-stage"><span class="orb orb--gold" aria-hidden="true" style="--s: 240px; right: -50px; top: -70px"></span><span class="orb orb--mint" aria-hidden="true" style="--s: 200px; left: -60px; bottom: -40px"></span>
       <figure class="console glass" style="margin: 0">
         <div class="console__bar" aria-hidden="true"><i style="--c: var(--mint)"></i><i style="--c: var(--gold)"></i><i style="--c: #4d6e64"></i><span>prograeduca.py</span></div>
-        <pre class="console__body" aria-label="Código de ejemplo: la programación aplicada a distintas áreas">areas = [<span class="s">"IA"</span>, <span class="s">"datos"</span>,
-         <span class="s">"robótica"</span>, <span class="s">"educación"</span>]
+        <pre class="console__body" aria-label="Código de ejemplo: dibuja el logo de PrograEduca con pixeles"><span class="k">def</span> pixeles(palabra):
+    <span class="k">return</span> [FUENTE[c] <span class="k">for</span> c <span class="k">in</span> palabra]
 
-<span class="k">def</span> aprender(area):
-    <span class="k">return</span> <span class="s">f"programación + {"{"}area{"}"}"</span>
-
-<span class="k">for</span> area <span class="k">in</span> areas:
-    print(aprender(area))</pre>
+<span class="k">for</span> palabra <span class="k">in</span> [<span class="s">"PROGRA"</span>, <span class="s">"EDUCA"</span>]:
+    print(pixeles(palabra))</pre>
         <div class="console__run">
           <button class="console__btn" type="button" data-run><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.5v9l8-4.5z" fill="currentColor"/></svg>Ejecutar</button>
           <span class="console__prompt"><output class="console__out" data-out aria-live="polite"></output><span class="cursor" aria-hidden="true"></span></span>
+          <div class="pixlogo" data-art aria-hidden="true"></div>
         </div>
       </figure>
       </div>
@@ -513,21 +511,42 @@ print(aprender())</pre>
     update();
   }
 
-  // consola: Ejecutar escribe la salida; se puede volver a tocar en cualquier momento
+  // consola: Ejecutar dibuja PROGRAEDUCA con pixeles (fuente de 4×5)
   const run = document.querySelector<HTMLButtonElement>('[data-run]');
   const out = document.querySelector<HTMLOutputElement>('[data-out]');
-  if (run && out) {
-    let timer = 0;
+  const art = document.querySelector<HTMLElement>('[data-art]');
+  if (run && out && art) {
+    const FUENTE: Record<string, string[]> = {
+      P: ['1110', '1001', '1110', '1000', '1000'], R: ['1110', '1001', '1110', '1010', '1001'], O: ['0110', '1001', '1001', '1001', '0110'],
+      G: ['0111', '1000', '1011', '1001', '0111'], A: ['0110', '1001', '1111', '1001', '1001'], E: ['1111', '1000', '1110', '1000', '1111'],
+      D: ['1110', '1001', '1001', '1001', '1110'], U: ['1001', '1001', '1001', '1001', '0110'], C: ['0111', '1000', '1000', '1000', '0111'],
+    };
+    const COLS = 29; // PROGRA: 6 letras × 4 + 5 espacios
+    const palabra = (texto: string, color: string) => {
+      const fila = document.createElement('div');
+      fila.className = 'pixlogo__word';
+      fila.style.setProperty('--c', color);
+      for (let r = 0; r < 5; r++) {
+        let col = 0;
+        [...texto].forEach((letra, i) => {
+          if (i) { fila.append(celda(false, col++, r)); }
+          for (const bit of FUENTE[letra][r]) fila.append(celda(bit === '1', col++, r));
+        });
+        while (col < COLS) fila.append(celda(false, col++, r));
+      }
+      return fila;
+    };
+    const celda = (on: boolean, col: number, r: number) => {
+      const c = document.createElement('i');
+      if (on) { c.className = 'on'; c.style.setProperty('--d', `${col * 22 + r * 10}ms`); }
+      return c;
+    };
     run.addEventListener('click', () => {
-      const msg = 'programación + IA\nprogramación + datos\nprogramación + robótica\nprogramación + educación';
-      clearTimeout(timer);
-      let i = 0;
-      out.textContent = '';
-      const step = () => {
-        out.textContent = msg.slice(0, ++i);
-        if (i < msg.length) timer = window.setTimeout(step, reduced ? 0 : 14);
-      };
-      step();
+      out.textContent = "['PROGRA', 'EDUCA']";
+      art.replaceChildren(palabra('PROGRA', 'var(--mint)'), palabra('EDUCA', 'var(--gold)'));
+      art.classList.remove('is-drawn');
+      void art.offsetWidth;
+      art.classList.add('is-drawn');
     });
   }
 

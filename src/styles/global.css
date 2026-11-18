@@ -642,3 +642,14 @@ button.speaker .speaker__initials { align-items: center; align-content: center; 
 /* formularios en el celular: más bajos (antes ~82% de la pantalla) */
 @media (max-width: 720px) { .form-window iframe { height: clamp(380px, 58svh, 520px); } }
 
+
+/* consola: logo en pixeles */
+.pixlogo { flex-basis: 100%; display: grid; gap: 8px; }
+.pixlogo:empty { display: none; }
+.pixlogo__word { display: grid; grid-template-columns: repeat(29, minmax(0, 1fr)); gap: 2px; max-width: 480px; }
+.pixlogo__word i { aspect-ratio: 1; background: rgb(242 240 230 / 0.05); }
+.pixlogo__word i.on { background: var(--c); }
+@media (prefers-reduced-motion: no-preference) {
+  .pixlogo.is-drawn i.on { animation: pix-in 320ms steps(3, end) both; animation-delay: var(--d); }
+}
+@keyframes pix-in { from { scale: 0; opacity: 0; } to { scale: 1; opacity: 1; } }
