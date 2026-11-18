@@ -64,6 +64,7 @@ const arrow = '<svg class="btn__arrow" width="16" height="16" viewBox="0 0 16 16
       <a href="#evento">Evento</a>
       <a href="#cronograma">Cronograma</a>
       <a href="#ubicacion">Ubicación</a>
+      <a class="btn btn--primary nav__cta-inline" href="#inscripcion" data-cta data-live="Cronograma"><span data-cta-label>Inscribirme</span></a>
       <a href="#speakers">Speakers</a>
       <div class="nav__drop" data-drop>
         <button class="nav__drop-btn" type="button" aria-expanded="false" aria-controls="participa-menu" data-drop-btn>Participa<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -83,6 +84,7 @@ const arrow = '<svg class="btn__arrow" width="16" height="16" viewBox="0 0 16 16
       <li><a href="#evento">Evento</a></li>
       <li><a href="#cronograma">Cronograma</a></li>
       <li><a href="#ubicacion">Ubicación</a></li>
+      <li><a href="#inscripcion">Inscribirme</a></li>
       <li><a href="#speakers">Speakers</a></li>
       <li class="nav__menu-group"><span>Participa</span>
         <ul>
@@ -435,11 +437,13 @@ print(aprender())</pre>
     const btn = drop.querySelector<HTMLButtonElement>('[data-drop-btn]')!;
     const panel = drop.querySelector<HTMLElement>('[data-drop-panel]')!;
     const setDrop = (open: boolean) => { btn.setAttribute('aria-expanded', String(open)); panel.hidden = !open; drop.classList.toggle('is-open', open); };
-    btn.addEventListener('click', () => setDrop(panel.hidden));
+    const fino = matchMedia('(hover: hover) and (pointer: fine)').matches;
+    // con mouse el clic solo abre (el hover ya lo abrió); en táctil alterna
+    btn.addEventListener('click', () => setDrop(fino ? true : panel.hidden));
     panel.addEventListener('click', (e) => { if ((e.target as HTMLElement).closest('a')) setDrop(false); });
     document.addEventListener('click', (e) => { if (!drop.contains(e.target as Node)) setDrop(false); });
     addEventListener('keydown', (e) => { if (e.key === 'Escape' && !panel.hidden) { setDrop(false); btn.focus(); } });
-    if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    if (fino) {
       let t = 0;
       drop.addEventListener('pointerenter', () => { clearTimeout(t); setDrop(true); });
       drop.addEventListener('pointerleave', () => { t = window.setTimeout(() => setDrop(false), 180); });

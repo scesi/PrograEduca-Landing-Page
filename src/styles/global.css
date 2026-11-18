@@ -690,3 +690,13 @@ button.speaker .speaker__initials { align-items: center; align-content: center; 
 .nav__menu { max-height: calc(100svh - var(--nav-h) - env(safe-area-inset-top, 0px)); overflow-y: auto; overscroll-behavior: contain; }
 .nav__drop-panel a::after { content: none; }
 .nav__drop-panel a[aria-current="true"] strong { color: var(--gold); }
+
+/* desplegable: [hidden] tiene que ganarle al display: grid */
+.nav__drop-panel[hidden] { display: none; }
+/* barra en el orden de la página: el botón Inscribirme va entre Ubicación y Speakers */
+.nav__links { align-items: center; }
+.nav__links .nav__cta-inline { min-height: 40px; padding: 0 18px; font-size: 15px; color: var(--ink-on-light); text-shadow: none; }
+.nav__links .nav__cta-inline::after { content: none; }
+@media (min-width: 961px) { .nav__bar > .btn[data-cta] { display: none; } }
+.nav__links .nav__cta-inline, .nav__links .nav__cta-inline[aria-current="true"] { color: var(--ink-on-light); }
+@media (hover: hover) and (pointer: fine) { .nav__links .nav__cta-inline:hover { color: var(--ink-on-light); } }
