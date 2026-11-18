@@ -576,18 +576,19 @@ print(aprender())</pre>
     };
     // la matriz apagada se arma al cargar: reserva el espacio y la ventana no salta al ejecutar
     art.replaceChildren(palabra('PROGRA', 'var(--mint)'), palabra('EDUCA', 'var(--gold)'));
-    // primero escribe la salida, después enciende los pixeles uno tras otro
+    // la salida se escribe mientras los pixeles se encienden, las dos a la vez
     let timer = 0;
     run.addEventListener('click', () => {
       clearTimeout(timer);
       art.classList.remove('is-drawn');
+      void art.offsetWidth;
+      art.classList.add('is-drawn');
       const msg = "['PROGRA', 'EDUCA']";
       let i = 0;
       out.textContent = '';
       const step = () => {
         out.textContent = msg.slice(0, ++i);
         if (i < msg.length) timer = window.setTimeout(step, reduced ? 0 : 22);
-        else timer = window.setTimeout(() => { void art.offsetWidth; art.classList.add('is-drawn'); }, reduced ? 0 : 120);
       };
       step();
     });
