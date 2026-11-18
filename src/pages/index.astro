@@ -349,9 +349,9 @@ print(aprender())</pre>
     </div>
   </section>
 
-  <section class="section" id="auspiciadores" aria-labelledby="auspiciadores-h">
+  <section class="section" id="sponsors" aria-labelledby="sponsors-h">
     <div class="wrap sponsors">
-      <h2 id="auspiciadores-h" class="h2">Sponsors <span class="gold">2026</span></h2>
+      <h2 id="sponsors-h" class="h2">Sponsors <span class="gold">2026</span></h2>
     </div>
     <div class="marquee" aria-label={SPONSORS.length ? 'Sponsors de PrograEduca 2026' : undefined} role={SPONSORS.length ? 'region' : undefined}>
       {[0, 1].map((copia) => (
@@ -371,26 +371,20 @@ print(aprender())</pre>
       ))}
     </div>
     <div class="wrap sponsors__cta" data-pre>
-      {SPONSORS.length === 0 && <p class="lead">Tu marca puede estar aquí.</p>}
-      <a class="btn btn--primary" href="#sponsors">Auspiciar PrograEduca <Fragment set:html={arrow} /></a>
+      <p class="lead">Buscamos aliados que compartan la visión del evento. Tu marca llega a <strong>estudiantes universitarios y de secundaria</strong>, <strong>docentes</strong> y <strong>comunidades tecnológicas</strong> de Cochabamba.</p>
+      <button class="btn btn--primary" type="button" aria-expanded="false" aria-controls="sponsors-form" data-sponsor-toggle>Auspiciar PrograEduca <svg class="btn__arrow sponsors__chev" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+    <div class="wrap sponsors__form" id="sponsors-form" hidden>
+      <div class="glass-stage"><span class="orb orb--mint" aria-hidden="true" style="--s: 260px; right: -70px; top: -60px"></span><span class="orb orb--gold" aria-hidden="true" style="--s: 240px; left: -60px; bottom: -50px"></span>
+      <div class="form-window glass">
+        <div class="console__bar" aria-hidden="true"><i style="--c: var(--mint)"></i><i style="--c: var(--gold)"></i><i style="--c: #4d6e64"></i><span>sponsors.form</span></div>
+        <iframe data-src={embed(FORMS.sponsors)} title="Formulario Call for Sponsors, PrograEduca 2026">Cargando…</iframe>
+      </div>
+      </div>
+      <p class="form-note">¿Dudas? Escríbenos a <a class="link" href={'mailto:' + CONTACTO.email}>{CONTACTO.email}</a></p>
     </div>
   </section>
 
-  <section class="section section--deep" id="sponsors" aria-labelledby="sponsors-h">
-    <div class="wrap split split--flip" style="align-items: start">
-      <div class="stack sticky-text">
-        <h2 id="sponsors-h" class="h2">Auspicia <span class="mint">PrograEduca</span></h2>
-        <p class="lead">Buscamos aliados que compartan la visión del evento. Tu marca llega a <strong>estudiantes universitarios y de secundaria</strong>, <strong>docentes</strong> y <strong>comunidades tecnológicas</strong> de Cochabamba.</p>
-        <p class="lead">¿Dudas? Escríbenos a <a class="link" href={'mailto:' + CONTACTO.email}>{CONTACTO.email}</a></p>
-      </div>
-      <div class="glass-stage" data-pre><span class="orb orb--mint" aria-hidden="true" style="--s: 260px; right: -70px; top: -60px"></span><span class="orb orb--gold" aria-hidden="true" style="--s: 240px; left: -60px; bottom: -50px"></span>
-      <div class="form-window glass">
-        <div class="console__bar" aria-hidden="true"><i style="--c: var(--mint)"></i><i style="--c: var(--gold)"></i><i style="--c: #4d6e64"></i><span>sponsors.form</span></div>
-        <iframe src={embed(FORMS.sponsors)} title="Formulario Call for Sponsors, PrograEduca 2026" loading="lazy">Cargando…</iframe>
-      </div>
-      </div>
-    </div>
-  </section>
 </main>
 
 <footer>
@@ -475,6 +469,20 @@ print(aprender())</pre>
       drop.addEventListener('pointerenter', () => { clearTimeout(t); setDrop(true); });
       drop.addEventListener('pointerleave', () => { t = window.setTimeout(() => setDrop(false), 180); });
     }
+  }
+
+  // sponsors: el formulario está plegado; el botón y los enlaces a #sponsors lo abren
+  const spBtn = document.querySelector<HTMLButtonElement>('[data-sponsor-toggle]');
+  const spForm = document.getElementById('sponsors-form');
+  if (spBtn && spForm) {
+    const setSp = (open: boolean) => {
+      spBtn.setAttribute('aria-expanded', String(open));
+      spForm.hidden = !open;
+      const f = spForm.querySelector<HTMLIFrameElement>('iframe[data-src]');
+      if (open && f) { f.src = f.dataset.src!; f.removeAttribute('data-src'); }
+    };
+    spBtn.addEventListener('click', () => setSp(spForm.hidden));
+    document.querySelectorAll<HTMLAnchorElement>('a[href="#sponsors"]').forEach((a) => a.addEventListener('click', () => setSp(true)));
   }
 
   // menú móvil

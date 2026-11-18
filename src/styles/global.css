@@ -725,3 +725,17 @@ button.speaker .speaker__initials { align-items: center; align-content: center; 
 .sponsors__cta { display: grid; justify-items: center; gap: 16px; text-align: center; margin-top: clamp(32px, 4vw, 48px); }
 .sponsors__cta .lead { margin: 0; }
 @media (prefers-reduced-motion: reduce) { .marquee { overflow-x: auto; } .marquee__track[aria-hidden] { display: none; } }
+
+/* sponsors: formulario plegado */
+.sponsors__cta { max-width: 760px; margin-inline: auto; }
+.sponsors__cta .lead { max-width: 60ch; }
+.sponsors__chev { transition: transform 220ms var(--ease-out); }
+[data-sponsor-toggle][aria-expanded="true"] .sponsors__chev { transform: rotate(180deg); }
+.sponsors__form { margin-top: 32px; max-width: 760px; display: grid; gap: 12px; justify-items: center; }
+.sponsors__form[hidden] { display: none; }
+.sponsors__form .glass-stage { width: 100%; }
+@media (prefers-reduced-motion: no-preference) { .sponsors__form:not([hidden]) { animation: drop-in 260ms var(--ease-out); } }
+@media (hover: hover) and (pointer: fine) {
+  [data-sponsor-toggle]:hover .sponsors__chev { transform: translateY(2px); }
+  [data-sponsor-toggle][aria-expanded="true"]:hover .sponsors__chev { transform: rotate(180deg) translateY(2px); }
+}
