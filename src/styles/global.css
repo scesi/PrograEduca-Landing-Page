@@ -64,7 +64,7 @@ html { scrollbar-color: var(--mint-deep) var(--bg-deep); }
   font: 600 16px/1 var(--font); text-decoration: none; cursor: pointer; border: 0;
   transition: transform 200ms var(--ease-out), background-color 200ms var(--ease-out), color 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
 }
-.btn:active { transform: scale(0.97); }
+.btn:active { scale: 0.97; }
 .btn--primary { background: var(--mint); color: var(--ink-on-light); box-shadow: 0 6px 20px -8px rgb(111 199 161 / 0.6); }
 .btn--ghost { background: transparent; color: var(--cream); box-shadow: inset 0 0 0 1.5px var(--line-strong); }
 @media (hover: hover) and (pointer: fine) {
@@ -512,8 +512,6 @@ a, button { -webkit-tap-highlight-color: transparent; }
 .speaker { margin: 0; border-radius: var(--radius); overflow: hidden; }
 .speaker img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; }
 .speaker__info { display: grid; gap: 4px; padding: 16px 18px 18px; }
-.speaker__info strong { font-size: 19px; font-weight: 600; }
-.speaker__info span { color: var(--muted); font-size: 15px; line-height: 1.45; }
 .speakers__cta { display: grid; justify-items: center; gap: 4px; text-align: center; }
 .speakers__cta .form-note { margin-top: 8px; }
 
@@ -593,7 +591,7 @@ button.speaker {
   transition: transform 160ms var(--ease-out), border-color 200ms ease;
 }
 button.speaker:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
-button.speaker:active { transform: scale(0.98); }
+button.speaker:active { scale: 0.98; }
 @media (hover: hover) and (pointer: fine) { button.speaker:hover { transform: translateY(-3px); border-color: rgb(242 240 230 / 0.28); } }
 button.speaker .speaker__media { display: block; aspect-ratio: 1; }
 button.speaker .speaker__initials { display: flex; }
@@ -715,3 +713,39 @@ button.speaker .speaker__initials { align-items: center; align-content: center; 
 @media (max-width: 720px) {
   .hero .snippet[data-type] { font-size: 11px; opacity: 0.5; }
 }
+
+/* ---------- arreglos de la 2.ª evaluación ---------- */
+/* 4. presionar: transición de scale */
+.btn { transition: transform 140ms var(--ease-out), scale 140ms var(--ease-out), background-color 200ms ease, color 200ms ease, box-shadow 200ms ease; }
+button.speaker { transition: transform 160ms var(--ease-out), scale 140ms var(--ease-out), border-color 200ms ease; }
+/* 2. tarjetas de speakers: cada dato en su fila, sin superponerse ni cortarse */
+.speaker__info > span { display: block; }
+.speaker__rol, .speaker__talk { display: -webkit-box; }
+.speaker__talk { padding-bottom: 2px; }
+/* 3. barra en celulares muy angostos */
+@media (max-width: 360px) {
+  .nav__bar { gap: 6px; }
+  .logo { font-size: 18px; }
+  .logo small { display: none; }
+  .nav .btn { padding: 0 14px; font-size: 14px; }
+  .nav__toggle { margin-right: -10px; }
+}
+/* 5. la página no se mueve detrás de la ventana del speaker */
+.speaker-dialog { overscroll-behavior: contain; }
+html:has(.speaker-dialog[open]) { overflow: hidden; }
+/* 7. contraste: vidrio más opaco donde hay texto chico sobre los círculos */
+.slot.glass { background-color: rgb(13 29 25 / 0.68); }
+.eje-node.glass { background-color: rgb(13 29 25 / 0.7); }
+@media (max-width: 1024px) { #evento > .orb { opacity: 0.25 !important; } }
+/* 8. menú del celular: el grupo Participa entra en orden */
+.nav__menu-group > span { opacity: 0; translate: 0 -6px; transition: opacity 200ms, translate 260ms var(--ease-out); }
+.nav.is-open .nav__menu-group > span { opacity: 1; translate: 0 0; transition-delay: 150ms; }
+.nav.is-open .nav__menu .nav__menu-group li:nth-child(1) a { transition-delay: 180ms; }
+.nav.is-open .nav__menu .nav__menu-group li:nth-child(2) a { transition-delay: 210ms; }
+.nav.is-open .nav__menu .nav__menu-group li:nth-child(3) a { transition-delay: 240ms; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-delay: 0s !important; } .nav__menu-group > span { opacity: 1; translate: none; } }
+/* 9. el cierre no se sale en pantallas medianas */
+@media (min-width: 761px) { .slot:last-child { margin-left: min(var(--start), 100% - 180px); } }
+.speaker__info > .speaker__rol { display: -webkit-box; -webkit-line-clamp: 1; }
+.speaker__info > .speaker__talk { display: -webkit-box; -webkit-line-clamp: 3; }
+.speaker__name { line-height: 1.3; }

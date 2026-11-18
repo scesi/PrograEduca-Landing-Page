@@ -43,7 +43,6 @@ const arrow = '<svg class="btn__arrow" width="16" height="16" viewBox="0 0 16 16
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta name="theme-color" content="#17302a">
 <link rel="preload" href={outfit700} as="font" type="font/woff2" crossorigin>
@@ -433,15 +432,22 @@ print(aprender())</pre>
     const panel = drop.querySelector<HTMLElement>('[data-drop-panel]')!;
     const setDrop = (open: boolean) => { btn.setAttribute('aria-expanded', String(open)); panel.hidden = !open; drop.classList.toggle('is-open', open); };
     const fino = matchMedia('(hover: hover) and (pointer: fine)').matches;
-    // con mouse el clic solo abre (el hover ya lo abrió); en táctil alterna
-    btn.addEventListener('click', () => setDrop(fino ? true : panel.hidden));
-    panel.addEventListener('click', (e) => { if ((e.target as HTMLElement).closest('a')) setDrop(false); });
-    document.addEventListener('click', (e) => { if (!drop.contains(e.target as Node)) setDrop(false); });
-    addEventListener('keydown', (e) => { if (e.key === 'Escape' && !panel.hidden) { setDrop(false); btn.focus(); } });
+    // con mouse el clic fija el panel abierto (el hover ya lo abrió); con teclado o táctil alterna
+    let fijo = false;
+    btn.addEventListener('click', (e) => {
+      if (fino && e.detail > 0) { fijo = !fijo; setDrop(fijo); return; }
+      fijo = false;
+      setDrop(panel.hidden);
+    });
+    // al salir con Tab, se cierra
+    drop.addEventListener('focusout', (e) => { if (!drop.contains(e.relatedTarget as Node)) { fijo = false; setDrop(false); } });
+    panel.addEventListener('click', (e) => { if ((e.target as HTMLElement).closest('a')) { fijo = false; setDrop(false); } });
+    document.addEventListener('click', (e) => { if (!drop.contains(e.target as Node)) { fijo = false; setDrop(false); } });
+    addEventListener('keydown', (e) => { if (e.key === 'Escape' && !panel.hidden) { fijo = false; setDrop(false); btn.focus(); } });
     if (fino) {
       let t = 0;
       drop.addEventListener('pointerenter', () => { clearTimeout(t); setDrop(true); });
-      drop.addEventListener('pointerleave', () => { t = window.setTimeout(() => setDrop(false), 180); });
+      drop.addEventListener('pointerleave', () => { if (!fijo) t = window.setTimeout(() => setDrop(false), 180); });
     }
   }
 
