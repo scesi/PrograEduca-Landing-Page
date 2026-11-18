@@ -649,10 +649,17 @@ button.speaker .speaker__initials { align-items: center; align-content: center; 
 .pixlogo__word { display: grid; grid-template-columns: repeat(29, minmax(0, 1fr)); gap: 2px; max-width: 480px; }
 .pixlogo__word i { aspect-ratio: 1; background: rgb(242 240 230 / 0.05); }
 .pixlogo__word i.on { background: var(--c); }
+/* cada pixel pasa de apagado a encendido en su turno; nunca se vacía antes */
+.pixlogo__word i.on { background: rgb(242 240 230 / 0.05); }
+.pixlogo.is-drawn i.on { background: var(--c); }
 @media (prefers-reduced-motion: no-preference) {
-  .pixlogo.is-drawn i.on { animation: pix-in 320ms steps(3, end) both; animation-delay: var(--d); }
+  .pixlogo.is-drawn i.on { background: rgb(242 240 230 / 0.05); animation: pix-on 260ms var(--ease-out) forwards; animation-delay: var(--d); }
 }
-@keyframes pix-in { from { scale: 0; opacity: 0; } to { scale: 1; opacity: 1; } }
+@keyframes pix-on {
+  0% { background: rgb(242 240 230 / 0.05); scale: 0.7; }
+  55% { background: var(--c); scale: 1.12; }
+  100% { background: var(--c); scale: 1; }
+}
 
 /* barra: desplegable Participa */
 .nav__drop { position: relative; display: flex; }
@@ -702,7 +709,6 @@ button.speaker .speaker__initials { align-items: center; align-content: center; 
 @media (hover: hover) and (pointer: fine) { .nav__links .nav__cta-inline:hover { color: var(--ink-on-light); } }
 
 /* matriz apagada hasta ejecutar */
-.pixlogo:not(.is-drawn) i.on { background: rgb(242 240 230 / 0.05); }
 @media (max-width: 720px) { .console__prompt { flex-basis: 100%; } }
 
 /* móvil: el código del hero acompaña, no protagoniza */
