@@ -704,3 +704,8 @@ button.speaker .speaker__initials { align-items: center; align-content: center; 
 /* matriz apagada hasta ejecutar */
 .pixlogo:not(.is-drawn) i.on { background: rgb(242 240 230 / 0.05); }
 @media (max-width: 720px) { .console__prompt { flex-basis: 100%; } }
+
+/* móvil: el código del hero acompaña, no protagoniza */
+@media (max-width: 720px) {
+  .hero .snippet[data-type] { font-size: 11px; opacity: 0.5; }
+}
