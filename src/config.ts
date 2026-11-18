@@ -84,3 +84,9 @@ export const SPEAKERS: Speaker[] = [
     resumen: 'Cuándo usar SDD con spec-kit y cuándo conviene usar specs de forma más ágil e iterativa, sin invertir de más en tokens.',
   },
 ];
+
+/** Sponsors (auspiciadores). El logo va en public/assets/sponsors/ (PNG o SVG con fondo transparente).
+ *  Mientras la lista esté vacía, el carrusel muestra espacios "tu_logo.png". */
+export const SPONSORS: { nombre: string; logo: string; url?: string }[] = [
+  // { nombre: 'Empresa', logo: '/assets/sponsors/empresa.svg', url: 'https://empresa.com' },
+];

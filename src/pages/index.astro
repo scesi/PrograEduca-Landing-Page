@@ -7,7 +7,7 @@ import '@fontsource/jetbrains-mono/latin-400.css';
 import '@fontsource/jetbrains-mono/latin-500.css';
 import outfit700 from '@fontsource/outfit/files/outfit-latin-700-normal.woff2?url';
 import '../styles/global.css';
-import { FORMS, SPEAKERS, CONTACTO, LUGAR_MAPA_EMBED, INICIO_EVENTO } from '../config';
+import { FORMS, SPEAKERS, SPONSORS, CONTACTO, LUGAR_MAPA_EMBED, INICIO_EVENTO } from '../config';
 
 const titulo = 'PrograEduca 2026';
 const descripcion =
@@ -346,6 +346,33 @@ print(aprender())</pre>
         <iframe src={embed(FORMS.colegios)} title="Formulario Call for Schools, PrograEduca 2026" loading="lazy">Cargando…</iframe>
       </div>
       </div>
+    </div>
+  </section>
+
+  <section class="section" id="auspiciadores" aria-labelledby="auspiciadores-h">
+    <div class="wrap sponsors">
+      <h2 id="auspiciadores-h" class="h2">Sponsors <span class="gold">2026</span></h2>
+    </div>
+    <div class="marquee" aria-label={SPONSORS.length ? 'Sponsors de PrograEduca 2026' : undefined} role={SPONSORS.length ? 'region' : undefined}>
+      {[0, 1].map((copia) => (
+        <ul class="marquee__track" aria-hidden={copia === 1 ? 'true' : undefined}>
+          {SPONSORS.length > 0
+            ? SPONSORS.map((sp) => (
+                <li class="sponsor-tile">
+                  {sp.url
+                    ? <a href={sp.url} target="_blank" rel="noopener" tabindex={copia ? -1 : undefined}><img src={sp.logo} alt={copia ? '' : sp.nombre} loading="lazy" decoding="async" /></a>
+                    : <img src={sp.logo} alt={copia ? '' : sp.nombre} loading="lazy" decoding="async" />}
+                </li>
+              ))
+            : Array.from({ length: 6 }).map(() => (
+                <li class="sponsor-tile sponsor-tile--empty" aria-hidden="true"><code>tu_logo.png</code></li>
+              ))}
+        </ul>
+      ))}
+    </div>
+    <div class="wrap sponsors__cta" data-pre>
+      {SPONSORS.length === 0 && <p class="lead">Tu marca puede estar aquí.</p>}
+      <a class="btn btn--primary" href="#sponsors">Auspiciar PrograEduca <Fragment set:html={arrow} /></a>
     </div>
   </section>
 
