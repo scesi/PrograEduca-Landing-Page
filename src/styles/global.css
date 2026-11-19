@@ -872,9 +872,9 @@ button.speaker .speaker__info { display: flex; flex-direction: column; flex: 1; 
   .ejes-steps button.is-active { color: var(--ink-on-light); background: var(--gold); border-color: var(--gold); }
   .ejes-steps button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
   /* evento + ejes + cronograma quedan fijos juntos (el tope negativo los fija cuando los ejes llegan
-     al centro) mientras la página recorre la pista, un tramo por eje */
+     al centro) mientras la página recorre la pista, un tramo por eje (el primero más corto) */
   .ejes-tramo.is-fijo .ejes-grupo { position: sticky; top: var(--ejes-tope, 0px); }
-  .ejes-tramo.is-fijo .ejes-tramo__pista { display: block; height: calc(3 * 32svh); }
+  .ejes-tramo.is-fijo .ejes-tramo__pista { display: block; height: calc(var(--ejes-tramos, 3) * 32svh); }
   /* los círculos se desplazan en direcciones opuestas con el avance; la transición larga los
      deja seguir el scroll con un arrastre suave en vez de a saltos */
   .ejes-tramo.is-fijo .ejes-map > .orb { transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1); will-change: transform; }

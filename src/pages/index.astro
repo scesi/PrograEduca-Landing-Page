@@ -569,7 +569,7 @@ print(aliados)</pre>
   // ejes temáticos en celular/tablet: cuando los ejes llegan al centro de la pantalla, evento, ejes y
   // cronograma quedan fijos juntos (un solo bloque sticky con tope negativo) mientras la página recorre
   // una pista vacía debajo. En pantalla no se mueve nada y asoman las secciones vecinas; el avance por
-  // la pista elige el eje (cada tercio, uno) y mueve los círculos. Al terminar la pista, todo sigue.
+  // la pista elige el eje (el primer tramo es más corto) y mueve los círculos. Al terminar la pista, todo sigue.
   // El scroll es siempre el del navegador (dedo, rueda, barra, teclado): aquí solo se lee la posición.
   // Si los ejes no caben en pantalla con las vecinas asomando, van apilados; con movimiento reducido
   // también (lo resuelve el CSS).
@@ -583,6 +583,13 @@ print(aliados)</pre>
     const N = nodos.length;
     const enZona = matchMedia('(max-width: 900px)');
     const ASOMA = 24; // px mínimos de las secciones vecinas que deben verse arriba y abajo
+    // largo de la pista por eje, en tramos de 32svh. El primero es corto: el eje[0] ya se vio
+    // mientras la sección llegaba al centro, así que un tramo entero haría eterno el primer cambio
+    const TRAMOS = [0.45, 1, 1];
+    const TOTAL = TRAMOS.reduce((a, b) => a + b, 0);
+    // dónde empieza cada eje en la pista (0 a 1)
+    const inicios = TRAMOS.map((_, i) => TRAMOS.slice(0, i).reduce((a, b) => a + b, 0) / TOTAL);
+    tramo.style.setProperty('--ejes-tramos', String(TOTAL));
     let actual = 0, activo = false, tocando = false, tope = 0;
 
     const mostrar = (i: number) => {
@@ -599,7 +606,7 @@ print(aliados)</pre>
       const recorrido = grupo.getBoundingClientRect().top - tramo.getBoundingClientRect().top;
       const p = Math.min(Math.max(recorrido / (pista.offsetHeight || 1), 0), 1);
       tramo.style.setProperty('--ep', p.toFixed(4));
-      mostrar(Math.min(Math.floor(p * N), N - 1));
+      mostrar(Math.max(inicios.findLastIndex((ini) => p >= ini), 0));
     };
 
     // alto de pantalla estable (sin la barra de Safari): no cambia al desplazarse
@@ -644,7 +651,8 @@ print(aliados)</pre>
     // pestañas (y el foco del teclado): llevan la página al punto de la pista donde se ve ese eje
     const irA = (i: number) => {
       if (!activo) { mostrar(i); return; }
-      scrollTo({ top: Math.round(inicioFijo() + ((i + 0.5) / N) * pista.offsetHeight), behavior: reduced ? 'auto' : 'smooth' });
+      const medio = inicios[i] + TRAMOS[i] / TOTAL / 2;
+      scrollTo({ top: Math.round(inicioFijo() + medio * pista.offsetHeight), behavior: reduced ? 'auto' : 'smooth' });
     };
     pasos.forEach((b, i) => b.addEventListener('click', () => irA(i)));
     tramo.addEventListener('focusin', (e) => {
