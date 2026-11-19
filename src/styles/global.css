@@ -855,33 +855,41 @@ button.speaker .speaker__info { display: flex; flex-direction: column; flex: 1; 
   .track { padding: 12px 14px; }
 }
 
-/* ---------- ejes temáticos en celular/tablet: fijos y centrados, tres ejes en el mismo lugar ---------- */
-.ejes-steps { display: none; }
-/* mientras los ejes tienen la página detenida, el navegador no la desplaza (corta también la inercia) */
-.ejes-quieto, .ejes-quieto body { overflow: hidden; overscroll-behavior: none; }
+/* ---------- ejes temáticos en celular/tablet: tres ejes en el mismo lugar ---------- */
+.ejes-steps, .ejes-tramo__pista { display: none; }
 @media (max-width: 900px) {
-  #ejes.section { padding-block: 28px; }
-  .ejes-pin .ejes-map { margin-top: 16px; }
-  .ejes-pin .ejes-map__nodes { display: grid; grid-template-columns: minmax(0, 1fr); }
-  .ejes-pin .eje-node { grid-area: 1 / 1; opacity: 0; translate: 0 18px; scale: 0.98; pointer-events: none; transition: opacity 380ms var(--ease-out), translate 480ms var(--ease-out), scale 480ms var(--ease-out); }
-  .ejes-pin .eje-node.is-active { opacity: 1; translate: 0 0; scale: 1; pointer-events: auto; }
-  /* con movimiento reducido no hay escena: los tres ejes apilados, sin pestañas */
-  @media (prefers-reduced-motion: reduce) {
-    .ejes-pin .ejes-map__nodes { gap: 14px; }
-    .ejes-pin .eje-node, .ejes-pin .eje-node.is-active { grid-area: auto; opacity: 1; translate: none; scale: none; pointer-events: auto; }
-    .ejes-pin .ejes-steps { display: none; }
-  }
+  /* secciones vecinas cerca: con los ejes en el centro asoman la de arriba y la de abajo */
+  #ejes.section { padding-block: 12px; }
+  #evento.section { padding-bottom: 20px; }
+  #cronograma.section { padding-top: 20px; }
+  .ejes-escena .ejes-map { margin-top: 16px; }
+  .ejes-escena .ejes-map__nodes { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .ejes-escena .eje-node { grid-area: 1 / 1; opacity: 0; translate: 0 18px; scale: 0.98; pointer-events: none; transition: opacity 380ms var(--ease-out), translate 480ms var(--ease-out), scale 480ms var(--ease-out); }
+  .ejes-escena .eje-node.is-active { opacity: 1; translate: 0 0; scale: 1; pointer-events: auto; }
   /* pestañas eje[0] eje[1] eje[2] como en el código: muestran y eligen el eje */
   .ejes-steps { display: flex; gap: 8px; margin-top: 14px; }
   .ejes-steps button { all: unset; cursor: pointer; font: 500 13px/1 var(--mono); color: var(--muted); padding: 15px 12px; border-radius: 6px; border: 1px solid var(--line); background: var(--bg-deep); transition: color 250ms, background-color 250ms, border-color 250ms; }
   .ejes-steps button.is-active { color: var(--ink-on-light); background: var(--gold); border-color: var(--gold); }
   .ejes-steps button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  /* evento + ejes + cronograma quedan fijos juntos (el tope negativo los fija cuando los ejes llegan
+     al centro) mientras la página recorre la pista, un tramo por eje */
+  .ejes-tramo.is-fijo .ejes-grupo { position: sticky; top: var(--ejes-tope, 0px); }
+  .ejes-tramo.is-fijo .ejes-tramo__pista { display: block; height: calc(3 * 40svh); }
+  /* los círculos se desplazan en direcciones opuestas con el avance; la transición larga los
+     deja seguir el scroll con un arrastre suave en vez de a saltos */
+  .ejes-tramo.is-fijo .ejes-map > .orb { transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1); will-change: transform; }
+  .ejes-tramo.is-fijo .ejes-map > .orb--gold { transform: translate3d(calc(var(--ep, 0) * 46vw), calc(var(--ep, 0) * 90px), 0) scale(calc(1 + var(--ep, 0) * 0.25)); }
+  .ejes-tramo.is-fijo .ejes-map > .orb--mint { transform: translate3d(calc(var(--ep, 0) * -50vw), calc(var(--ep, 0) * -50px), 0) scale(calc(1.15 - var(--ep, 0) * 0.25)); }
+  /* sin escena (no caben con las vecinas asomando): los tres ejes apilados, sin pestañas */
+  .ejes-tramo.is-apilado .ejes-map__nodes { gap: 14px; }
+  .ejes-tramo.is-apilado .eje-node { grid-area: auto; opacity: 1; translate: none; scale: none; pointer-events: auto; }
+  .ejes-tramo.is-apilado .ejes-steps { display: none; }
 }
-/* los círculos de los ejes se desplazan en direcciones opuestas, de a poco con el deslizamiento */
-@media (max-width: 900px) and (prefers-reduced-motion: no-preference) {
-  .ejes-pin .ejes-map > .orb { transition: transform 160ms linear; }
-  .ejes-pin .ejes-map > .orb--gold { transform: translate3d(calc(var(--ep, 0) * 46vw), calc(var(--ep, 0) * 90px), 0) scale(calc(1 + var(--ep, 0) * 0.25)); }
-  .ejes-pin .ejes-map > .orb--mint { transform: translate3d(calc(var(--ep, 0) * -50vw), calc(var(--ep, 0) * -50px), 0) scale(calc(1.15 - var(--ep, 0) * 0.25)); }
+/* con movimiento reducido no hay escena: los tres ejes apilados, sin pestañas */
+@media (max-width: 900px) and (prefers-reduced-motion: reduce) {
+  .ejes-escena .ejes-map__nodes { gap: 14px; }
+  .ejes-escena .eje-node { grid-area: auto; opacity: 1; translate: none; scale: none; pointer-events: auto; }
+  .ejes-steps { display: none; }
 }
 /* celular: menos aire entre secciones */
 @media (max-width: 720px) {

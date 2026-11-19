@@ -161,6 +161,9 @@ print(aprender())</pre>
     </div>
   </section>
 
+  <!-- en celular, evento + ejes + cronograma quedan fijos juntos mientras se recorre la pista y cambian los ejes -->
+  <div class="ejes-tramo" data-ejes-tramo>
+  <div class="ejes-grupo">
   <section class="section section--deep" id="evento" aria-labelledby="evento-h">
     <span class="orb orb--gold" aria-hidden="true" style="--s: 360px; right: -180px; top: 60px; opacity: .55"></span>
     <span class="pixel" aria-hidden="true" style="left: 3%; bottom: 14%; --t: 6s"></span>
@@ -191,8 +194,8 @@ print(aprender())</pre>
     <span class="orb orb--mint" aria-hidden="true" style="--s: 300px; left: -150px; bottom: -120px; opacity: .5"></span>
     <span class="pixel pixel--gold" aria-hidden="true" style="right: 6%; top: 18%; --t: 5s"></span>
     <span class="pixel" aria-hidden="true" style="right: 8%; top: 22%; --p: 12px; --t: 7s; --d: 1s"></span>
-    <div class="wrap ejes-pin" data-ejes-pin>
-      <div class="ejes-pin__stage">
+    <div class="wrap ejes-escena">
+      <div class="ejes-escena__bloque">
       <h2 id="ejes-h" class="h2">Tres ejes temáticos</h2>
       <div class="ejes-steps" role="group" aria-label="Elegir eje temático">
         <button type="button" class="is-active" aria-label="Ver eje 1">eje[0]</button><button type="button" aria-label="Ver eje 2">eje[1]</button><button type="button" aria-label="Ver eje 3">eje[2]</button>
@@ -266,6 +269,9 @@ print(aprender())</pre>
       </div>
     </div>
   </section>
+  </div>
+  <div class="ejes-tramo__pista" aria-hidden="true"></div>
+  </div>
 
   <section class="section" id="ubicacion" aria-labelledby="ubicacion-h">
     <div class="wrap venue">
@@ -517,6 +523,9 @@ print(aliados)</pre>
   }, { rootMargin: '-45% 0px -50% 0px' });
   document.querySelectorAll('main section[id]').forEach((s) => io.observe(s));
 
+  // los ejes en celular fijan un tramo de la página: corrige el destino de un enlace que cae ahí (se define abajo)
+  let corregirDestino: ((el: Element, y: number) => number) | null = null;
+
   // enlaces internos: si la sección cabe en pantalla queda centrada bajo el navbar;
   // si no, su contenido arranca justo debajo del navbar (sin el padding de la sección)
   document.addEventListener('click', (e) => {
@@ -535,7 +544,8 @@ print(aliados)</pre>
     const libre = innerHeight - navH;
     const margen = innerWidth < 721 ? 24 : 32;
     const off = r.height + margen * 2 <= libre ? navH + (libre - r.height) / 2 : navH + margen;
-    scrollTo({ top: scrollY + r.top - off, behavior: reduced ? 'auto' : 'smooth' });
+    const y = scrollY + r.top - off;
+    scrollTo({ top: corregirDestino ? corregirDestino(box, y) : y, behavior: reduced ? 'auto' : 'smooth' });
   });
 
   // vibración corta (háptica). Android: Vibration API (necesita que la persona ya haya tocado la página).
@@ -556,137 +566,106 @@ print(aliados)</pre>
     return () => label.click();
   })();
 
-  // ejes temáticos en celular/tablet: al llegar al centro de la pantalla, con el dedo, la página se detiene.
-  // Mientras está quieta, el deslizamiento recorre un avance continuo de 0 a 3: cada tramo es un eje
-  // (con un tic al cambiar) y los círculos se desplazan de a poco. Al pasar el final (bajando) o el
-  // inicio (subiendo) se suelta y el scroll sigue con su inercia.
-  // Solo se detiene ante un deslizamiento real (dedo, rueda o trackpad): teclado, buscar en la página
-  // o desplazamientos por código pasan de largo. Con movimiento reducido, nunca.
-  const pin = document.querySelector<HTMLElement>('[data-ejes-pin]');
-  if (pin) {
-    const stage = pin.querySelector<HTMLElement>('.ejes-pin__stage')!;
-    const nodos = [...pin.querySelectorAll<HTMLElement>('.eje-node')];
-    const pasos = [...pin.querySelectorAll<HTMLButtonElement>('.ejes-steps button')];
-    const N = nodos.length, ultimo = N - 1;
+  // ejes temáticos en celular/tablet: cuando los ejes llegan al centro de la pantalla, evento, ejes y
+  // cronograma quedan fijos juntos (un solo bloque sticky con tope negativo) mientras la página recorre
+  // una pista vacía debajo. En pantalla no se mueve nada y asoman las secciones vecinas; el avance por
+  // la pista elige el eje (cada tercio, uno) y mueve los círculos. Al terminar la pista, todo sigue.
+  // El scroll es siempre el del navegador (dedo, rueda, barra, teclado): aquí solo se lee la posición.
+  // Si los ejes no caben en pantalla con las vecinas asomando, van apilados; con movimiento reducido
+  // también (lo resuelve el CSS).
+  const tramo = document.querySelector<HTMLElement>('[data-ejes-tramo]');
+  if (tramo) {
+    const grupo = tramo.querySelector<HTMLElement>('.ejes-grupo')!;
+    const pista = tramo.querySelector<HTMLElement>('.ejes-tramo__pista')!;
+    const bloque = tramo.querySelector<HTMLElement>('.ejes-escena__bloque')!;
+    const nodos = [...tramo.querySelectorAll<HTMLElement>('.eje-node')];
+    const pasos = [...tramo.querySelectorAll<HTMLButtonElement>('.ejes-steps button')];
+    const N = nodos.length;
     const enZona = matchMedia('(max-width: 900px)');
-    const TRAMO = 150; // px de deslizamiento por eje
-    const PAUSA = 320; // ms mínimos entre un eje y el siguiente (un movimiento rápido no los salta todos)
-    let avance = 0, ultimoCambio = 0;
-    let actual = 0, quieto = false, ultimoY = scrollY, tocY = 0, soltadoEnGesto = false;
-    let tocando = false, ultimoToque = 0;
-    const vel: { t: number; y: number }[] = [];
+    const ASOMA = 24; // px mínimos de las secciones vecinas que deben verse arriba y abajo
+    let actual = 0, activo = false, tocando = false, tope = 0;
 
-    const activar = (i: number) => {
+    const mostrar = (i: number) => {
       if (i === actual) return;
       actual = i;
       nodos.forEach((n, j) => n.classList.toggle('is-active', j === i));
-      pasos.forEach((b, j) => b.toggleAttribute('aria-current', j === i));
-      pasos.forEach((b, j) => b.classList.toggle('is-active', j === i));
-      haptica();
+      pasos.forEach((b, j) => { b.classList.toggle('is-active', j === i); b.toggleAttribute('aria-current', j === i); });
+      if (tocando) haptica();
     };
-    const pintar = () => pin.style.setProperty('--ep', (avance / N).toFixed(4));
-    // posición de la página con los ejes centrados en el espacio bajo el navbar
-    const yQuieto = () => {
-      const libre = innerHeight - nav.offsetHeight;
-      return Math.round(scrollY + stage.getBoundingClientRect().top - nav.offsetHeight - Math.max((libre - stage.offsetHeight) / 2, 12));
-    };
-    const fijar = () => {
-      quieto = true;
-      scrollTo({ top: yQuieto(), behavior: 'instant' as ScrollBehavior });
-      document.documentElement.classList.add('ejes-quieto');
-    };
-    const soltar = () => {
-      if (!quieto) return;
-      quieto = false;
-      document.documentElement.classList.remove('ejes-quieto');
-    };
-    // mueve el avance; devuelve true si la página quedó suelta
-    const mover = (delta: number) => {
-      let sig = avance + delta / TRAMO;
-      const tramo = Math.min(Math.floor(Math.max(sig, 0)), ultimo);
-      if (tramo !== actual && performance.now() - ultimoCambio < PAUSA) {
-        sig = tramo > actual ? actual + 0.999 : actual; // espera en el borde del tramo
-      } else if (tramo !== actual) {
-        ultimoCambio = performance.now();
-        activar(tramo);
-      }
-      avance = sig;
-      if (avance >= N) { avance = N; pintar(); soltar(); return true; }
-      if (avance <= 0 && delta < 0) { avance = 0; pintar(); soltar(); return true; }
-      avance = Math.max(avance, 0);
-      pintar();
-      return false;
-    };
-    let ultimaRueda = 0;
-    const puedeDetener = () => enZona.matches && !reduced && (tocando || performance.now() - Math.max(ultimoToque, ultimaRueda) < 900);
 
-    // al cruzar el punto de quietud (bajando con ejes pendientes, o subiendo) la página se detiene.
-    // Se mira un cuadro adelante para no pasarse de largo y volver de golpe.
+    // cuánto bajó el bloque fijo dentro del tramo = cuánto se recorrió la pista (0 a 1)
+    const actualizar = () => {
+      if (!activo) return;
+      const recorrido = grupo.getBoundingClientRect().top - tramo.getBoundingClientRect().top;
+      const p = Math.min(Math.max(recorrido / (pista.offsetHeight || 1), 0), 1);
+      tramo.style.setProperty('--ep', p.toFixed(4));
+      mostrar(Math.min(Math.floor(p * N), N - 1));
+    };
+
+    // alto de pantalla estable (sin la barra de Safari): no cambia al desplazarse
+    const sonda = document.createElement('div');
+    sonda.style.cssText = 'position:fixed;top:0;height:100svh;width:0;visibility:hidden;pointer-events:none';
+    document.body.append(sonda);
+
+    let altoPantalla = 0;
+    const medir = () => {
+      altoPantalla = sonda.offsetHeight;
+      // se mide con un solo eje a la vista, como se ve fijo
+      tramo.classList.remove('is-apilado');
+      const navH = nav.offsetHeight, libre = altoPantalla - navH;
+      const b = bloque.getBoundingClientRect(), g = grupo.getBoundingClientRect();
+      activo = enZona.matches && !reduced && b.height <= libre - 2 * ASOMA;
+      tramo.classList.toggle('is-fijo', activo);
+      tramo.classList.toggle('is-apilado', !activo);
+      if (!activo) return;
+      // tope del bloque para que se fije justo cuando el centro de los ejes llega al centro bajo el navbar
+      tope = Math.round(navH + libre / 2 - (b.top - g.top + b.height / 2));
+      tramo.style.setProperty('--ejes-tope', tope + 'px');
+      actualizar();
+    };
+
+    // scroll en el que el bloque se fija
+    const inicioFijo = () => scrollY + tramo.getBoundingClientRect().top - tope;
+
+    let cuadro = 0;
     addEventListener('scroll', () => {
-      const y = scrollY, dy = y - ultimoY, baja = dy > 0;
-      ultimoY = y;
-      if (quieto || !puedeDetener()) return;
-      const yq = yQuieto();
-      if (baja && avance < N && y + dy >= yq && y - yq < innerHeight) { avance = Math.min(avance, N - 0.001); fijar(); }
-      else if (!baja && dy < 0 && avance > 0 && y + dy <= yq && yq - y < innerHeight) { avance = Math.max(avance, 0.001); fijar(); }
+      if (!activo || cuadro) return;
+      cuadro = requestAnimationFrame(() => { cuadro = 0; actualizar(); });
     }, { passive: true });
+    addEventListener('touchstart', () => { tocando = true; }, { passive: true });
+    addEventListener('touchend', () => { tocando = false; }, { passive: true });
+    addEventListener('touchcancel', () => { tocando = false; }, { passive: true });
+    // el contenido cambia de alto (fuentes, imágenes, ancho): se vuelve a medir
+    new ResizeObserver(medir).observe(grupo);
+    // la barra de Safari cambia innerHeight al desplazarse: solo cuenta si cambió el alto estable
+    addEventListener('resize', () => { if (sonda.offsetHeight !== altoPantalla) medir(); });
+    enZona.addEventListener('change', medir);
 
-    addEventListener('touchstart', (e) => {
-      tocY = e.touches[0].clientY; soltadoEnGesto = false; tocando = true;
-      vel.length = 0;
-    }, { passive: true });
-    addEventListener('touchmove', (e) => {
-      const y = e.touches[0].clientY, dy = tocY - y;
-      tocY = y;
-      ultimoToque = performance.now();
-      if (soltadoEnGesto) {
-        // el resto del gesto sigue moviendo la página; se guarda la velocidad para la inercia final
-        e.preventDefault();
-        scrollBy(0, dy);
-        vel.push({ t: performance.now(), y: dy });
-        if (vel.length > 6) vel.shift();
-        return;
-      }
-      if (!quieto) return;
-      e.preventDefault();
-      if (mover(dy)) soltadoEnGesto = true;
-    }, { passive: false });
-    addEventListener('touchend', () => {
-      tocando = false;
-      ultimoToque = performance.now();
-      // inercia: si el gesto que soltó la página venía rápido, la página sigue deslizándose
-      if (soltadoEnGesto && vel.length > 1) {
-        const dt = vel[vel.length - 1].t - vel[0].t || 16;
-        const v = vel.reduce((s, m) => s + m.y, 0) / dt; // px/ms
-        if (Math.abs(v) > 0.3) scrollBy({ top: v * 320, behavior: 'smooth' });
-      }
-      soltadoEnGesto = false;
-    }, { passive: true });
-
-    // rueda o trackpad: marca el gesto como real y, con la página quieta, mueve el avance
-    addEventListener('wheel', (e) => {
-      ultimaRueda = performance.now();
-      if (!quieto) return;
-      e.preventDefault();
-      mover(e.deltaY);
-    }, { passive: false });
-
-    // si el foco (Tab, lector de pantalla) sale de los ejes, la página se suelta;
-    // si entra a un eje que no está a la vista, ese eje se muestra
-    document.addEventListener('focusin', (e) => {
-      const t = e.target as HTMLElement;
-      if (!pin.contains(t)) { soltar(); return; }
-      const i = nodos.findIndex((n) => n.contains(t));
-      if (i >= 0) { avance = i + 0.5; activar(i); pintar(); }
+    // pestañas (y el foco del teclado): llevan la página al punto de la pista donde se ve ese eje
+    const irA = (i: number) => {
+      if (!activo) { mostrar(i); return; }
+      scrollTo({ top: Math.round(inicioFijo() + ((i + 0.5) / N) * pista.offsetHeight), behavior: reduced ? 'auto' : 'smooth' });
+    };
+    pasos.forEach((b, i) => b.addEventListener('click', () => irA(i)));
+    tramo.addEventListener('focusin', (e) => {
+      const i = nodos.findIndex((n) => n.contains(e.target as Node));
+      if (i >= 0 && i !== actual) irA(i);
     });
-    // un enlace del menú o un botón que mueve la página siempre la suelta
-    document.addEventListener('click', (e) => { if ((e.target as HTMLElement).closest('a[href^="#"]')) soltar(); }, true);
-    addEventListener('visibilitychange', soltar);
-    // pestañas: eligen el eje directamente (a la mitad de su tramo)
-    pasos.forEach((b, i) => b.addEventListener('click', () => { avance = i + 0.5; ultimoCambio = 0; activar(i); pintar(); }));
-    enZona.addEventListener('change', () => { if (!enZona.matches) soltar(); });
+
+    // un enlace a algo dentro del bloque: lo que está sobre los ejes se alcanza antes de fijarse (los
+    // ejes mismos, justo al fijarse); lo que está debajo, después de la pista, nunca a mitad de ella
+    corregirDestino = (el, y) => {
+      if (!activo || !grupo.contains(el)) return y;
+      const r = el.getBoundingClientRect();
+      const enBloque = r.top - grupo.getBoundingClientRect().top; // no cambia al fijarse
+      const enPantalla = scrollY + r.top - y; // altura de la pantalla donde debe quedar
+      const inicioTramo = scrollY + tramo.getBoundingClientRect().top;
+      if (enPantalla - enBloque >= tope - 40) return Math.min(inicioTramo + enBloque - enPantalla, inicioFijo());
+      return inicioTramo + pista.offsetHeight + enBloque - enPantalla;
+    };
+
     pasos[0]?.setAttribute('aria-current', 'true');
-    pintar();
+    medir();
   }
 
   // pósters: pasada la fecha límite, el botón se reemplaza por el aviso de cierre (?fase=post también lo muestra)
