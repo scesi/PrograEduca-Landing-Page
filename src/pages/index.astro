@@ -7,7 +7,7 @@ import '@fontsource/jetbrains-mono/latin-400.css';
 import '@fontsource/jetbrains-mono/latin-500.css';
 import outfit700 from '@fontsource/outfit/files/outfit-latin-700-normal.woff2?url';
 import '../styles/global.css';
-import { FORMS, SPEAKERS, CONTACTO, LUGAR_MAPA_EMBED, INICIO_EVENTO } from '../config';
+import { FORMS, SPEAKERS, COMUNIDADES, CONTACTO, LUGAR_MAPA_EMBED, INICIO_EVENTO } from '../config';
 
 const titulo = 'PrograEduca 2026';
 const descripcion =
@@ -16,18 +16,15 @@ const tel = (n: string) => 'tel:' + n.replace(/\s+/g, '');
 const iniciales = (n: string) => n.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
 const embed = (url: string) => url + (url.includes('?') ? '&' : '?') + 'embedded=true';
 
-// Cronograma: posición en la línea de tiempo de 9:00 a 17:30 (deja espacio al bloque de cierre)
-const DIA_INI = 9 * 60, DIA_FIN = 17 * 60 + 30;
-const pct = (h: number, m: number) => (((h * 60 + m) - DIA_INI) / (DIA_FIN - DIA_INI)) * 100;
-const programa = [
+// Cronograma: una fila por horario; la de actividades para colegios se divide en una columna por comunidad
+const programa: { nombre: string; desde: number[]; hasta: number[]; color: string; soloInicio?: boolean; actividades?: boolean }[] = [
   { nombre: 'Acreditación y apertura', desde: [9, 0], hasta: [9, 30], color: 'var(--cream)' },
   { nombre: 'Charlas', desde: [9, 30], hasta: [12, 0], color: 'var(--mint)' },
   { nombre: 'Feria de pósters científicos', desde: [12, 0], hasta: [13, 30], color: 'var(--gold)' },
-  { nombre: 'Actividad para colegios', desde: [14, 30], hasta: [16, 0], color: '#9fd7c0' },
+  { nombre: 'Actividades para colegios', desde: [14, 30], hasta: [16, 0], color: '#9fd7c0', actividades: true },
   { nombre: 'Cierre del evento', desde: [16, 0], hasta: [16, 30], color: 'var(--cream)', soloInicio: true },
 ];
 const hhmm = ([h, m]: number[]) => `${h}:${String(m).padStart(2, '0')}`;
-const ticks = [9, 10, 11, 12, 13, 14, 15, 16, 17];
 const arrow = '<svg class="btn__arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 ---
 <!doctype html>
@@ -65,6 +62,7 @@ const arrow = '<svg class="btn__arrow" width="16" height="16" viewBox="0 0 16 16
       <a href="#cronograma">Cronograma</a>
       <a href="#ubicacion">Ubicación</a>
       <a href="#speakers">Speakers</a>
+      <a href="#comunidades">Comunidades</a>
       <a class="btn btn--primary nav__cta-inline" href="#inscripcion" data-cta data-live="Cronograma"><span data-cta-label>Inscribirme</span></a>
       <div class="nav__drop" data-drop>
         <button class="nav__drop-btn" type="button" aria-expanded="false" aria-controls="participa-menu" data-drop-btn>Participa<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -84,6 +82,7 @@ const arrow = '<svg class="btn__arrow" width="16" height="16" viewBox="0 0 16 16
       <li><a href="#cronograma">Cronograma</a></li>
       <li><a href="#ubicacion">Ubicación</a></li>
       <li><a href="#speakers">Speakers</a></li>
+      <li><a href="#comunidades">Comunidades</a></li>
       <li><a href="#inscripcion">Inscribirme</a></li>
       <li class="nav__menu-group"><span>Participa</span>
         <ul>
@@ -135,7 +134,7 @@ print(aprender())</pre>
         <a class="btn btn--primary" href="#inscripcion" data-cta data-live="Ver el cronograma"><span data-cta-label>Inscribirme al evento</span> <Fragment set:html={arrow} /></a>
         <a class="btn btn--ghost" href="#cronograma">Ver el cronograma</a>
       </div>
-      <p class="countdown" data-in style="--i: 4" data-countdown={INICIO_EVENTO}>charlas, feria de pósters y actividad para colegios</p>
+      <p class="countdown" data-in style="--i: 4" data-countdown={INICIO_EVENTO}>charlas, feria de pósters y actividades para colegios</p>
     </div>
   </section>
 
@@ -146,7 +145,7 @@ print(aprender())</pre>
       <div class="stack">
         <h2 id="evento-h" class="h2">Tecnología y educación desde <span class="gold">2024</span></h2>
         <p class="lead">PrograEduca conecta la tecnología con la educación mediante <strong>charlas</strong> y una <strong>feria de pósters científicos</strong>. Busca promover el aprendizaje con tecnologías STEM: ciencia, tecnología, ingeniería y matemáticas.</p>
-        <p class="lead">Este año llega a su <strong>tercera versión</strong> y, por primera vez, suma una <strong>actividad para colegios</strong>.</p>
+        <p class="lead">Este año llega a su <strong>tercera versión</strong> y, por primera vez, suma <strong>actividades para colegios</strong> de la mano de cinco comunidades tecnológicas.</p>
       </div>
       <div class="glass-stage"><span class="orb orb--gold" aria-hidden="true" style="--s: 240px; right: -50px; top: -70px"></span><span class="orb orb--mint" aria-hidden="true" style="--s: 200px; left: -60px; bottom: -40px"></span>
       <figure class="console glass" style="margin: 0">
@@ -207,19 +206,32 @@ print(aprender())</pre>
     <div class="wrap">
       <h2 id="cronograma-h" class="h2">Cronograma del <span class="mint">27 de noviembre</span></h2>
       <div class="agenda glass-stage"><span class="orb orb--gold agenda__orb-a" aria-hidden="true" style="--s: 240px"></span><span class="orb orb--mint agenda__orb-b" aria-hidden="true" style="--s: 220px"></span>
-        <div class="timeline" data-timeline data-day="2026-11-27">
-          <div class="timeline__scale" aria-hidden="true">
-            {ticks.map((h) => (<span class="timeline__tick" style={`left: ${pct(h, 0)}%`}><span>{h}:00</span></span>))}
-          </div>
-          <ol style="list-style: none; margin: 0; padding: 0; display: grid; gap: 14px">
-            {programa.map((p) => (
-              <li class="slot glass" style={`--start: ${pct(p.desde[0], p.desde[1])}%; --len: ${pct(p.hasta[0], p.hasta[1]) - pct(p.desde[0], p.desde[1])}%; --c: ${p.color}`} data-from={hhmm(p.desde)} data-to={hhmm(p.hasta)}>
-                <time>{p.soloInicio ? hhmm(p.desde) : `${hhmm(p.desde)} – ${hhmm(p.hasta)}`}</time>
-                <strong>{p.nombre}</strong>
+        <ol class="sched" data-timeline data-day="2026-11-27">
+          {programa.map((p) => {
+            const hora = p.soloInicio ? hhmm(p.desde) : `${hhmm(p.desde)} – ${hhmm(p.hasta)}`;
+            return (
+              <li class="sched__row" style={`--c: ${p.color}`} data-from={hhmm(p.desde)} data-to={hhmm(p.hasta)}>
+                <time class="sched__time">{hora}</time>
+                {p.actividades ? (
+                  <div class="sched__body">
+                    <p class="sched__tag">{COMUNIDADES.length} {p.nombre.toLowerCase()} simultáneas</p>
+                    <ul class="sched__tracks">
+                      {COMUNIDADES.map((c) => (
+                        <li class="track glass">
+                          <img src={c.logo} alt="" width="40" height="40" loading="lazy" decoding="async" />
+                          <strong>{c.actividad}</strong>
+                          <a class="track__by" href="#comunidades">{c.nombre}</a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : (
+                  <div class="sched__body"><div class="sched__item glass"><strong>{p.nombre}</strong></div></div>
+                )}
               </li>
-            ))}
-          </ol>
-        </div>
+            );
+          })}
+        </ol>
         <dl class="audience"><dt>Público</dt><dd>Estudiantes universitarios, docentes, investigadores y aficionados a la tecnología.</dd></dl>
       </div>
     </div>
@@ -295,6 +307,32 @@ print(aprender())</pre>
     </div>
   </section>
 
+  <section class="section section--deep" id="comunidades" aria-labelledby="comunidades-h">
+    <span class="orb orb--teal" aria-hidden="true" style="--s: 380px; left: -190px; top: 120px; opacity: .6"></span>
+    <div class="wrap comunidades">
+      <div class="stack">
+        <h2 id="comunidades-h" class="h2">Comunidades <span class="mint">tecnológicas</span></h2>
+        <p class="lead">De <strong>14:30 a 16:00</strong>, cinco comunidades de Cochabamba llevan a los colegios actividades prácticas sobre <strong>Python, inteligencia artificial, la nube y blockchain</strong>, para despertar la curiosidad por la tecnología.</p>
+      </div>
+      <div class="glass-stage"><span class="orb orb--gold" aria-hidden="true" style="--s: 280px; right: 4%; top: -40px"></span><span class="orb orb--mint" aria-hidden="true" style="--s: 300px; left: 30%; bottom: -60px"></span>
+      <ul class="comunidades__grid">
+        {COMUNIDADES.map((c) => (
+          <li class="comunidad glass">
+            <div class="comunidad__head">
+              <img class="comunidad__logo" src={c.logo} alt={`Logo de ${c.nombre}`} width="72" height="72" loading="lazy" decoding="async" />
+              <div>
+                <h3 class="comunidad__name">{c.nombre}</h3>
+                <p class="comunidad__tema">{c.tema}</p>
+              </div>
+            </div>
+            <p class="comunidad__enfoque">{c.enfoque}</p>
+          </li>
+        ))}
+      </ul>
+      </div>
+    </div>
+  </section>
+
   <section class="section section--deep" id="inscripcion" aria-labelledby="inscripcion-h">
     <div class="wrap split" style="align-items: start">
       <div class="stack sticky-text">
@@ -337,7 +375,8 @@ print(aprender())</pre>
     <div class="wrap split" style="align-items: start">
       <div class="stack sticky-text">
         <h2 id="colegios-h" class="h2">Ven con tu <span class="gold">colegio</span></h2>
-        <p class="lead">Por primera vez, PrograEduca tiene una <strong>actividad para colegios</strong>: el viernes 27 de noviembre, de <strong>14:30 a 16:00</strong>. Invitamos a estudiantes de <strong>4.º a 6.º de secundaria</strong>.</p>
+        <p class="lead">Por primera vez, PrograEduca tiene <strong>actividades para colegios</strong>: el viernes 27 de noviembre, de <strong>14:30 a 16:00</strong>. Invitamos a estudiantes de <strong>4.º a 6.º de secundaria</strong>.</p>
+        <p class="lead">Las guían <a class="link" href="#comunidades">cinco comunidades tecnológicas</a> de Cochabamba.</p>
       </div>
       <div class="glass-stage" data-pre><span class="orb orb--gold" aria-hidden="true" style="--s: 260px; left: -70px; top: -60px"></span><span class="orb orb--mint" aria-hidden="true" style="--s: 240px; right: -60px; bottom: -50px"></span>
       <div class="form-window glass">
@@ -419,6 +458,23 @@ print(aprender())</pre>
     }
   }, { rootMargin: '-45% 0px -50% 0px' });
   document.querySelectorAll('main section[id]').forEach((s) => io.observe(s));
+
+  // enlaces internos: si la sección cabe en pantalla queda centrada bajo el navbar;
+  // si no, su contenido arranca justo debajo del navbar (sin el padding de la sección)
+  document.addEventListener('click', (e) => {
+    const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[href^="#"]');
+    if (!a || a.hash === '#top' || a.hash === '#contenido' || e.defaultPrevented) return;
+    const sec = document.querySelector<HTMLElement>(a.hash);
+    const box = sec?.querySelector<HTMLElement>(':scope > .wrap');
+    if (!sec || !box) return;
+    e.preventDefault();
+    const navH = nav.offsetHeight;
+    const r = box.getBoundingClientRect();
+    const libre = innerHeight - navH;
+    const margen = innerWidth < 721 ? 24 : 32;
+    const off = r.height + margen * 2 <= libre ? navH + (libre - r.height) / 2 : navH + margen;
+    scrollTo({ top: scrollY + r.top - off, behavior: reduced ? 'auto' : 'smooth' });
+  });
 
   // speakers: cada tarjeta abre su ventana con el resumen
   document.querySelectorAll<HTMLButtonElement>('[data-speaker]').forEach((b) => {
@@ -627,7 +683,7 @@ print(aprender())</pre>
       const parts = Object.fromEntries(new Intl.DateTimeFormat('en-CA', { timeZone: 'America/La_Paz', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date()).map((p) => [p.type, p.value]));
       const today = `${parts.year}-${parts.month}-${parts.day}`;
       const mins = Number(parts.hour) * 60 + Number(parts.minute);
-      tl.querySelectorAll<HTMLElement>('.slot').forEach((s) => {
+      tl.querySelectorAll<HTMLElement>('.sched__row').forEach((s) => {
         const [fh, fm] = s.dataset.from!.split(':').map(Number);
         const [th, tm] = s.dataset.to!.split(':').map(Number);
         s.classList.toggle('is-now', today === tl.dataset.day && mins >= fh * 60 + fm && mins < th * 60 + tm);

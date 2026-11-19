@@ -87,3 +87,44 @@ export const SPEAKERS: Speaker[] = [
     resumen: 'Cuándo usar SDD con spec-kit y cuándo conviene usar specs de forma más ágil e iterativa, sin invertir de más en tokens.',
   },
 ];
+
+/** Comunidades tecnológicas a cargo de las actividades para colegios (14:30 a 16:00, en paralelo).
+ *  El logo va en public/assets/comunidades/ (circular o cuadrado). */
+export type Comunidad = { nombre: string; logo: string; enfoque: string; actividad: string; tema: string };
+export const COMUNIDADES: Comunidad[] = [
+  {
+    nombre: 'CochaAI',
+    logo: '/assets/comunidades/cochaai.webp',
+    enfoque: 'Desarrollo y difusión de la IA, los datos y sus aplicaciones. Su encuentro nacional de IA y Datos refleja esta orientación.',
+    actividad: 'Descubre la inteligencia artificial: ¡crea tu propio asistente inteligente!',
+    tema: 'Inteligencia artificial',
+  },
+  {
+    nombre: 'PyLadies Cochabamba',
+    logo: '/assets/comunidades/pyladies.webp',
+    enfoque: 'Promueve el aprendizaje continuo de Python con talleres, cursos y actividades de formación, e impulsa la participación de mujeres en tecnología.',
+    actividad: '¡Mi primer programa! Introducción a la programación con Python',
+    tema: 'Python',
+  },
+  {
+    nombre: 'Hub Boliviano de Inteligencia Artificial',
+    logo: '/assets/comunidades/hub-ia.webp',
+    enfoque: 'Investigación, enseñanza y desarrollo de soluciones de IA: machine learning, redes neuronales, procesamiento de lenguaje natural y proyectos aplicados.',
+    actividad: '¡Entrena una inteligencia artificial para reconocer imágenes!',
+    tema: 'Machine learning',
+  },
+  {
+    nombre: 'AWS Student Builder Group UMSS',
+    logo: '/assets/comunidades/aws-sbg-umss.svg',
+    enfoque: 'Comunidad estudiantil impulsada por Amazon Web Services que promueve la computación en la nube con talleres, proyectos prácticos y experiencias colaborativas.',
+    actividad: '¡Lleva tus ideas a la nube! Descubre cloud computing con AWS',
+    tema: 'Cloud computing',
+  },
+  {
+    nombre: 'CochaBlock',
+    logo: '/assets/comunidades/cochablock.webp',
+    enfoque: 'Blockchain, NEAR Protocol y desarrollo Web3. Promueve el aprendizaje de contratos inteligentes y tecnologías descentralizadas.',
+    actividad: 'El futuro del dinero digital: descubre cómo funciona blockchain',
+    tema: 'Blockchain',
+  },
+];
