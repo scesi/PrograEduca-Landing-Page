@@ -996,9 +996,8 @@ button.speaker .speaker__info { display: flex; flex-direction: column; flex: 1; 
   .nav__wa { width: 40px; height: 44px; margin-right: -6px; border-radius: 8px; box-shadow: none; }
   .nav__wa svg { width: 22px; height: 22px; }
   .nav__wa:focus-visible { outline-offset: -2px; }
+  .nav__wa:hover { box-shadow: none; }
 }
-.nav__menu a.nav__menu-wa { align-items: center; }
-.nav__menu-wa svg { flex: none; width: 22px; height: 22px; color: var(--mint); }
 /* escritorio angosto: menos aire entre enlaces para que entre el ícono */
 @media (min-width: 961px) and (max-width: 1199px) { .nav__bar { gap: 20px; } .nav__links { gap: 14px; } }
 /* celulares: logo + Inscribirme + WhatsApp + menú en una fila */
