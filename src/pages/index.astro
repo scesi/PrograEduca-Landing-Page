@@ -253,7 +253,9 @@ print(aprender())</pre>
             <li>
               <button class="speaker glass" type="button" data-speaker={`speaker-${i}`} aria-haspopup="dialog">
                 <span class="speaker__media">
-                  {sp.foto ? (
+                  {sp.fotos ? (
+                    <span class="speaker__group">{sp.fotos.map((f) => <img src={f} alt="" width="300" height="300" loading="lazy" decoding="async" />)}</span>
+                  ) : sp.foto ? (
                     <img src={sp.foto} alt="" width="600" height="600" loading="lazy" decoding="async" />
                   ) : (
                     <span class="speaker__initials" aria-hidden="true">{sp.nombres.map((n) => <span>{iniciales(n)}</span>)}</span>

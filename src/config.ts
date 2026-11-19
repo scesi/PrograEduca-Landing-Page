@@ -31,7 +31,8 @@ export const INICIO_EVENTO = '2026-11-27T09:20:00-04:00';
 
 /** Speakers confirmados. La foto va en public/assets/speakers/ (cuadrada, mínimo 600×600);
  *  mientras `foto` esté vacía, la tarjeta muestra las iniciales. No publicar emails ni teléfonos. */
-export type Speaker = { nombres: string[]; corto?: string; org: string; rol: string; charla: string; resumen: string; foto?: string };
+export type Speaker = { nombres: string[]; corto?: string; org: string; rol: string; charla: string; resumen: string; foto?: string;
+  /** Para charlas de varias personas: una foto por nombre, en el mismo orden. */ fotos?: string[] };
 export const SPEAKERS: Speaker[] = [
   {
     nombres: ['Adrian Rafael Camara Reque'],
@@ -64,6 +65,7 @@ export const SPEAKERS: Speaker[] = [
   {
     nombres: ['Sara Quispe Choque', 'Nicole Geraldine Rodas Cornejo', 'Mateo Alejandro Merino Vidal', 'Israel Gonzalo Orosco Zeballos'],
     corto: 'Sara, Nicole, Mateo e Israel',
+    fotos: ['/assets/speakers/sara.webp', '/assets/speakers/nicole.webp', '/assets/speakers/mateo.webp', '/assets/speakers/israel.webp'],
     org: 'UMSS · KU Leuven',
     rol: 'Estudiantes de Ingeniería Informática, UMSS',
     charla: 'De la UMSS a Bélgica: nuestro proyecto de grado con KU Leuven',
