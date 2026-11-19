@@ -967,3 +967,10 @@ button.speaker .speaker__info { display: flex; flex-direction: column; flex: 1; 
 /* sponsors: la lista de aliados en Python */
 .aliados__out { margin: 0; padding: 4px 22px 22px; font: 400 14px/1.6 var(--mono); color: var(--muted); }
 .aliados__out b { color: var(--gold); font-weight: 500; }
+
+/* celular: inscripción, pósters, colegios y sponsors van seguidas; más aire y una línea fina entre ellas */
+@media (max-width: 720px) {
+  #inscripcion.section, #posters.section, #colegios.section, #sponsors.section { padding-block: 64px; }
+  #posters.section, #colegios.section, #sponsors.section { border-top: 1px solid var(--line); }
+  .cta-split { gap: 48px; }
+}
