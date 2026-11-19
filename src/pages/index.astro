@@ -248,6 +248,7 @@ print(aprender())</pre>
       <h2 id="speakers-h" class="h2">Speakers <span class="gold">2026</span></h2>
       {SPEAKERS.length > 0 ? (
         <>
+        <div class="glass-stage speakers__stage"><span class="orb orb--gold" aria-hidden="true" style="--s: 320px; left: 14%; top: 8%"></span><span class="orb orb--mint" aria-hidden="true" style="--s: 360px; right: 6%; top: 34%"></span><span class="orb orb--gold" aria-hidden="true" style="--s: 260px; left: 34%; bottom: -40px"></span>
         <ul class="speakers__grid">
           {SPEAKERS.map((sp, i) => (
             <li>
@@ -270,6 +271,7 @@ print(aprender())</pre>
             </li>
           ))}
         </ul>
+        </div>
         {SPEAKERS.map((sp, i) => (
           <dialog class="speaker-dialog glass" id={`speaker-${i}`} aria-labelledby={`speaker-${i}-t`} closedby="any">
             <div class="console__bar">
