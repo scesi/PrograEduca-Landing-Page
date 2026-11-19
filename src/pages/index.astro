@@ -7,12 +7,11 @@ import '@fontsource/jetbrains-mono/latin-400.css';
 import '@fontsource/jetbrains-mono/latin-500.css';
 import outfit700 from '@fontsource/outfit/files/outfit-latin-700-normal.woff2?url';
 import '../styles/global.css';
-import { FORMS, SPEAKERS, COMUNIDADES, CONTACTO, LUGAR_MAPA, LUGAR_MAPA_EMBED, INICIO_EVENTO } from '../config';
+import { FORMS, SPEAKERS, COMUNIDADES, CONTACTO, WHATSAPP_GRUPO, LUGAR_MAPA_EMBED, INICIO_EVENTO } from '../config';
 
 const titulo = 'PrograEduca 2026';
 const descripcion =
   'La programación como herramienta transversal. Tercera versión de PrograEduca, viernes 27 de noviembre en el centro MEMI de la Facultad de Tecnología, UMSS, Cochabamba.';
-const tel = (n: string) => 'tel:' + n.replace(/\s+/g, '');
 const iniciales = (n: string) => n.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
 // monograma de pixeles (fuente de 4×5, la misma idea que el logo de la consola) para speakers sin foto
 const PIX: Record<string, string> = {
@@ -43,6 +42,7 @@ const programa: { nombre: string; desde: number[]; hasta: number[]; color: strin
   { nombre: 'Cierre del evento', desde: [16, 0], hasta: [16, 30], color: 'var(--cream)', soloInicio: true },
 ];
 const hhmm = ([h, m]: number[]) => `${h}:${String(m).padStart(2, '0')}`;
+const WA = '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>';
 const EXT = '<svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3h7v7M13 3 4 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 // código de pixeles decorativo para la entrada (no es un QR real)
 const qr = Array.from({ length: 81 }, (_, i) => ((i * 7 + (i >> 2) * 3) % 5 < 2) || [0, 1, 2, 9, 11, 18, 19, 20, 6, 7, 8, 15, 17, 24, 25, 26, 54, 55, 56, 63, 65, 72, 73, 74].includes(i));
@@ -97,6 +97,7 @@ const arrow = '<svg class="btn__arrow" width="16" height="16" viewBox="0 0 16 16
       </div>
     </nav>
     <a class="btn btn--primary" href="#inscripcion" data-cta data-live="Cronograma"><span data-cta-label>Inscribirme</span></a>
+    <a class="nav__wa" href={WHATSAPP_GRUPO} target="_blank" rel="noopener" aria-label="Únete al grupo de WhatsApp" title="Grupo de WhatsApp"><Fragment set:html={WA} /></a>
     <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú" data-menu-toggle><span></span><span></span></button>
   </div>
   <nav class="nav__menu" id="menu" aria-label="Secciones" data-menu inert>
@@ -281,7 +282,6 @@ print(aprender())</pre>
           <div><dt>Ubicación</dt><dd>Centro MEMI, Facultad de Tecnología, UMSS, Cochabamba</dd></div>
           <div><dt>Cuándo</dt><dd>Viernes 27 de noviembre, de 9:00 a 16:00 (acreditación 9:00, apertura 9:20)</dd></div>
         </dl>
-        <a class="btn btn--ghost" href={LUGAR_MAPA} target="_blank" rel="noopener">Cómo llegar <Fragment set:html={EXT} /></a>
       </div>
       <div class="glass-stage"><span class="orb orb--gold" aria-hidden="true" style="--s: 220px; right: -50px; top: -50px"></span><span class="orb orb--mint" aria-hidden="true" style="--s: 200px; left: -50px; bottom: -40px"></span>
       <figure class="map-window glass">
@@ -484,7 +484,6 @@ print(aliados)</pre>
       <a class="btn btn--primary" href="#inscripcion" data-cta data-live="Ver el cronograma"><span data-cta-label>Inscribirme al evento</span> <Fragment set:html={arrow} /></a>
       <div class="contact">
         <a href={'mailto:' + CONTACTO.email}>{CONTACTO.email}</a>
-        {CONTACTO.telefonos.map((n) => (<a href={tel(n)}>{n}</a>))}
       </div>
     </div>
   </section>
