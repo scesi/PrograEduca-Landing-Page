@@ -45,6 +45,7 @@ export const SPEAKERS: Speaker[] = [
   },
   {
     nombres: ['Tania Fernanda Ugarte Guzmán'],
+    foto: '/assets/speakers/tania.webp',
     org: 'KU Leuven',
     rol: 'Doctoranda en Ciencias de la Computación, KU Leuven',
     charla: 'Amplía tu futuro académico en el exterior: cómo postular a becas en Bélgica',
@@ -59,6 +60,7 @@ export const SPEAKERS: Speaker[] = [
   },
   {
     nombres: ['Juan Pablo Taya F.'],
+    foto: '/assets/speakers/juanpablo.webp',
     org: 'Docente de posgrado',
     rol: 'Docente de posgrado en innovación y emprendimiento',
     charla: 'UX en educación: gamificación',
@@ -82,6 +84,7 @@ export const SPEAKERS: Speaker[] = [
   },
   {
     nombres: ['Irvin Cossio Chavalier'],
+    foto: '/assets/speakers/irvin.webp',
     org: 'GDG Cochabamba',
     rol: 'GDG Organizer Cochabamba, 9 años en desarrollo móvil y frontend',
     charla: 'Por qué SDD no debería aplicarse a proyectos personales',
