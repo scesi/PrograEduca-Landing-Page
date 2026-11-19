@@ -16,17 +16,18 @@ const tel = (n: string) => 'tel:' + n.replace(/\s+/g, '');
 const iniciales = (n: string) => n.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
 const embed = (url: string) => url + (url.includes('?') ? '&' : '?') + 'embedded=true';
 
-// Cronograma: posición en la línea de tiempo de 9:00 a 18:30 (deja espacio al bloque de cierre)
-const DIA_INI = 9 * 60, DIA_FIN = 18 * 60 + 30;
+// Cronograma: posición en la línea de tiempo de 9:00 a 17:30 (deja espacio al bloque de cierre)
+const DIA_INI = 9 * 60, DIA_FIN = 17 * 60 + 30;
 const pct = (h: number, m: number) => (((h * 60 + m) - DIA_INI) / (DIA_FIN - DIA_INI)) * 100;
 const programa = [
+  { nombre: 'Acreditación y apertura', desde: [9, 0], hasta: [9, 30], color: 'var(--cream)' },
   { nombre: 'Charlas', desde: [9, 30], hasta: [12, 0], color: 'var(--mint)' },
-  { nombre: 'Feria de pósters científicos', desde: [10, 0], hasta: [12, 0], color: 'var(--gold)' },
+  { nombre: 'Feria de pósters científicos', desde: [12, 0], hasta: [13, 30], color: 'var(--gold)' },
   { nombre: 'Actividad para colegios', desde: [14, 30], hasta: [16, 0], color: '#9fd7c0' },
-  { nombre: 'Cierre del evento', desde: [17, 0], hasta: [17, 30], color: 'var(--cream)', soloInicio: true },
+  { nombre: 'Cierre del evento', desde: [16, 0], hasta: [16, 30], color: 'var(--cream)', soloInicio: true },
 ];
 const hhmm = ([h, m]: number[]) => `${h}:${String(m).padStart(2, '0')}`;
-const ticks = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
+const ticks = [9, 10, 11, 12, 13, 14, 15, 16, 17];
 const arrow = '<svg class="btn__arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 ---
 <!doctype html>
@@ -124,7 +125,7 @@ print(aprender())</pre>
     </div>
 
     <div class="wrap hero__inner">
-      <p class="hero__when" data-in style="--i: 0"><span class="when__part">Viernes 27 de noviembre, 9:30</span> <span class="when__sep">·</span> <span class="when__part">Centro MEMI, UMSS</span></p>
+      <p class="hero__when" data-in style="--i: 0"><span class="when__part">Viernes 27 de noviembre, 9:20</span> <span class="when__sep">·</span> <span class="when__part">Centro MEMI, UMSS</span></p>
       <h1 id="hero-h" class="wordmark" data-in style="--i: 1">
         <span class="wordmark__name"><span class="mint">PROGRA</span><span class="gold">EDUCA</span></span>
         <span class="wordmark__year">2026</span>
@@ -230,7 +231,7 @@ print(aprender())</pre>
         <h2 id="ubicacion-h" class="h2">¿Dónde <span class="gold">es</span>?</h2>
         <dl>
           <div><dt>Ubicación</dt><dd>Centro MEMI, Facultad de Tecnología, UMSS, Cochabamba</dd></div>
-          <div><dt>Cuándo</dt><dd>Viernes 27 de noviembre, de 9:30 a 17:00</dd></div>
+          <div><dt>Cuándo</dt><dd>Viernes 27 de noviembre, de 9:20 a 16:00</dd></div>
         </dl>
       </div>
       <div class="glass-stage"><span class="orb orb--gold" aria-hidden="true" style="--s: 220px; right: -50px; top: -50px"></span><span class="orb orb--mint" aria-hidden="true" style="--s: 200px; left: -50px; bottom: -40px"></span>
@@ -310,7 +311,7 @@ print(aprender())</pre>
     <div class="wrap split split--flip">
       <div class="stack">
         <h2 id="posters-h" class="h2">Presenta tu <span class="mint">póster</span></h2>
-        <p class="lead">La <strong>feria de pósters científicos</strong> corre de <strong>10:00 a 12:00</strong>, en paralelo a las charlas. Muestra tu investigación o proyecto de forma visual.</p>
+        <p class="lead">La <strong>feria de pósters científicos</strong> va de <strong>12:00 a 13:30</strong>, después de las charlas. Muestra tu investigación o proyecto de forma visual.</p>
       </div>
       <div class="posters__media">
         <div class="glass-stage posters__stage"><span class="orb orb--gold" aria-hidden="true" style="--s: 240px; right: -70px; top: -60px"></span><span class="orb orb--mint" aria-hidden="true" style="--s: 220px; left: -70px; bottom: -40px"></span>
@@ -372,7 +373,7 @@ print(aprender())</pre>
     </div>
     <div class="wrap">
       <h2 id="close-h" class="h2"><span class="mint">PROGRA</span><span class="gold">EDUCA</span> <span data-pre>te espera</span><span data-post hidden>gracias por venir</span></h2>
-      <p class="closing__line"><span>viernes 27 de noviembre</span><i> · </i><span>9:30 a 17:00</span><i> · </i><span>centro MEMI, UMSS</span></p>
+      <p class="closing__line"><span>viernes 27 de noviembre</span><i> · </i><span>9:20 a 16:00</span><i> · </i><span>centro MEMI, UMSS</span></p>
       <a class="btn btn--primary" href="#inscripcion" data-cta data-live="Ver el cronograma"><span data-cta-label>Inscribirme al evento</span> <Fragment set:html={arrow} /></a>
       <div class="contact">
         <a href={'mailto:' + CONTACTO.email}>{CONTACTO.email}</a>
@@ -509,7 +510,7 @@ print(aprender())</pre>
   const cd = document.querySelector<HTMLElement>('[data-countdown]');
   if (cd) {
     const target = new Date(cd.dataset.countdown!).getTime();
-    const end = target + 7.5 * 3600e3; // 9:30 a 17:00
+    const end = target + (6 * 60 + 40) * 60e3; // 9:20 a 16:00
     const pad = (x: number) => String(x).padStart(2, '0');
     // ?fase=live|post permite revisar los estados antes del evento
     const forced = new URLSearchParams(location.search).get('fase');

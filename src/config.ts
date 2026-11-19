@@ -27,7 +27,7 @@ export const LUGAR_MAPA_EMBED =
   'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d950!2d-66.1469758!3d-17.393255!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x93e373fece8d6291%3A0xd42e222329aae38c!2sMEMI-UMSS!5e0!3m2!1ses!2sbo';
 
 /** Inicio del evento (hora de Bolivia, UTC-4) para la cuenta regresiva. */
-export const INICIO_EVENTO = '2026-11-27T09:30:00-04:00';
+export const INICIO_EVENTO = '2026-11-27T09:20:00-04:00';
 
 /** Speakers confirmados. La foto va en public/assets/speakers/ (cuadrada, mínimo 600×600);
  *  mientras `foto` esté vacía, la tarjeta muestra las iniciales. No publicar emails ni teléfonos. */

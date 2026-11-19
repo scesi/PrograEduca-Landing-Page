@@ -16,7 +16,7 @@ Landing de un evento de un día: PrograEduca 2026, tercera versión, viernes 27 
 Evento universitario hecho por estudiantes (SCESI UMSS) con el lema "La programación como herramienta transversal": la programación como herramienta para cualquier área, no solo para informáticos.
 
 ## Operating Context
-- Programa: charlas 9:30–12:00; feria de pósters 10:00–12:00 (en paralelo); actividad para colegios 14:30–16:00; cierre 17:00.
+- Programa: acreditación 9:00, apertura 9:20; charlas 9:30–12:00 (dos salas en paralelo); feria de pósters 12:00–13:30; actividad para colegios 14:30–16:00; cierre 16:00.
 - Ejes: tecnología en diferentes áreas; educación y tecnología; elaboración de pósters científicos.
 - La inscripción se hace con un Google Form insertado en la página. Por decisión del usuario, por ahora es el formulario de postulación de speakers (forms.gle/LRV4b2VE6kc8FFZo9).
 
