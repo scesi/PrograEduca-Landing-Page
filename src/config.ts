@@ -36,6 +36,7 @@ export type Speaker = { nombres: string[]; corto?: string; org: string; rol: str
 export const SPEAKERS: Speaker[] = [
   {
     nombres: ['Adrian Rafael Camara Reque'],
+    foto: '/assets/speakers/adrian.webp',
     org: 'UMSS',
     rol: 'Estudiante de Ingeniería Informática, UMSS',
     charla: 'Dos cerebros piensan mejor que uno: métodos de estudio con Obsidian e IA',
