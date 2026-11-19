@@ -145,8 +145,7 @@ print(aprender())</pre>
     <div class="wrap split">
       <div class="stack">
         <h2 id="evento-h" class="h2">Tecnología y educación desde <span class="gold">2024</span></h2>
-        <p class="lead">PrograEduca conecta la tecnología con la educación mediante <strong>charlas</strong> y una <strong>feria de pósters científicos</strong>. Busca promover el aprendizaje con tecnologías STEM: ciencia, tecnología, ingeniería y matemáticas.</p>
-        <p class="lead">Este año llega a su <strong>tercera versión</strong> y, por primera vez, suma <strong>actividades para colegios</strong> de la mano de cinco comunidades tecnológicas.</p>
+        <p class="lead">Tercera versión: <strong>charlas</strong>, <strong>feria de pósters científicos</strong> y, por primera vez, <strong>actividades para colegios</strong>.</p>
       </div>
       <div class="glass-stage"><span class="orb orb--gold" aria-hidden="true" style="--s: 240px; right: -50px; top: -70px"></span><span class="orb orb--mint" aria-hidden="true" style="--s: 200px; left: -60px; bottom: -40px"></span>
       <figure class="console glass" style="margin: 0">
@@ -170,13 +169,17 @@ print(aprender())</pre>
     <span class="orb orb--mint" aria-hidden="true" style="--s: 300px; left: -150px; bottom: -120px; opacity: .5"></span>
     <span class="pixel pixel--gold" aria-hidden="true" style="right: 6%; top: 18%; --t: 5s"></span>
     <span class="pixel" aria-hidden="true" style="right: 8%; top: 22%; --p: 12px; --t: 7s; --d: 1s"></span>
-    <div class="wrap">
+    <div class="wrap ejes-pin" data-ejes-pin>
+      <div class="ejes-pin__stage">
       <h2 id="ejes-h" class="h2">Tres ejes temáticos</h2>
+      <div class="ejes-steps">
+        <button type="button" class="is-active" aria-label="Ver eje 1">eje[0]</button><button type="button" aria-label="Ver eje 2">eje[1]</button><button type="button" aria-label="Ver eje 3">eje[2]</button>
+      </div>
       <div class="ejes-map glass-stage">
         <span class="orb orb--gold" aria-hidden="true" style="--s: 260px; left: 6%; top: 150px"></span>
         <span class="orb orb--mint" aria-hidden="true" style="--s: 300px; right: 4%; top: 220px"></span>
         <div class="ejes-map__nodes">
-          <article class="eje-node glass">
+          <article class="eje-node glass is-active">
             <code class="eje-node__id">eje[0]</code>
             <h3>Tecnología en diferentes áreas</h3>
             <p>Inteligencia artificial, ciencia de datos, desarrollo de software, ciberseguridad, redes, IoT, robótica y software libre, entre otras.</p>
@@ -199,6 +202,7 @@ print(aprender())</pre>
           </article>
         </div>
       </div>
+      </div>
     </div>
   </section>
 
@@ -215,8 +219,12 @@ print(aprender())</pre>
                 <time class="sched__time">{hora}</time>
                 {p.actividades ? (
                   <div class="sched__body">
-                    <p class="sched__tag"><strong>Para colegios · 4.º a 6.º de secundaria</strong> · {COMUNIDADES.length} actividades simultáneas</p>
-                    <ul class="sched__tracks">
+                    <div class="sched__item sched__item--group glass">
+                      <time class="sched__intime">{hora}</time>
+                      <strong>{p.nombre}</strong>
+                      <span class="sched__sub">4.º a 6.º de secundaria · {COMUNIDADES.length} actividades simultáneas</span>
+                    </div>
+                    <ul class="sched__tracks carousel" data-carousel data-carousel-nodots aria-label="Actividades para colegios">
                       {COMUNIDADES.map((c) => (
                         <li class="track glass">
                           <img class="logo-disc" src={c.logo} alt="" width="40" height="40" loading="lazy" decoding="async" />
@@ -233,7 +241,6 @@ print(aprender())</pre>
             );
           })}
         </ol>
-        <dl class="audience"><dt>Público</dt><dd>Estudiantes universitarios, docentes, investigadores y aficionados a la tecnología.</dd></dl>
       </div>
     </div>
   </section>
@@ -485,6 +492,138 @@ print(aprender())</pre>
     scrollTo({ top: scrollY + r.top - off, behavior: reduced ? 'auto' : 'smooth' });
   });
 
+  // vibración corta (háptica). Android: Vibration API (necesita que la persona ya haya tocado la página).
+  // iPhone no tiene API: en iOS 18+ Safari hace un "tic" al activar un <input switch> a través de su label.
+  const haptica = (() => {
+    if ('vibrate' in navigator) return () => { try { navigator.vibrate(8); } catch {} };
+    const ios = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    if (!ios) return () => {};
+    const label = document.createElement('label');
+    label.setAttribute('aria-hidden', 'true');
+    label.style.cssText = 'position:fixed;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none';
+    const input = document.createElement('input');
+    input.type = 'checkbox';
+    input.setAttribute('switch', '');
+    input.tabIndex = -1;
+    label.append(input);
+    document.body.append(label);
+    return () => label.click();
+  })();
+
+  // ejes temáticos en celular/tablet: al llegar al centro de la pantalla la página se detiene.
+  // Mientras está quieta, el deslizamiento (dedo, rueda o teclado) recorre un avance continuo de 0 a 3:
+  // cada tramo es un eje (con un tic al cambiar) y los círculos giran poco a poco con ese avance.
+  // Al pasar el final (bajando) o el inicio (subiendo) se suelta y el scroll sigue normal.
+  const pin = document.querySelector<HTMLElement>('[data-ejes-pin]');
+  if (pin) {
+    const stage = pin.querySelector<HTMLElement>('.ejes-pin__stage')!;
+    const nodos = [...pin.querySelectorAll<HTMLElement>('.eje-node')];
+    const pasos = [...pin.querySelectorAll<HTMLButtonElement>('.ejes-steps button')];
+    const N = nodos.length, ultimo = N - 1;
+    const enZona = matchMedia('(max-width: 900px)');
+    const TRAMO = 150; // px de deslizamiento por eje
+    const PAUSA = 320; // ms mínimos entre un eje y el siguiente (un movimiento rápido no los salta todos)
+    let avance = 0, ultimoCambio = 0;
+    let actual = 0, quieto = false, ultimoY = scrollY, tocY = 0, soltadoEnGesto = false;
+
+    // mientras la página se mueve por un enlace (menú, botones), los ejes no la detienen
+    let navegando = false, navT = 0;
+    const finNavegar = () => { navegando = false; clearTimeout(navT); };
+
+    const activar = (i: number) => {
+      if (i === actual) return;
+      actual = i;
+      nodos.forEach((n, j) => n.classList.toggle('is-active', j === i));
+      pasos.forEach((b, j) => b.classList.toggle('is-active', j === i));
+      haptica();
+    };
+    const pintar = () => pin.style.setProperty('--ep', (avance / N).toFixed(4));
+    // posición de la página con los ejes centrados en el espacio bajo el navbar
+    const yQuieto = () => {
+      const libre = innerHeight - nav.offsetHeight;
+      return Math.round(scrollY + stage.getBoundingClientRect().top - nav.offsetHeight - Math.max((libre - stage.offsetHeight) / 2, 12));
+    };
+    const fijar = () => {
+      quieto = true;
+      scrollTo({ top: yQuieto(), behavior: 'instant' as ScrollBehavior });
+      document.documentElement.classList.add('ejes-quieto');
+    };
+    const soltar = () => {
+      quieto = false;
+      document.documentElement.classList.remove('ejes-quieto');
+    };
+    // mueve el avance; devuelve true si la página quedó suelta
+    const mover = (delta: number) => {
+      let sig = avance + delta / TRAMO;
+      const tramo = Math.min(Math.floor(Math.max(sig, 0)), ultimo);
+      // cambio de eje demasiado seguido: el avance espera en el borde del tramo
+      if (tramo !== actual && performance.now() - ultimoCambio < PAUSA) {
+        sig = tramo > actual ? actual + 0.999 : actual;
+      } else if (tramo !== actual) {
+        ultimoCambio = performance.now();
+        activar(tramo);
+      }
+      avance = sig;
+      if (avance >= N) { avance = N; pintar(); soltar(); return true; }
+      if (avance <= 0 && delta < 0) { avance = 0; pintar(); soltar(); return true; }
+      avance = Math.max(avance, 0);
+      pintar();
+      return false;
+    };
+
+    // al cruzar el punto de quietud (bajando con ejes pendientes, o subiendo), la página se detiene
+    addEventListener('scroll', () => {
+      const y = scrollY, baja = y > ultimoY;
+      ultimoY = y;
+      if (!enZona.matches || quieto || navegando) return;
+      const yq = yQuieto();
+      if (baja && avance < N && y >= yq && y - yq < innerHeight) { avance = Math.min(avance, N - 0.001); fijar(); }
+      else if (!baja && avance > 0 && y <= yq && yq - y < innerHeight) { avance = Math.max(avance, 0.001); fijar(); }
+    }, { passive: true });
+
+    // dedo
+    addEventListener('touchstart', (e) => { tocY = e.touches[0].clientY; soltadoEnGesto = false; }, { passive: true });
+    addEventListener('touchmove', (e) => {
+      const y = e.touches[0].clientY, dy = tocY - y;
+      tocY = y;
+      if (soltadoEnGesto) { e.preventDefault(); scrollBy(0, dy); return; } // termina el gesto con scroll normal
+      if (!quieto) return;
+      e.preventDefault();
+      if (mover(dy)) soltadoEnGesto = true;
+    }, { passive: false });
+    // rueda (pantallas angostas con mouse o trackpad)
+    addEventListener('wheel', (e) => {
+      if (!quieto) return;
+      e.preventDefault();
+      mover(e.deltaY);
+    }, { passive: false });
+    // teclado: un tramo entero por tecla
+    addEventListener('keydown', (e) => {
+      if (!quieto) return;
+      const abajo = ['ArrowDown', 'PageDown', ' '].includes(e.key), arriba = ['ArrowUp', 'PageUp'].includes(e.key);
+      if (!abajo && !arriba) return;
+      e.preventDefault();
+      ultimoCambio = 0;
+      mover((abajo ? Math.floor(avance) + 1 - avance + 0.001 : Math.floor(avance) - avance - 0.001) * TRAMO);
+    });
+    // un enlace del menú o un botón que mueve la página siempre la suelta
+    document.addEventListener('click', (e) => {
+      if (!(e.target as HTMLElement).closest('a[href^="#"]')) return;
+      if (quieto) soltar();
+      navegando = true;
+      clearTimeout(navT);
+      navT = window.setTimeout(finNavegar, 2500);
+    }, true);
+    addEventListener('scrollend', () => { if (navegando) setTimeout(finNavegar, 50); });
+    // pestañas: eligen el eje directamente (a la mitad de su tramo)
+    pasos.forEach((b, i) => b.addEventListener('click', () => {
+      avance = i + 0.5; ultimoCambio = 0; activar(i); pintar();
+      if (!quieto && enZona.matches) fijar();
+    }));
+    enZona.addEventListener('change', () => { if (!enZona.matches) soltar(); });
+    pintar();
+  }
+
   // carruseles del celular (speakers y comunidades): infinitos y centrados, con arrastre de mouse y puntos.
   // Para el bucle se clona la lista antes y después; al quedar quieto sobre una copia,
   // se salta sin animación a la tarjeta original equivalente.
@@ -523,7 +662,7 @@ print(aprender())</pre>
       dots.append(b);
       return b;
     });
-    track.after(dots);
+    if (!track.hasAttribute('data-carousel-nodots')) track.after(dots);
 
     const cercano = () => {
       let best = 0, dist = Infinity;
