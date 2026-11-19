@@ -7,14 +7,31 @@ import '@fontsource/jetbrains-mono/latin-400.css';
 import '@fontsource/jetbrains-mono/latin-500.css';
 import outfit700 from '@fontsource/outfit/files/outfit-latin-700-normal.woff2?url';
 import '../styles/global.css';
-import { FORMS, SPEAKERS, COMUNIDADES, CONTACTO, LUGAR_MAPA_EMBED, INICIO_EVENTO } from '../config';
+import { FORMS, SPEAKERS, COMUNIDADES, CONTACTO, LUGAR_MAPA, LUGAR_MAPA_EMBED, INICIO_EVENTO } from '../config';
 
 const titulo = 'PrograEduca 2026';
 const descripcion =
   'La programación como herramienta transversal. Tercera versión de PrograEduca, viernes 27 de noviembre en el centro MEMI de la Facultad de Tecnología, UMSS, Cochabamba.';
 const tel = (n: string) => 'tel:' + n.replace(/\s+/g, '');
 const iniciales = (n: string) => n.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
-const embed = (url: string) => url + (url.includes('?') ? '&' : '?') + 'embedded=true';
+// monograma de pixeles (fuente de 4×5, la misma idea que el logo de la consola) para speakers sin foto
+const PIX: Record<string, string> = {
+  A: '0110100111111001 1001', B: '11101001111010011110', C: '01111000100010000111', D: '11101001100110011110', E: '11111000111010001111',
+  F: '11111000111010001000', G: '01111000101110010111', H: '10011001111110011001', I: '11100100010001001110', J: '01110010001010100100',
+  K: '10011010110010101001', L: '10001000100010001111', M: '10011111111110011001', N: '10011101101110011001', O: '01101001100110010110',
+  P: '11101001111010001000', Q: '01101001100110110111', R: '11101001111010101001', S: '01111000011000011110', T: '11110100010001000100',
+  U: '10011001100110010110', V: '10011001100101100110', W: '10011001111111111001', X: '10010110011001101001', Y: '10011001011001000100',
+  Z: '11110010010010001111',
+};
+const monograma = (nombre: string) => {
+  const letras = [...iniciales(nombre).normalize('NFD').replace(/[\u0300-\u036f]/g, '')].filter((c) => PIX[c]).slice(0, 2);
+  const celdas: { x: number; y: number; on: boolean; c: number }[] = [];
+  letras.forEach((l, i) => {
+    const bits = PIX[l].replace(/ /g, '');
+    for (let r = 0; r < 5; r++) for (let k = 0; k < 4; k++) celdas.push({ x: i * 5 + k, y: r, on: bits[r * 4 + k] === '1', c: i });
+  });
+  return { ancho: letras.length * 5 - 1, celdas };
+};
 
 // Cronograma: una fila por horario; la de actividades para colegios se divide en una columna por comunidad
 const slug = (t: string) => t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -26,6 +43,7 @@ const programa: { nombre: string; desde: number[]; hasta: number[]; color: strin
   { nombre: 'Cierre del evento', desde: [16, 0], hasta: [16, 30], color: 'var(--cream)', soloInicio: true },
 ];
 const hhmm = ([h, m]: number[]) => `${h}:${String(m).padStart(2, '0')}`;
+const EXT = '<svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3h7v7M13 3 4 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const arrow = '<svg class="btn__arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 ---
 <!doctype html>
@@ -172,7 +190,7 @@ print(aprender())</pre>
     <div class="wrap ejes-pin" data-ejes-pin>
       <div class="ejes-pin__stage">
       <h2 id="ejes-h" class="h2">Tres ejes temáticos</h2>
-      <div class="ejes-steps">
+      <div class="ejes-steps" role="group" aria-label="Elegir eje temático">
         <button type="button" class="is-active" aria-label="Ver eje 1">eje[0]</button><button type="button" aria-label="Ver eje 2">eje[1]</button><button type="button" aria-label="Ver eje 3">eje[2]</button>
       </div>
       <div class="ejes-map glass-stage">
@@ -251,8 +269,9 @@ print(aprender())</pre>
         <h2 id="ubicacion-h" class="h2">¿Dónde <span class="gold">es</span>?</h2>
         <dl>
           <div><dt>Ubicación</dt><dd>Centro MEMI, Facultad de Tecnología, UMSS, Cochabamba</dd></div>
-          <div><dt>Cuándo</dt><dd>Viernes 27 de noviembre, de 9:20 a 16:00</dd></div>
+          <div><dt>Cuándo</dt><dd>Viernes 27 de noviembre, de 9:00 a 16:00 (acreditación 9:00, apertura 9:20)</dd></div>
         </dl>
+        <a class="btn btn--ghost" href={LUGAR_MAPA} target="_blank" rel="noopener">Cómo llegar <Fragment set:html={EXT} /></a>
       </div>
       <div class="glass-stage"><span class="orb orb--gold" aria-hidden="true" style="--s: 220px; right: -50px; top: -50px"></span><span class="orb orb--mint" aria-hidden="true" style="--s: 200px; left: -50px; bottom: -40px"></span>
       <figure class="map-window glass">
@@ -282,7 +301,9 @@ print(aprender())</pre>
                   ) : sp.foto ? (
                     <img src={sp.foto} alt="" width="600" height="600" loading="lazy" decoding="async" />
                   ) : (
-                    <span class="speaker__initials" aria-hidden="true">{sp.nombres.map((n) => <span>{iniciales(n)}</span>)}</span>
+                    <span class="speaker__mono" aria-hidden="true">{(() => { const m = monograma(sp.nombres[0]); return (
+                      <svg viewBox={`-1 -1 ${m.ancho * 10 + 2} 52`} width={m.ancho * 10} height="50">{m.celdas.map((c) => <rect x={c.x * 10} y={c.y * 10} width="8" height="8" class={c.on ? (c.c ? 'on on--gold' : 'on') : 'off'} />)}</svg>
+                    ); })()}</span>
                   )}
                 </span>
                 <span class="speaker__info">
@@ -346,17 +367,13 @@ print(aprender())</pre>
   </section>
 
   <section class="section section--deep" id="inscripcion" aria-labelledby="inscripcion-h">
-    <div class="wrap split" style="align-items: start">
-      <div class="stack sticky-text">
-        <h2 id="inscripcion-h" class="h2"><span data-pre>Inscríbete al <span class="mint">evento</span></span><span data-post hidden>Inscripciones <span class="mint">cerradas</span></span></h2>
-        <p class="lead" data-pre>Llena el formulario y te esperamos el <strong>viernes 27 de noviembre</strong> en el centro MEMI de la UMSS.</p>
-        <p class="lead" data-post hidden>Gracias por venir a PrograEduca 2026. Nos vemos en la próxima edición.</p>
-      </div>
-      <div class="glass-stage" data-pre><span class="orb orb--mint" aria-hidden="true" style="--s: 260px; left: -70px; top: -60px"></span><span class="orb orb--gold" aria-hidden="true" style="--s: 240px; right: -60px; bottom: -50px"></span>
-      <div class="form-window glass">
-        <div class="console__bar" aria-hidden="true"><i style="--c: var(--mint)"></i><i style="--c: var(--gold)"></i><i style="--c: #4d6e64"></i><span>inscripcion.form</span></div>
-        <iframe src={embed(FORMS.inscripcion)} title="Formulario de inscripción a PrograEduca 2026" loading="lazy">Cargando…</iframe>
-      </div>
+    <div class="wrap cta-block">
+      <h2 id="inscripcion-h" class="h2"><span data-pre>Inscríbete al <span class="mint">evento</span></span><span data-post hidden>Inscripciones <span class="mint">cerradas</span></span></h2>
+      <p class="lead" data-pre>Llena el formulario y te esperamos el <strong>viernes 27 de noviembre</strong> en el centro MEMI de la UMSS.</p>
+      <p class="lead" data-post hidden>Gracias por venir a PrograEduca 2026. Nos vemos en la próxima edición.</p>
+      <div class="cta-block__actions" data-pre>
+        <a class="btn btn--primary" href={FORMS.inscripcion} target="_blank" rel="noopener">Abrir el formulario de inscripción <Fragment set:html={EXT} /></a>
+        <p class="form-note">Se abre en otra pestaña (Google Forms).</p>
       </div>
     </div>
   </section>
@@ -375,42 +392,33 @@ print(aprender())</pre>
             alt="Call for posters, PrograEduca 2026: ¿Desarrollaste algo interesante? ¡Compártelo y dale visibilidad! Postula hasta el 21 de noviembre.">
         </figure>
         </div>
-        <div class="posters__cta" data-pre>
+        <div class="posters__cta" data-hasta="2026-11-22T00:00:00-04:00">
           <a class="btn btn--primary" href={FORMS.posters} target="_blank" rel="noopener">Postular mi póster <Fragment set:html={arrow} /></a>
           <p class="form-note">Postula hasta el 21 de noviembre.</p>
         </div>
+        <p class="form-note posters__closed" data-cerrado hidden>Las postulaciones de pósters cerraron el 21 de noviembre. Te esperamos en la feria.</p>
       </div>
     </div>
   </section>
 
   <section class="section" id="colegios" aria-labelledby="colegios-h">
-    <div class="wrap split" style="align-items: start">
-      <div class="stack sticky-text">
-        <h2 id="colegios-h" class="h2">Ven con tu <span class="gold">colegio</span></h2>
-        <p class="lead">Por primera vez, PrograEduca tiene <strong>actividades para colegios</strong>: el viernes 27 de noviembre, de <strong>14:30 a 16:00</strong>. Invitamos a estudiantes de <strong>4.º a 6.º de secundaria</strong>.</p>
-        <p class="lead">Las guían <a class="link" href="#comunidades">cinco comunidades tecnológicas</a> de Cochabamba.</p>
-      </div>
-      <div class="glass-stage" data-pre><span class="orb orb--gold" aria-hidden="true" style="--s: 260px; left: -70px; top: -60px"></span><span class="orb orb--mint" aria-hidden="true" style="--s: 240px; right: -60px; bottom: -50px"></span>
-      <div class="form-window glass">
-        <div class="console__bar" aria-hidden="true"><i style="--c: var(--mint)"></i><i style="--c: var(--gold)"></i><i style="--c: #4d6e64"></i><span>colegios.form</span></div>
-        <iframe src={embed(FORMS.colegios)} title="Formulario Call for Schools, PrograEduca 2026" loading="lazy">Cargando…</iframe>
-      </div>
+    <div class="wrap cta-block">
+      <h2 id="colegios-h" class="h2">Ven con tu <span class="gold">colegio</span></h2>
+      <p class="lead">Por primera vez, PrograEduca tiene <strong>actividades para colegios</strong>: el viernes 27 de noviembre, de <strong>14:30 a 16:00</strong>. Invitamos a estudiantes de <strong>4.º a 6.º de secundaria</strong>. Las guían <a class="link" href="#comunidades">cinco comunidades tecnológicas</a> de Cochabamba.</p>
+      <div class="cta-block__actions" data-pre>
+        <a class="btn btn--primary" href={FORMS.colegios} target="_blank" rel="noopener">Inscribir a mi colegio <Fragment set:html={EXT} /></a>
+        <p class="form-note">Se abre en otra pestaña (Google Forms).</p>
       </div>
     </div>
   </section>
 
   <section class="section section--deep" id="sponsors" aria-labelledby="sponsors-h">
-    <div class="wrap split split--flip" style="align-items: start">
-      <div class="stack sticky-text">
-        <h2 id="sponsors-h" class="h2">Auspicia <span class="mint">PrograEduca</span></h2>
-        <p class="lead">Buscamos aliados que compartan la visión del evento. Tu marca llega a <strong>estudiantes universitarios y de secundaria</strong>, <strong>docentes</strong> y <strong>comunidades tecnológicas</strong> de Cochabamba.</p>
-        <p class="lead">¿Dudas? Escríbenos a <a class="link" href={'mailto:' + CONTACTO.email}>{CONTACTO.email}</a></p>
-      </div>
-      <div class="glass-stage" data-pre><span class="orb orb--mint" aria-hidden="true" style="--s: 260px; right: -70px; top: -60px"></span><span class="orb orb--gold" aria-hidden="true" style="--s: 240px; left: -60px; bottom: -50px"></span>
-      <div class="form-window glass">
-        <div class="console__bar" aria-hidden="true"><i style="--c: var(--mint)"></i><i style="--c: var(--gold)"></i><i style="--c: #4d6e64"></i><span>sponsors.form</span></div>
-        <iframe src={embed(FORMS.sponsors)} title="Formulario Call for Sponsors, PrograEduca 2026" loading="lazy">Cargando…</iframe>
-      </div>
+    <div class="wrap cta-block">
+      <h2 id="sponsors-h" class="h2">Auspicia <span class="mint">PrograEduca</span></h2>
+      <p class="lead">Buscamos aliados que compartan la visión del evento. Tu marca llega a <strong>estudiantes universitarios y de secundaria</strong>, <strong>docentes</strong> y <strong>comunidades tecnológicas</strong> de Cochabamba.</p>
+      <div class="cta-block__actions" data-pre>
+        <a class="btn btn--primary" href={FORMS.sponsors} target="_blank" rel="noopener">Quiero auspiciar <Fragment set:html={EXT} /></a>
+        <p class="form-note">¿Dudas? Escríbenos a <a class="link" href={'mailto:' + CONTACTO.email}>{CONTACTO.email}</a></p>
       </div>
     </div>
   </section>
@@ -510,30 +518,31 @@ print(aprender())</pre>
     return () => label.click();
   })();
 
-  // ejes temáticos en celular/tablet: al llegar al centro de la pantalla la página se detiene.
-  // Mientras está quieta, el deslizamiento (dedo, rueda o teclado) recorre un avance continuo de 0 a 3:
-  // cada tramo es un eje (con un tic al cambiar) y los círculos giran poco a poco con ese avance.
-  // Al pasar el final (bajando) o el inicio (subiendo) se suelta y el scroll sigue normal.
+  // ejes temáticos en celular/tablet: al llegar al centro de la pantalla, con el dedo, la página se detiene.
+  // Mientras está quieta, el deslizamiento recorre un avance continuo de 0 a 3: cada tramo es un eje
+  // (con un tic al cambiar) y los círculos se desplazan de a poco. Al pasar el final (bajando) o el
+  // inicio (subiendo) se suelta y el scroll sigue con su inercia.
+  // Solo se detiene ante un deslizamiento real con el dedo: teclado, rueda, zoom de escritorio,
+  // buscar en la página o desplazamientos por código pasan de largo. Con movimiento reducido, nunca.
   const pin = document.querySelector<HTMLElement>('[data-ejes-pin]');
   if (pin) {
     const stage = pin.querySelector<HTMLElement>('.ejes-pin__stage')!;
     const nodos = [...pin.querySelectorAll<HTMLElement>('.eje-node')];
     const pasos = [...pin.querySelectorAll<HTMLButtonElement>('.ejes-steps button')];
     const N = nodos.length, ultimo = N - 1;
-    const enZona = matchMedia('(max-width: 900px)');
+    const enZona = matchMedia('(max-width: 900px) and (pointer: coarse)');
     const TRAMO = 150; // px de deslizamiento por eje
     const PAUSA = 320; // ms mínimos entre un eje y el siguiente (un movimiento rápido no los salta todos)
     let avance = 0, ultimoCambio = 0;
     let actual = 0, quieto = false, ultimoY = scrollY, tocY = 0, soltadoEnGesto = false;
-
-    // mientras la página se mueve por un enlace (menú, botones), los ejes no la detienen
-    let navegando = false, navT = 0;
-    const finNavegar = () => { navegando = false; clearTimeout(navT); };
+    let tocando = false, ultimoToque = 0;
+    const vel: { t: number; y: number }[] = [];
 
     const activar = (i: number) => {
       if (i === actual) return;
       actual = i;
       nodos.forEach((n, j) => n.classList.toggle('is-active', j === i));
+      pasos.forEach((b, j) => b.toggleAttribute('aria-current', j === i));
       pasos.forEach((b, j) => b.classList.toggle('is-active', j === i));
       haptica();
     };
@@ -549,6 +558,7 @@ print(aprender())</pre>
       document.documentElement.classList.add('ejes-quieto');
     };
     const soltar = () => {
+      if (!quieto) return;
       quieto = false;
       document.documentElement.classList.remove('ejes-quieto');
     };
@@ -556,9 +566,8 @@ print(aprender())</pre>
     const mover = (delta: number) => {
       let sig = avance + delta / TRAMO;
       const tramo = Math.min(Math.floor(Math.max(sig, 0)), ultimo);
-      // cambio de eje demasiado seguido: el avance espera en el borde del tramo
       if (tramo !== actual && performance.now() - ultimoCambio < PAUSA) {
-        sig = tramo > actual ? actual + 0.999 : actual;
+        sig = tramo > actual ? actual + 0.999 : actual; // espera en el borde del tramo
       } else if (tramo !== actual) {
         ultimoCambio = performance.now();
         activar(tramo);
@@ -570,59 +579,77 @@ print(aprender())</pre>
       pintar();
       return false;
     };
+    const puedeDetener = () => enZona.matches && !reduced && (tocando || performance.now() - ultimoToque < 900);
 
-    // al cruzar el punto de quietud (bajando con ejes pendientes, o subiendo), la página se detiene
+    // al cruzar el punto de quietud (bajando con ejes pendientes, o subiendo) la página se detiene.
+    // Se mira un cuadro adelante para no pasarse de largo y volver de golpe.
     addEventListener('scroll', () => {
-      const y = scrollY, baja = y > ultimoY;
+      const y = scrollY, dy = y - ultimoY, baja = dy > 0;
       ultimoY = y;
-      if (!enZona.matches || quieto || navegando) return;
+      if (quieto || !puedeDetener()) return;
       const yq = yQuieto();
-      if (baja && avance < N && y >= yq && y - yq < innerHeight) { avance = Math.min(avance, N - 0.001); fijar(); }
-      else if (!baja && avance > 0 && y <= yq && yq - y < innerHeight) { avance = Math.max(avance, 0.001); fijar(); }
+      if (baja && avance < N && y + dy >= yq && y - yq < innerHeight) { avance = Math.min(avance, N - 0.001); fijar(); }
+      else if (!baja && dy < 0 && avance > 0 && y + dy <= yq && yq - y < innerHeight) { avance = Math.max(avance, 0.001); fijar(); }
     }, { passive: true });
 
-    // dedo
-    addEventListener('touchstart', (e) => { tocY = e.touches[0].clientY; soltadoEnGesto = false; }, { passive: true });
+    addEventListener('touchstart', (e) => {
+      tocY = e.touches[0].clientY; soltadoEnGesto = false; tocando = true;
+      vel.length = 0;
+    }, { passive: true });
     addEventListener('touchmove', (e) => {
       const y = e.touches[0].clientY, dy = tocY - y;
       tocY = y;
-      if (soltadoEnGesto) { e.preventDefault(); scrollBy(0, dy); return; } // termina el gesto con scroll normal
+      ultimoToque = performance.now();
+      if (soltadoEnGesto) {
+        // el resto del gesto sigue moviendo la página; se guarda la velocidad para la inercia final
+        e.preventDefault();
+        scrollBy(0, dy);
+        vel.push({ t: performance.now(), y: dy });
+        if (vel.length > 6) vel.shift();
+        return;
+      }
       if (!quieto) return;
       e.preventDefault();
       if (mover(dy)) soltadoEnGesto = true;
     }, { passive: false });
-    // rueda (pantallas angostas con mouse o trackpad)
-    addEventListener('wheel', (e) => {
-      if (!quieto) return;
-      e.preventDefault();
-      mover(e.deltaY);
-    }, { passive: false });
-    // teclado: un tramo entero por tecla
-    addEventListener('keydown', (e) => {
-      if (!quieto) return;
-      const abajo = ['ArrowDown', 'PageDown', ' '].includes(e.key), arriba = ['ArrowUp', 'PageUp'].includes(e.key);
-      if (!abajo && !arriba) return;
-      e.preventDefault();
-      ultimoCambio = 0;
-      mover((abajo ? Math.floor(avance) + 1 - avance + 0.001 : Math.floor(avance) - avance - 0.001) * TRAMO);
+    addEventListener('touchend', () => {
+      tocando = false;
+      ultimoToque = performance.now();
+      // inercia: si el gesto que soltó la página venía rápido, la página sigue deslizándose
+      if (soltadoEnGesto && vel.length > 1) {
+        const dt = vel[vel.length - 1].t - vel[0].t || 16;
+        const v = vel.reduce((s, m) => s + m.y, 0) / dt; // px/ms
+        if (Math.abs(v) > 0.3) scrollBy({ top: v * 320, behavior: 'smooth' });
+      }
+      soltadoEnGesto = false;
+    }, { passive: true });
+
+    // si el foco (Tab, lector de pantalla) sale de los ejes, la página se suelta;
+    // si entra a un eje que no está a la vista, ese eje se muestra
+    document.addEventListener('focusin', (e) => {
+      const t = e.target as HTMLElement;
+      if (!pin.contains(t)) { soltar(); return; }
+      const i = nodos.findIndex((n) => n.contains(t));
+      if (i >= 0) { avance = i + 0.5; activar(i); pintar(); }
     });
     // un enlace del menú o un botón que mueve la página siempre la suelta
-    document.addEventListener('click', (e) => {
-      if (!(e.target as HTMLElement).closest('a[href^="#"]')) return;
-      if (quieto) soltar();
-      navegando = true;
-      clearTimeout(navT);
-      navT = window.setTimeout(finNavegar, 2500);
-    }, true);
-    addEventListener('scrollend', () => { if (navegando) setTimeout(finNavegar, 50); });
+    document.addEventListener('click', (e) => { if ((e.target as HTMLElement).closest('a[href^="#"]')) soltar(); }, true);
+    addEventListener('visibilitychange', soltar);
     // pestañas: eligen el eje directamente (a la mitad de su tramo)
-    pasos.forEach((b, i) => b.addEventListener('click', () => {
-      avance = i + 0.5; ultimoCambio = 0; activar(i); pintar();
-      if (!quieto && enZona.matches) fijar();
-    }));
+    pasos.forEach((b, i) => b.addEventListener('click', () => { avance = i + 0.5; ultimoCambio = 0; activar(i); pintar(); }));
     enZona.addEventListener('change', () => { if (!enZona.matches) soltar(); });
+    pasos[0]?.setAttribute('aria-current', 'true');
     pintar();
   }
+
+  // pósters: pasada la fecha límite, el botón se reemplaza por el aviso de cierre (?fase=post también lo muestra)
+  document.querySelectorAll<HTMLElement>('[data-hasta]').forEach((el) => {
+    const forzado = new URLSearchParams(location.search).get('fase') === 'post';
+    if (forzado || Date.now() >= new Date(el.dataset.hasta!).getTime()) {
+      el.hidden = true;
+      el.parentElement?.querySelector<HTMLElement>('[data-cerrado]')?.removeAttribute('hidden');
+    }
+  });
 
   // carruseles del celular (speakers y comunidades): infinitos y centrados, con arrastre de mouse y puntos.
   // Para el bucle se clona la lista antes y después; al quedar quieto sobre una copia,
