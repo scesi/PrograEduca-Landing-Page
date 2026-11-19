@@ -869,10 +869,8 @@ button.speaker .speaker__info { display: flex; flex-direction: column; flex: 1; 
   #cronograma.section { padding-top: 20px; }
   .ejes-escena .ejes-map { margin-top: 16px; }
   .ejes-escena .ejes-map__nodes { display: grid; grid-template-columns: minmax(0, 1fr); }
-  /* cambio de eje asimétrico: la tarjeta que sale se va rápido y la que entra llega justo después,
-     así nunca se ven dos textos encimados */
-  .ejes-escena .eje-node { grid-area: 1 / 1; opacity: 0; translate: 0 18px; scale: 0.98; pointer-events: none; transition: opacity 80ms var(--ease-out), translate 80ms var(--ease-out), scale 80ms var(--ease-out); }
-  .ejes-escena .eje-node.is-active { opacity: 1; translate: 0 0; scale: 1; pointer-events: auto; transition: opacity 200ms var(--ease-out) 50ms, translate 280ms var(--ease-out) 50ms, scale 280ms var(--ease-out) 50ms; }
+  .ejes-escena .eje-node { grid-area: 1 / 1; opacity: 0; translate: 0 18px; scale: 0.98; pointer-events: none; transition: opacity 380ms var(--ease-out), translate 480ms var(--ease-out), scale 480ms var(--ease-out); }
+  .ejes-escena .eje-node.is-active { opacity: 1; translate: 0 0; scale: 1; pointer-events: auto; }
   .ejes-tramo.is-midiendo .eje-node { transition: none; }
   /* pestañas eje[0] eje[1] eje[2] como en el código: muestran y eligen el eje */
   .ejes-steps { display: flex; gap: 8px; margin-top: 14px; }
