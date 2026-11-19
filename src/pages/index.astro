@@ -522,15 +522,15 @@ print(aprender())</pre>
   // Mientras está quieta, el deslizamiento recorre un avance continuo de 0 a 3: cada tramo es un eje
   // (con un tic al cambiar) y los círculos se desplazan de a poco. Al pasar el final (bajando) o el
   // inicio (subiendo) se suelta y el scroll sigue con su inercia.
-  // Solo se detiene ante un deslizamiento real con el dedo: teclado, rueda, zoom de escritorio,
-  // buscar en la página o desplazamientos por código pasan de largo. Con movimiento reducido, nunca.
+  // Solo se detiene ante un deslizamiento real (dedo, rueda o trackpad): teclado, buscar en la página
+  // o desplazamientos por código pasan de largo. Con movimiento reducido, nunca.
   const pin = document.querySelector<HTMLElement>('[data-ejes-pin]');
   if (pin) {
     const stage = pin.querySelector<HTMLElement>('.ejes-pin__stage')!;
     const nodos = [...pin.querySelectorAll<HTMLElement>('.eje-node')];
     const pasos = [...pin.querySelectorAll<HTMLButtonElement>('.ejes-steps button')];
     const N = nodos.length, ultimo = N - 1;
-    const enZona = matchMedia('(max-width: 900px) and (pointer: coarse)');
+    const enZona = matchMedia('(max-width: 900px)');
     const TRAMO = 150; // px de deslizamiento por eje
     const PAUSA = 320; // ms mínimos entre un eje y el siguiente (un movimiento rápido no los salta todos)
     let avance = 0, ultimoCambio = 0;
@@ -579,7 +579,8 @@ print(aprender())</pre>
       pintar();
       return false;
     };
-    const puedeDetener = () => enZona.matches && !reduced && (tocando || performance.now() - ultimoToque < 900);
+    let ultimaRueda = 0;
+    const puedeDetener = () => enZona.matches && !reduced && (tocando || performance.now() - Math.max(ultimoToque, ultimaRueda) < 900);
 
     // al cruzar el punto de quietud (bajando con ejes pendientes, o subiendo) la página se detiene.
     // Se mira un cuadro adelante para no pasarse de largo y volver de golpe.
@@ -623,6 +624,14 @@ print(aprender())</pre>
       }
       soltadoEnGesto = false;
     }, { passive: true });
+
+    // rueda o trackpad: marca el gesto como real y, con la página quieta, mueve el avance
+    addEventListener('wheel', (e) => {
+      ultimaRueda = performance.now();
+      if (!quieto) return;
+      e.preventDefault();
+      mover(e.deltaY);
+    }, { passive: false });
 
     // si el foco (Tab, lector de pantalla) sale de los ejes, la página se suelta;
     // si entra a un eje que no está a la vista, ese eje se muestra
