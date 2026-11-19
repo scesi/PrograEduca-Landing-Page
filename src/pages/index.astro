@@ -44,6 +44,10 @@ const programa: { nombre: string; desde: number[]; hasta: number[]; color: strin
 ];
 const hhmm = ([h, m]: number[]) => `${h}:${String(m).padStart(2, '0')}`;
 const EXT = '<svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3h7v7M13 3 4 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+// código de pixeles decorativo para la entrada (no es un QR real)
+const qr = Array.from({ length: 81 }, (_, i) => ((i * 7 + (i >> 2) * 3) % 5 < 2) || [0, 1, 2, 9, 11, 18, 19, 20, 6, 7, 8, 15, 17, 24, 25, 26, 54, 55, 56, 63, 65, 72, 73, 74].includes(i));
+// escalera de pixeles para colegios: un bloque por curso, cada uno más alto
+const cursos = [{ c: '4.º', h: 5 }, { c: '5.º', h: 8 }, { c: '6.º', h: 11 }];
 const arrow = '<svg class="btn__arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 ---
 <!doctype html>
@@ -367,13 +371,28 @@ print(aprender())</pre>
   </section>
 
   <section class="section section--deep" id="inscripcion" aria-labelledby="inscripcion-h">
-    <div class="wrap cta-block">
+    <div class="wrap split cta-split">
+      <div class="cta-block">
       <h2 id="inscripcion-h" class="h2"><span data-pre>Inscríbete al <span class="mint">evento</span></span><span data-post hidden>Inscripciones <span class="mint">cerradas</span></span></h2>
       <p class="lead" data-pre>Llena el formulario y te esperamos el <strong>viernes 27 de noviembre</strong> en el centro MEMI de la UMSS.</p>
       <p class="lead" data-post hidden>Gracias por venir a PrograEduca 2026. Nos vemos en la próxima edición.</p>
       <div class="cta-block__actions" data-pre>
         <a class="btn btn--primary" href={FORMS.inscripcion} target="_blank" rel="noopener">Abrir el formulario de inscripción <Fragment set:html={EXT} /></a>
         <p class="form-note">Se abre en otra pestaña (Google Forms).</p>
+      </div>
+      </div>
+      <div class="glass-stage cta-visual" aria-hidden="true"><span class="orb orb--gold" style="--s: 220px; right: -30px; top: -60px"></span><span class="orb orb--mint" style="--s: 200px; left: -40px; bottom: -50px"></span>
+        <div class="ticket glass">
+          <div class="ticket__main">
+            <p class="ticket__brand"><span class="mint">PROGRA</span><span class="gold">EDUCA</span> <small>2026</small></p>
+            <dl class="ticket__kv">
+              <dt>fecha</dt><dd>Viernes 27 de noviembre</dd>
+              <dt>hora</dt><dd>9:00 a 16:00</dd>
+              <dt>lugar</dt><dd>Centro MEMI, Facultad de Tecnología, UMSS</dd>
+            </dl>
+          </div>
+          <div class="ticket__stub"><div class="ticket__qr">{qr.map((on) => <i class={on ? 'on' : ''}></i>)}</div><span>ENTRADA</span></div>
+        </div>
       </div>
     </div>
   </section>
@@ -402,23 +421,44 @@ print(aprender())</pre>
   </section>
 
   <section class="section" id="colegios" aria-labelledby="colegios-h">
-    <div class="wrap cta-block">
+    <div class="wrap split split--flip cta-split">
+      <div class="cta-block">
       <h2 id="colegios-h" class="h2">Ven con tu <span class="gold">colegio</span></h2>
       <p class="lead">Por primera vez, PrograEduca tiene <strong>actividades para colegios</strong>: el viernes 27 de noviembre, de <strong>14:30 a 16:00</strong>. Invitamos a estudiantes de <strong>4.º a 6.º de secundaria</strong>. Las guían <a class="link" href="#comunidades">cinco comunidades tecnológicas</a> de Cochabamba.</p>
       <div class="cta-block__actions" data-pre>
         <a class="btn btn--primary" href={FORMS.colegios} target="_blank" rel="noopener">Inscribir a mi colegio <Fragment set:html={EXT} /></a>
         <p class="form-note">Se abre en otra pestaña (Google Forms).</p>
       </div>
+      </div>
+      <div class="cta-visual escalera" aria-hidden="true">
+        {cursos.map((k, i) => (
+          <div class="escalera__col" style={`--i: ${i}`}>
+            <div class="escalera__bloque">{Array.from({ length: k.h * 4 }, (_, j) => <i style={`--d: ${(k.h - 1 - Math.floor(j / 4)) * 45}ms`}></i>)}</div>
+            <span>{k.c}</span>
+          </div>
+        ))}
+      </div>
     </div>
   </section>
 
   <section class="section section--deep" id="sponsors" aria-labelledby="sponsors-h">
-    <div class="wrap cta-block">
+    <div class="wrap split cta-split">
+      <div class="cta-block">
       <h2 id="sponsors-h" class="h2">Auspicia <span class="mint">PrograEduca</span></h2>
       <p class="lead">Buscamos aliados que compartan la visión del evento. Tu marca llega a <strong>estudiantes universitarios y de secundaria</strong>, <strong>docentes</strong> y <strong>comunidades tecnológicas</strong> de Cochabamba.</p>
       <div class="cta-block__actions" data-pre>
         <a class="btn btn--primary" href={FORMS.sponsors} target="_blank" rel="noopener">Quiero auspiciar <Fragment set:html={EXT} /></a>
         <p class="form-note">¿Dudas? Escríbenos a <a class="link" href={'mailto:' + CONTACTO.email}>{CONTACTO.email}</a></p>
+      </div>
+      </div>
+      <div class="glass-stage cta-visual" aria-hidden="true"><span class="orb orb--mint" style="--s: 220px; right: -40px; top: -50px"></span><span class="orb orb--gold" style="--s: 200px; left: -40px; bottom: -40px"></span>
+        <figure class="console glass" style="margin: 0">
+          <div class="console__bar"><i style="--c: var(--mint)"></i><i style="--c: var(--gold)"></i><i style="--c: #4d6e64"></i><span>aliados.py</span></div>
+          <pre class="console__body"><span class="k">aliados</span> = [<span class="s">"UMSS"</span>, <span class="s">"SCESI"</span>, <span class="s">"KU Leuven"</span>]
+<span class="k">aliados</span>.append(<span class="s">"tu marca"</span>)
+print(aliados)</pre>
+          <p class="aliados__out">&gt;&gt;&gt; ['UMSS', 'SCESI', 'KU Leuven', <b>'tu marca'</b>]<span class="cursor"></span></p>
+        </figure>
       </div>
     </div>
   </section>
@@ -659,6 +699,12 @@ print(aprender())</pre>
       el.parentElement?.querySelector<HTMLElement>('[data-cerrado]')?.removeAttribute('hidden');
     }
   });
+
+  // escalera de colegios: se enciende al entrar en pantalla
+  const escalera = document.querySelector<HTMLElement>('.escalera');
+  if (escalera && 'IntersectionObserver' in window) {
+    new IntersectionObserver((es, o) => { if (es[0].isIntersecting) { escalera.classList.add('is-in'); o.disconnect(); } }, { rootMargin: '0px 0px -20% 0px' }).observe(escalera);
+  }
 
   // carruseles del celular (speakers y comunidades): infinitos y centrados, con arrastre de mouse y puntos.
   // Para el bucle se clona la lista antes y después; al quedar quieto sobre una copia,
