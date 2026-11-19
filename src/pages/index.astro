@@ -198,7 +198,7 @@ print(aprender())</pre>
       <div class="ejes-escena__bloque">
       <h2 id="ejes-h" class="h2">Tres ejes temáticos</h2>
       <div class="ejes-steps" role="group" aria-label="Elegir eje temático">
-        <button type="button" class="is-active" aria-label="Ver eje 1">eje[0]</button><button type="button" aria-label="Ver eje 2">eje[1]</button><button type="button" aria-label="Ver eje 3">eje[2]</button>
+        <button type="button" class="is-active" aria-current="true" aria-label="Ver eje 1">eje[0]</button><button type="button" aria-label="Ver eje 2">eje[1]</button><button type="button" aria-label="Ver eje 3">eje[2]</button>
       </div>
       <div class="ejes-map glass-stage">
         <span class="orb orb--gold" aria-hidden="true" style="--s: 260px; left: 6%; top: 150px"></span>
@@ -571,17 +571,21 @@ print(aliados)</pre>
   // una pista vacía debajo. En pantalla no se mueve nada y asoman las secciones vecinas; el avance por
   // la pista elige el eje (el primer tramo es más corto) y mueve los círculos. Al terminar la pista, todo sigue.
   // El scroll es siempre el del navegador (dedo, rueda, barra, teclado): aquí solo se lee la posición.
-  // Si los ejes no caben en pantalla con las vecinas asomando, van apilados; con movimiento reducido
-  // también (lo resuelve el CSS).
+  // Si los ejes no caben en pantalla con las vecinas asomando, o con movimiento reducido, van apilados.
   const tramo = document.querySelector<HTMLElement>('[data-ejes-tramo]');
   if (tramo) {
     const grupo = tramo.querySelector<HTMLElement>('.ejes-grupo')!;
     const pista = tramo.querySelector<HTMLElement>('.ejes-tramo__pista')!;
     const bloque = tramo.querySelector<HTMLElement>('.ejes-escena__bloque')!;
+    // --ep (avance) va en el contenedor de los círculos: cambia en cada cuadro de scroll y en el
+    // tramo obligaría a recalcular estilos de las tres secciones
+    const mapa = tramo.querySelector<HTMLElement>('.ejes-map')!;
     const nodos = [...tramo.querySelectorAll<HTMLElement>('.eje-node')];
     const pasos = [...tramo.querySelectorAll<HTMLButtonElement>('.ejes-steps button')];
     const N = nodos.length;
     const enZona = matchMedia('(max-width: 900px)');
+    // se consulta en vivo: si se activa movimiento reducido con la página abierta, la escena se apila
+    const movReducido = matchMedia('(prefers-reduced-motion: reduce)');
     const ASOMA = 24; // px mínimos de las secciones vecinas que deben verse arriba y abajo
     // largo de la pista por eje, en tramos de 32svh. El primero es corto: el eje[0] ya se vio
     // mientras la sección llegaba al centro, así que un tramo entero haría eterno el primer cambio
@@ -591,6 +595,8 @@ print(aliados)</pre>
     const inicios = TRAMOS.map((_, i) => TRAMOS.slice(0, i).reduce((a, b) => a + b, 0) / TOTAL);
     tramo.style.setProperty('--ejes-tramos', String(TOTAL));
     let actual = 0, activo = false, tocando = false, tope = 0;
+    // mientras una pestaña lleva la página a su eje, se muestra ese eje (no los que se cruzan en el camino)
+    let destino: number | null = null, finDestino = 0;
 
     const mostrar = (i: number) => {
       if (i === actual) return;
@@ -605,8 +611,10 @@ print(aliados)</pre>
       if (!activo) return;
       const recorrido = grupo.getBoundingClientRect().top - tramo.getBoundingClientRect().top;
       const p = Math.min(Math.max(recorrido / (pista.offsetHeight || 1), 0), 1);
-      tramo.style.setProperty('--ep', p.toFixed(4));
-      mostrar(Math.max(inicios.findLastIndex((ini) => p >= ini), 0));
+      mapa.style.setProperty('--ep', p.toFixed(4));
+      let i = 0;
+      while (i + 1 < N && p >= inicios[i + 1]) i++;
+      mostrar(destino ?? i);
     };
 
     // alto de pantalla estable (sin la barra de Safari): no cambia al desplazarse
@@ -617,13 +625,17 @@ print(aliados)</pre>
     let altoPantalla = 0;
     const medir = () => {
       altoPantalla = sonda.offsetHeight;
-      // se mide con un solo eje a la vista, como se ve fijo
+      // se mide con un solo eje a la vista, como se ve fijo; is-midiendo apaga las transiciones de las
+      // tarjetas para que quitar y volver a poner is-apilado no las haga parpadear
+      tramo.classList.add('is-midiendo');
       tramo.classList.remove('is-apilado');
       const navH = nav.offsetHeight, libre = altoPantalla - navH;
       const b = bloque.getBoundingClientRect(), g = grupo.getBoundingClientRect();
-      activo = enZona.matches && !reduced && b.height <= libre - 2 * ASOMA;
+      activo = enZona.matches && !movReducido.matches && b.height <= libre - 2 * ASOMA;
       tramo.classList.toggle('is-fijo', activo);
       tramo.classList.toggle('is-apilado', !activo);
+      bloque.getBoundingClientRect();
+      tramo.classList.remove('is-midiendo');
       if (!activo) return;
       // tope del bloque para que se fije justo cuando el centro de los ejes llega al centro bajo el navbar
       tope = Math.round(navH + libre / 2 - (b.top - g.top + b.height / 2));
@@ -647,14 +659,21 @@ print(aliados)</pre>
     // la barra de Safari cambia innerHeight al desplazarse: solo cuenta si cambió el alto estable
     addEventListener('resize', () => { if (sonda.offsetHeight !== altoPantalla) medir(); });
     enZona.addEventListener('change', medir);
+    movReducido.addEventListener('change', medir);
 
     // pestañas (y el foco del teclado): llevan la página al punto de la pista donde se ve ese eje
+    const soltarDestino = () => { destino = null; clearTimeout(finDestino); actualizar(); };
     const irA = (i: number) => {
       if (!activo) { mostrar(i); return; }
+      destino = i;
+      mostrar(i);
+      clearTimeout(finDestino);
+      finDestino = window.setTimeout(soltarDestino, 1200);
       const medio = inicios[i] + TRAMOS[i] / TOTAL / 2;
-      scrollTo({ top: Math.round(inicioFijo() + medio * pista.offsetHeight), behavior: reduced ? 'auto' : 'smooth' });
+      scrollTo({ top: Math.round(inicioFijo() + medio * pista.offsetHeight), behavior: movReducido.matches ? 'auto' : 'smooth' });
     };
-    pasos.forEach((b, i) => b.addEventListener('click', () => irA(i)));
+    addEventListener('scrollend', () => { if (destino !== null) soltarDestino(); });
+    pasos.forEach((b, i) => b.addEventListener('click', () => { if (i !== actual) haptica(); irA(i); }));
     tramo.addEventListener('focusin', (e) => {
       const i = nodos.findIndex((n) => n.contains(e.target as Node));
       if (i >= 0 && i !== actual) irA(i);
@@ -671,8 +690,23 @@ print(aliados)</pre>
       if (enPantalla - enBloque >= tope - 40) return Math.min(inicioTramo + enBloque - enPantalla, inicioFijo());
       return inicioTramo + pista.offsetHeight + enBloque - enPantalla;
     };
+    // un #ancla que no pasa por el click (cambiar location.hash, atrás/adelante): el navegador salta a la
+    // posición sin fijar, que con el bloque fijo cae a mitad de la pista. Al cargar no hace falta: la
+    // página quita el #ancla y arranca arriba
+    const corregirAncla = () => {
+      const el = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+      if (!activo || !el || !grupo.contains(el)) return;
+      const margen = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+      const y = corregirDestino!(el, scrollY + el.getBoundingClientRect().top - margen);
+      // sin animación: con scroll-behavior: smooth, un scrollTo normal se animaría
+      const raiz = document.documentElement, suave = raiz.style.scrollBehavior;
+      raiz.style.scrollBehavior = 'auto';
+      scrollTo(0, Math.round(y));
+      raiz.style.scrollBehavior = suave;
+    };
+    addEventListener('hashchange', corregirAncla);
+    addEventListener('popstate', () => requestAnimationFrame(corregirAncla));
 
-    pasos[0]?.setAttribute('aria-current', 'true');
     medir();
   }
 
