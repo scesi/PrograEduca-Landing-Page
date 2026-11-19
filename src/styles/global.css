@@ -760,7 +760,7 @@ button.speaker.glass {
 .track strong { font-weight: 600; font-size: 16px; line-height: 1.3; }
 .track__by { margin-top: auto; font: 400 12px/1.35 var(--mono); color: var(--muted); text-decoration: none; }
 @media (hover: hover) and (pointer: fine) {
-  .sched__item:hover, .track:hover { border-color: rgb(242 240 230 / 0.28); transform: translateY(-2px); }
+  .track:hover { border-color: rgb(242 240 230 / 0.28); transform: translateY(-2px); }
   .track__by:hover { color: var(--cream); }
 }
 .sched__row.is-now .sched__time::after { content: "ahora"; display: inline-block; margin-left: 8px; padding: 3px 6px; font: 500 12px/1 var(--mono); color: var(--ink-on-light); background: var(--gold); }
@@ -779,10 +779,9 @@ button.speaker.glass {
 /* sección */
 #comunidades { position: relative; overflow: clip; }
 .comunidades { display: grid; gap: clamp(32px, 4vw, 48px); }
-.comunidades .lead { max-width: 60ch; }
 .comunidades__grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: clamp(16px, 2vw, 24px); }
-.comunidad { grid-column: span 2; display: flex; flex-direction: column; gap: 16px; padding: 22px; border-radius: var(--radius); background-color: rgb(13 29 25 / 0.68); }
-.comunidad:nth-child(4) { grid-column: 2 / span 2; }
+.comunidad { grid-column: span 2; display: flex; flex-direction: column; gap: 16px; padding: 22px; border-radius: var(--radius); background-color: rgb(13 29 25 / 0.8); scroll-margin-top: calc(var(--nav-h) + 24px); }
+.comunidad:nth-child(4 of :not([data-clone])) { grid-column: 2 / span 2; }
 .comunidad__head { display: flex; align-items: center; gap: 16px; }
 .comunidad__logo { flex: none; width: 72px; height: 72px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 1px rgb(242 240 230 / 0.16); }
 .comunidad__name { font-size: 20px; font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; }
@@ -790,11 +789,76 @@ button.speaker.glass {
 .comunidad__enfoque { font-size: 15px; line-height: 1.55; color: var(--muted); }
 @media (max-width: 1024px) {
   .comunidades__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .comunidad, .comunidad:nth-child(4) { grid-column: auto; }
-  .comunidad:last-child { grid-column: 1 / -1; }
+  .comunidad, .comunidad:nth-child(4 of :not([data-clone])) { grid-column: auto; }
+  .comunidad:nth-last-child(1 of :not([data-clone])) { grid-column: 1 / -1; justify-self: center; width: calc(50% - clamp(8px, 1vw, 12px)); }
 }
 @media (max-width: 640px) {
   .comunidades__grid { grid-template-columns: 1fr; }
   .comunidad { padding: 18px; }
   .comunidad__logo { width: 60px; height: 60px; }
 }
+
+/* ---------- carruseles en el celular (speakers y comunidades) ---------- */
+.carousel__dots, [data-clone] { display: none; }
+@media (max-width: 720px) {
+  /* el escenario no debe estirarse al ancho de todas las tarjetas, o no hay nada que desplazar */
+  .speakers > *, .comunidades > * { min-width: 0; }
+  .carousel {
+    display: flex; gap: 12px; align-items: stretch;
+    overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory;
+    margin-inline: calc(-1 * var(--gut)); padding: 4px 0 10px;
+    scrollbar-width: none; cursor: grab; user-select: none; -webkit-user-select: none;
+  }
+  .carousel.is-dragging { cursor: grabbing; scroll-snap-type: none; }
+  .carousel.is-dragging * { pointer-events: none; }
+  .carousel::-webkit-scrollbar { display: none; }
+  .carousel img { -webkit-user-drag: none; }
+  .carousel > li, .carousel > [data-clone] { display: flex; flex: 0 0 min(80%, 320px); scroll-snap-align: center; }
+
+  /* speakers: textos más grandes */
+  .carousel .speaker__name { font-size: 19px; }
+  .carousel .speaker__rol { font-size: 13px; }
+  .carousel .speaker__talk { font-size: 17px; line-height: 1.3; }
+  .carousel .speaker__info { padding: 16px 18px 20px; gap: 6px; }
+
+  /* comunidades: tarjetas cuadradas */
+  .carousel > .comunidad { aspect-ratio: 1; padding: 22px; gap: 18px; justify-content: flex-start; }
+  .carousel .comunidad__logo { width: 64px; height: 64px; }
+  .carousel .comunidad__name { font-size: 21px; }
+  .carousel .comunidad__tema { font-size: 14px; }
+  .carousel .comunidad__enfoque { font-size: 16px; line-height: 1.5; color: var(--cream); opacity: 0.88; }
+
+  .carousel__dots { display: flex; justify-content: center; gap: 2px; margin-top: 8px; }
+  .carousel__dots button { all: unset; display: grid; place-items: center; width: 28px; height: 28px; cursor: pointer; }
+  /* puntos cuadrados, como los pixeles del flyer */
+  .carousel__dots button::before { content: ""; width: 8px; height: 8px; background: var(--line-strong); transition: background-color 200ms, width 250ms var(--ease-out); }
+  .carousel__dots button[aria-current]::before { width: 18px; background: var(--mint); }
+  .carousel__dots button:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
+}
+
+/* ---------- ajustes de la evaluación ---------- */
+/* logos de comunidades sobre un disco crema: se leen sobre el fondo oscuro (CochaBlock es negro) */
+.logo-disc { background: var(--paper); padding: 3px; object-fit: contain !important; box-shadow: none !important; }
+/* toda la tarjeta del cronograma lleva a su comunidad (el enlace se estira); objetivo táctil grande */
+.track__by::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.track__by:focus-visible { outline: none; }
+.track:has(.track__by:focus-visible) { outline: 2px solid var(--gold); outline-offset: 3px; }
+.sched__tag { opacity: 1; color: var(--muted); }
+.sched__tag strong { font-weight: 500; color: #9fd7c0; }
+@media (max-width: 760px) {
+  /* las horas no quedan sobre el círculo dorado: van en una pastilla oscura */
+  .sched__time { justify-self: start; padding: 4px 10px; border-radius: 6px; background: rgb(17 37 32 / 0.92); }
+}
+
+/* speakers: la tarjeta avisa que se abre */
+.speaker__more { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; padding: 6px 10px 6px 12px; width: max-content; border-radius: 999px; border: 1px solid rgb(111 199 161 / 0.4); font: 500 13px/1 var(--mono); color: var(--mint); transition: background-color 200ms, color 200ms; }
+.speaker__more svg { transition: translate 200ms var(--ease-out); }
+@media (hover: hover) and (pointer: fine) {
+  button.speaker:hover .speaker__more { background: var(--mint); color: var(--ink-on-light); }
+  button.speaker:hover .speaker__more svg { translate: 3px 0; }
+}
+button.speaker:active .speaker__more { background: var(--mint); color: var(--ink-on-light); }
+/* la info ocupa el alto de la tarjeta y el botón queda abajo, alineado entre tarjetas */
+button.speaker .speaker__info { display: flex; flex-direction: column; flex: 1; }
+.speaker__info > .speaker__talk { margin-bottom: 14px; }
+.speaker__info > .speaker__more { display: inline-flex; margin-top: auto; white-space: nowrap; }
