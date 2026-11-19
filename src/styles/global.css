@@ -991,15 +991,21 @@ button.speaker .speaker__info { display: flex; flex-direction: column; flex: 1; 
 .nav__wa:active { scale: 0.94; }
 .nav__wa:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 @media (hover: hover) and (pointer: fine) { .nav__wa:hover { color: var(--gold); box-shadow: inset 0 0 0 1.5px var(--gold); } }
-@media (max-width: 960px) { .nav__wa { width: 44px; height: 44px; } }
+/* celular: ícono suelto como el ☰, sin aro, pegado al menú */
+@media (max-width: 960px) {
+  .nav__wa { width: 40px; height: 44px; margin-right: -6px; border-radius: 8px; box-shadow: none; }
+  .nav__wa svg { width: 22px; height: 22px; }
+  .nav__wa:focus-visible { outline-offset: -2px; }
+}
+.nav__menu a.nav__menu-wa { align-items: center; }
+.nav__menu-wa svg { flex: none; width: 22px; height: 22px; color: var(--mint); }
 /* escritorio angosto: menos aire entre enlaces para que entre el ícono */
 @media (min-width: 961px) and (max-width: 1199px) { .nav__bar { gap: 20px; } .nav__links { gap: 14px; } }
 /* celulares: logo + Inscribirme + WhatsApp + menú en una fila */
 @media (max-width: 420px) { .logo small { display: none; } .nav__bar { gap: 8px; } }
-@media (max-width: 360px) { .nav__wa { width: 40px; height: 40px; } }
 @media (max-width: 340px) {
   .nav__bar { gap: 4px; }
   .logo { font-size: 17px; }
   .nav .btn { padding: 0 12px; }
-  .nav__wa { width: 36px; box-shadow: none; }
+  .nav__wa { width: 36px; }
 }
