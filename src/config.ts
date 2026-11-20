@@ -53,6 +53,7 @@ export const SPEAKERS: Speaker[] = [
   },
   {
     nombres: ['Mairon Henry Fernandez Orellana'],
+    foto: '/assets/speakers/mairon.webp',
     org: 'UMSS',
     rol: 'Estudiante de Ingeniería Informática, UMSS',
     charla: 'Sistema local de recuperación inteligente de información académica mediante bases de datos relacionales',
@@ -77,6 +78,7 @@ export const SPEAKERS: Speaker[] = [
   },
   {
     nombres: ['Claudia Ureña Hinojosa'],
+    foto: '/assets/speakers/claudia.webp',
     org: 'Docente',
     rol: 'Docente con más de 15 años de experiencia',
     charla: 'El currículo oscuro y la línea macabra',
