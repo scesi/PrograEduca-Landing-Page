@@ -1051,5 +1051,11 @@ button.speaker .speaker__info { display: flex; flex-direction: column; flex: 1; 
   .carousel__arrow:active { scale: 0.94; }
   @media (hover: hover) and (pointer: fine) { .carousel__arrow:hover { background: var(--mint); color: var(--ink-on-light); } }
 }
-.carousel__arrow { display: none; }
-@media (min-width: 721px) { .carousel__arrow { display: grid; } }
+/* las flechas son solo de escritorio; en el celular gana sobre la regla de los puntos (.carousel__dots button) */
+.carousel__dots .carousel__arrow { display: none; }
+@media (min-width: 721px) { .carousel__dots .carousel__arrow { display: grid; } }
+/* el orden de foco pone flechas y puntos antes de las tarjetas; a la vista van debajo */
+.speakers__stage { display: flex; flex-direction: column; }
+.speakers__stage > .carousel__dots { order: 1; }
+/* toques rápidos en el carrusel y sus botones no hacen zoom por doble toque */
+.carousel, .carousel__dots button { touch-action: manipulation; }
