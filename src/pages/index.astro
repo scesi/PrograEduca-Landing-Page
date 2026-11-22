@@ -317,6 +317,7 @@ print(aprender())</pre>
                   )}
                 </span>
                 <span class="speaker__info">
+                  <span class="speaker__hora">{sp.hora}</span>
                   <span class="speaker__name">{sp.corto ?? sp.nombres[0]}</span>
                   <span class="speaker__rol">{sp.org}</span>
                   <span class="speaker__talk">{sp.charla}</span>
@@ -336,6 +337,7 @@ print(aprender())</pre>
               </button>
             </div>
             <div class="speaker-dialog__body">
+              <p class="speaker__hora">27 de noviembre · {sp.hora}</p>
               <p class="speaker__rol">{sp.rol}</p>
               <h3 id={`speaker-${i}-t`} class="speaker-dialog__talk">{sp.charla}</h3>
               <p class="speaker-dialog__names">{sp.nombres.join(', ')}</p>

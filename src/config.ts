@@ -30,44 +30,14 @@ export const LUGAR_MAPA_EMBED =
 /** Inicio del evento (hora de Bolivia, UTC-4) para la cuenta regresiva. */
 export const INICIO_EVENTO = '2026-11-27T09:20:00-04:00';
 
-/** Speakers confirmados. La foto va en public/assets/speakers/ (cuadrada, mínimo 600×600);
+/** Speakers confirmados, en el orden del cronograma (hoja "Cronograma Evento": dos salas en paralelo,
+ *  en cada horario primero la Sala 1). La foto va en public/assets/speakers/ (cuadrada, mínimo 600×600);
  *  mientras `foto` esté vacía, la tarjeta muestra las iniciales. No publicar emails ni teléfonos. */
-export type Speaker = { nombres: string[]; corto?: string; org: string; rol: string; charla: string; resumen: string; foto?: string;
+export type Speaker = { hora: string; nombres: string[]; corto?: string; org: string; rol: string; charla: string; resumen: string; foto?: string;
   /** Para charlas de varias personas: una foto por nombre, en el mismo orden. */ fotos?: string[] };
 export const SPEAKERS: Speaker[] = [
   {
-    nombres: ['Adrian Rafael Camara Reque'],
-    foto: '/assets/speakers/adrian.webp',
-    org: 'UMSS',
-    rol: 'Estudiante de Ingeniería Informática, UMSS',
-    charla: 'Dos cerebros piensan mejor que uno: métodos de estudio con Obsidian e IA',
-    resumen: '¿Cómo convertir apuntes dispersos en una ruta de estudio? Un prototipo que combina Obsidian, IA y revisión humana para conectar conceptos, generar prácticas y mejorar los materiales mediante comentarios, conservando las fuentes originales.',
-  },
-  {
-    nombres: ['Tania Fernanda Ugarte Guzmán'],
-    foto: '/assets/speakers/tania.webp',
-    org: 'KU Leuven',
-    rol: 'Doctoranda en Ciencias de la Computación, KU Leuven',
-    charla: 'Amplía tu futuro académico en el exterior: cómo postular a becas en Bélgica',
-    resumen: '¿Quieres estudiar un máster o un doctorado en Bélgica? Paso a paso para encontrar una beca, preparar tus documentos y postular, a partir de su experiencia como estudiante de doctorado en la KU Leuven.',
-  },
-  {
-    nombres: ['Mairon Henry Fernandez Orellana'],
-    foto: '/assets/speakers/mairon.webp',
-    org: 'UMSS',
-    rol: 'Estudiante de Ingeniería Informática, UMSS',
-    charla: 'Sistema local de recuperación inteligente de información académica mediante bases de datos relacionales',
-    resumen: 'Un sistema de consulta documental para cargar PDF académicos, organizar su contenido en una base de datos relacional y hacer preguntas en lenguaje natural, sin depender de Internet, servicios de pago ni modelos de IA pesados.',
-  },
-  {
-    nombres: ['Juan Pablo Taya F.'],
-    foto: '/assets/speakers/juanpablo.webp',
-    org: 'Docente de posgrado',
-    rol: 'Docente de posgrado en innovación y emprendimiento',
-    charla: 'UX en educación: gamificación',
-    resumen: 'Design Thinking y su uso en UX/UI: conocer los segmentos, crear necesidades a partir de la investigación y los prototipos.',
-  },
-  {
+    hora: '9:30 – 10:00',
     nombres: ['Sara Quispe Choque', 'Nicole Geraldine Rodas Cornejo', 'Mateo Alejandro Merino Vidal', 'Israel Gonzalo Orosco Zeballos'],
     corto: 'Sara, Nicole, Mateo e Israel',
     fotos: ['/assets/speakers/sara.webp', '/assets/speakers/nicole.webp', '/assets/speakers/mateo.webp', '/assets/speakers/israel.webp'],
@@ -77,22 +47,34 @@ export const SPEAKERS: Speaker[] = [
     resumen: '¿Cómo se investiga cuando tus tutores están en Bélgica? Cuatro estudiantes de la UMSS comparten los retos, aprendizajes y la nueva forma de trabajar que descubrieron haciendo su proyecto de grado junto a KU Leuven.',
   },
   {
-    nombres: ['Claudia Ureña Hinojosa'],
-    foto: '/assets/speakers/claudia.webp',
-    org: 'Docente',
-    rol: 'Docente con más de 15 años de experiencia',
-    charla: 'El currículo oscuro y la línea macabra',
-    resumen: 'Una reflexión crítica sobre los márgenes de la enseñanza en STEM y la delgada línea que cruzan los docentes entre la exigencia institucional, el mito del «buen profesor» y los temas que solo se susurran en los pasillos.',
+    hora: '9:30 – 10:00',
+    nombres: ['Juan Pablo Taya F.'],
+    foto: '/assets/speakers/juanpablo.webp',
+    org: 'Docente de posgrado',
+    rol: 'Docente de posgrado en innovación y emprendimiento',
+    charla: 'UX en educación: gamificación',
+    resumen: 'Design Thinking y su uso en UX/UI: conocer los segmentos, crear necesidades a partir de la investigación y los prototipos.',
   },
   {
-    nombres: ['Irvin Cossio Chavalier'],
-    foto: '/assets/speakers/irvin.webp',
-    org: 'GDG Cochabamba',
-    rol: 'GDG Organizer Cochabamba, 9 años en desarrollo móvil y frontend',
-    charla: 'Por qué SDD no debería aplicarse a proyectos personales',
-    resumen: 'Cuándo usar SDD con spec-kit y cuándo conviene usar specs de forma más ágil e iterativa, sin invertir de más en tokens.',
+    hora: '10:00 – 10:30',
+    nombres: ['Adrian Rafael Camara Reque'],
+    foto: '/assets/speakers/adrian.webp',
+    org: 'UMSS',
+    rol: 'Estudiante de Ingeniería Informática, UMSS',
+    charla: 'Dos cerebros piensan mejor que uno: métodos de estudio con Obsidian e IA',
+    resumen: '¿Cómo convertir apuntes dispersos en una ruta de estudio? Un prototipo que combina Obsidian, IA y revisión humana para conectar conceptos, generar prácticas y mejorar los materiales mediante comentarios, conservando las fuentes originales.',
   },
   {
+    hora: '10:00 – 10:30',
+    nombres: ['Mairon Henry Fernandez Orellana'],
+    foto: '/assets/speakers/mairon.webp',
+    org: 'UMSS',
+    rol: 'Estudiante de Ingeniería Informática, UMSS',
+    charla: 'Sistema local de recuperación inteligente de información académica mediante bases de datos relacionales',
+    resumen: 'Un sistema de consulta documental para cargar PDF académicos, organizar su contenido en una base de datos relacional y hacer preguntas en lenguaje natural, sin depender de Internet, servicios de pago ni modelos de IA pesados.',
+  },
+  {
+    hora: '10:30 – 11:00',
     nombres: ['Evelyn Cusi López'],
     foto: '/assets/speakers/evelyn.webp',
     org: 'Cocha AI',
@@ -101,6 +83,7 @@ export const SPEAKERS: Speaker[] = [
     resumen: 'No existe un único camino para trabajar en datos e inteligencia artificial: las diferentes especialidades, cómo aprovechar lo que ya sabes y qué primeros pasos dar para construir tu propia ruta.',
   },
   {
+    hora: '10:30 – 11:00',
     nombres: ['Tom Schrijvers'],
     foto: '/assets/speakers/tom.webp',
     org: 'KU Leuven',
@@ -109,6 +92,34 @@ export const SPEAKERS: Speaker[] = [
     resumen: 'Una reflexión sobre cómo se conectan la docencia y la investigación en la universidad, y cómo las preguntas del aula pueden inspirar nuevas ideas y oportunidades de crecimiento académico.',
   },
   {
+    hora: '11:00 – 11:30',
+    nombres: ['Tania Fernanda Ugarte Guzmán'],
+    foto: '/assets/speakers/tania.webp',
+    org: 'KU Leuven',
+    rol: 'Doctoranda en Ciencias de la Computación, KU Leuven',
+    charla: 'Amplía tu futuro académico en el exterior: cómo postular a becas en Bélgica',
+    resumen: '¿Quieres estudiar un máster o un doctorado en Bélgica? Paso a paso para encontrar una beca, preparar tus documentos y postular, a partir de su experiencia como estudiante de doctorado en la KU Leuven.',
+  },
+  {
+    hora: '11:00 – 11:30',
+    nombres: ['Irvin Cossio Chavalier'],
+    foto: '/assets/speakers/irvin.webp',
+    org: 'GDG Cochabamba',
+    rol: 'GDG Organizer Cochabamba, 9 años en desarrollo móvil y frontend',
+    charla: 'Por qué SDD no debería aplicarse a proyectos personales',
+    resumen: 'Cuándo usar SDD con spec-kit y cuándo conviene usar specs de forma más ágil e iterativa, sin invertir de más en tokens.',
+  },
+  {
+    hora: '11:30 – 12:00',
+    nombres: ['Claudia Ureña Hinojosa'],
+    foto: '/assets/speakers/claudia.webp',
+    org: 'Docente',
+    rol: 'Docente con más de 15 años de experiencia',
+    charla: 'El currículo oscuro y la línea macabra',
+    resumen: 'Una reflexión crítica sobre los márgenes de la enseñanza en STEM y la delgada línea que cruzan los docentes entre la exigencia institucional, el mito del «buen profesor» y los temas que solo se susurran en los pasillos.',
+  },
+  {
+    hora: '11:30 – 12:00',
     nombres: ['Ricardo Ramírez Caero'],
     foto: '/assets/speakers/ricardo.webp',
     org: 'AWS Student Builder Group UMSS',

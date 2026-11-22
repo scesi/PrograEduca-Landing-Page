@@ -1059,3 +1059,7 @@ button.speaker .speaker__info { display: flex; flex-direction: column; flex: 1; 
 .speakers__stage > .carousel__dots { order: 1; }
 /* toques rápidos en el carrusel y sus botones no hacen zoom por doble toque */
 .carousel, .carousel__dots button { touch-action: manipulation; }
+/* hora de la charla: arriba del nombre, en la tipografía de código y con el verde del evento */
+.speaker__hora, .speaker__info > .speaker__hora { display: flex; align-items: center; gap: 8px; margin: 0 0 4px; font: 500 13px/1.3 var(--mono); color: var(--mint); font-variant-numeric: tabular-nums; }
+.speaker__hora::before { content: ""; width: 6px; height: 6px; background: currentColor; flex: none; }
+@media (max-width: 720px) { .carousel .speaker__hora { font-size: 14px; } }
