@@ -1008,3 +1008,40 @@ button.speaker .speaker__info { display: flex; flex-direction: column; flex: 1; 
   .nav .btn { padding: 0 12px; }
   .nav__wa { width: 36px; }
 }
+
+/* speakers en escritorio: carrusel infinito que muestra todas las tarjetas que entran (4, o 3 en pantallas medianas),
+   alineadas al borde izquierdo, con flechas y puntos debajo; el número de columnas sale del ancho del carrusel */
+@media (min-width: 721px) {
+  .speakers > * { min-width: 0; }
+  .speakers__grid.carousel {
+    --g: clamp(16px, 2vw, 24px); --cols: 4; container-type: inline-size;
+    display: flex; gap: var(--g); align-items: stretch;
+    overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory;
+    /* aire para el levantado del hover, el foco y la sombra de las tarjetas (llega ~60px abajo),
+       sin correr las tarjetas del borde del contenido */
+    padding: 8px 4px 64px; margin: -8px -4px -64px; scroll-padding-inline: 4px;
+    scrollbar-width: none; cursor: grab; user-select: none; -webkit-user-select: none;
+  }
+  .speakers__grid.carousel::-webkit-scrollbar { display: none; }
+  .speakers__grid.carousel.is-dragging { cursor: grabbing; scroll-snap-type: none; }
+  .speakers__grid.carousel.is-dragging * { pointer-events: none; }
+  .speakers__grid.carousel img { -webkit-user-drag: none; }
+  .speakers__grid.carousel > li { display: flex; flex: 0 0 calc((100cqi - (var(--cols) - 1) * var(--g)) / var(--cols)); min-width: 0; scroll-snap-align: start; }
+  @container (max-width: 1031px) { .speakers__grid.carousel > li { --cols: 3; } }
+  @container (max-width: 767px) { .speakers__grid.carousel > li { --cols: 2; } }
+
+  .speakers .carousel__dots { position: relative; display: flex; justify-content: center; align-items: center; margin-top: 20px; }
+  .speakers .carousel__dots > button:not(.carousel__arrow) { all: unset; display: grid; place-items: center; width: 26px; height: 44px; cursor: pointer; }
+  .speakers .carousel__dots > button:not(.carousel__arrow)::before { content: ""; width: 8px; height: 8px; background: var(--line-strong); transition: background-color 200ms, width 250ms var(--ease-out); }
+  .speakers .carousel__dots > button[aria-current]::before { width: 18px; background: var(--mint); }
+  .speakers .carousel__dots > button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .carousel__arrow {
+    all: unset; box-sizing: border-box; place-items: center; width: 44px; height: 44px; margin-inline: 12px;
+    border-radius: 999px; border: 1px solid rgb(111 199 161 / 0.4); background: rgb(17 37 32 / 0.85); color: var(--mint); cursor: pointer;
+    transition: background-color 200ms, color 200ms, scale 160ms var(--ease-out);
+  }
+  .carousel__arrow:active { scale: 0.94; }
+  @media (hover: hover) and (pointer: fine) { .carousel__arrow:hover { background: var(--mint); color: var(--ink-on-light); } }
+}
+.carousel__arrow { display: none; }
+@media (min-width: 721px) { .carousel__arrow { display: grid; } }

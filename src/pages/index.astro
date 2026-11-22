@@ -301,7 +301,7 @@ print(aprender())</pre>
       {SPEAKERS.length > 0 ? (
         <>
         <div class="glass-stage speakers__stage"><span class="orb orb--gold" aria-hidden="true" style="--s: 320px; left: 14%; top: 8%"></span><span class="orb orb--mint" aria-hidden="true" style="--s: 360px; right: 6%; top: 34%"></span><span class="orb orb--gold" aria-hidden="true" style="--s: 260px; left: 34%; bottom: -40px"></span>
-        <ul class="speakers__grid carousel" data-carousel aria-label="Speakers">
+        <ul class="speakers__grid carousel" data-carousel data-carousel-desk aria-label="Speakers">
           {SPEAKERS.map((sp, i) => (
             <li>
               <button class="speaker glass" type="button" data-speaker={`speaker-${i}`} aria-haspopup="dialog">
@@ -724,13 +724,16 @@ print(aliados)</pre>
     new IntersectionObserver((es, o) => { if (es[0].isIntersecting) { escalera.classList.add('is-in'); o.disconnect(); } }, { rootMargin: '0px 0px -20% 0px' }).observe(escalera);
   }
 
-  // carruseles del celular (speakers y comunidades): infinitos y centrados, con arrastre de mouse y puntos.
-  // Para el bucle se clona la lista antes y después; al quedar quieto sobre una copia,
-  // se salta sin animación a la tarjeta original equivalente.
+  // carruseles (speakers y comunidades en el celular; speakers también en escritorio): infinitos, con arrastre
+  // de mouse y puntos. Para el bucle se clona la lista antes y después; al quedar quieto sobre una copia,
+  // se salta sin animación a la tarjeta original equivalente. En el celular la tarjeta activa va al centro;
+  // en escritorio entran varias y la activa es la primera de la izquierda.
   const movil = matchMedia('(max-width: 720px)');
   document.querySelectorAll<HTMLElement>('[data-carousel]').forEach((track) => {
     const items = [...track.children] as HTMLElement[];
     const n = items.length;
+    const desk = track.hasAttribute('data-carousel-desk');
+    const activo = () => desk || movil.matches;
     const copia = () => items.map((it) => {
       const c = it.cloneNode(true) as HTMLElement;
       c.dataset.clone = '';
@@ -739,15 +742,16 @@ print(aliados)</pre>
       c.querySelectorAll('a, button').forEach((el) => el.setAttribute('tabindex', '-1'));
       return c;
     });
-    // las copias existen solo en el celular; en escritorio la grilla muestra cada tarjeta una vez
+    // las copias existen solo mientras es carrusel; si no, la grilla muestra cada tarjeta una vez
     const ponerCopias = () => { if (!track.querySelector('[data-clone]')) { track.prepend(...copia()); track.append(...copia()); } };
     const quitarCopias = () => track.querySelectorAll('[data-clone]').forEach((c) => c.remove());
     const all = () => [...track.children] as HTMLElement[];
     const instant = 'instant' as ScrollBehavior;
 
-    // distancia para dejar una tarjeta en el centro del carrusel
+    // distancia para dejar una tarjeta en su lugar: al centro en el celular, al borde izquierdo en escritorio
     const centro = (el: HTMLElement) => {
       const r = el.getBoundingClientRect(), t = track.getBoundingClientRect();
+      if (!movil.matches) return r.left - t.left - (parseFloat(getComputedStyle(track).scrollPaddingLeft) || 0);
       return r.left + r.width / 2 - (t.left + t.width / 2);
     };
     const ir = (el: HTMLElement, smooth = true) => track.scrollTo({ left: track.scrollLeft + centro(el), behavior: smooth && !reduced ? 'smooth' : instant });
@@ -763,6 +767,20 @@ print(aliados)</pre>
       return b;
     });
     if (!track.hasAttribute('data-carousel-nodots')) track.after(dots);
+    // flechas para escritorio (en el celular se ocultan): avanzan de a una tarjeta
+    if (desk) {
+      const flecha = (paso: number, label: string, d: string) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'carousel__arrow';
+        b.setAttribute('aria-label', label);
+        b.innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="${d}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+        b.addEventListener('click', () => ir(all()[cercano() + paso]));
+        return b;
+      };
+      dots.prepend(flecha(-1, 'Anterior', 'M13 8H4M7.5 4l-4 4 4 4'));
+      dots.append(flecha(1, 'Siguiente', 'M3 8h9M8.5 4l4 4-4 4'));
+    }
 
     const cercano = () => {
       let best = 0, dist = Infinity;
@@ -771,7 +789,7 @@ print(aliados)</pre>
     };
     const marcar = () => { const i = track.querySelector('[data-clone]') ? cercano() % n : cercano(); btns.forEach((b, j) => b.toggleAttribute('aria-current', j === i)); };
     const recolocar = () => {
-      if (!movil.matches || arrastrando || !track.querySelector('[data-clone]')) return;
+      if (!activo() || arrastrando || !track.querySelector('[data-clone]')) return;
       const i = cercano();
       if (i < n || i >= 2 * n) ir(all()[n + (i % n)], false);
     };
@@ -782,12 +800,12 @@ print(aliados)</pre>
       quieto = window.setTimeout(recolocar, 140);
     }, { passive: true });
     // desde un enlace (p. ej. el nombre de la comunidad en el cronograma)
-    track.addEventListener('carousel:go', (e) => { if (movil.matches) ir((e as CustomEvent<HTMLElement>).detail, false); });
+    track.addEventListener('carousel:go', (e) => { if (activo()) ir((e as CustomEvent<HTMLElement>).detail, false); });
 
     // arrastre con mouse (en el celular ya se desliza con el dedo)
     let x0 = 0, s0 = 0, arrastrando = false, movido = false;
     track.addEventListener('pointerdown', (e) => {
-      if (e.pointerType !== 'mouse' || !movil.matches || e.button !== 0) return;
+      if (e.pointerType !== 'mouse' || !activo() || e.button !== 0) return;
       arrastrando = true; movido = false; x0 = e.clientX; s0 = track.scrollLeft;
     });
     addEventListener('pointermove', (e) => {
@@ -809,7 +827,7 @@ print(aliados)</pre>
     track.addEventListener('dragstart', (e) => e.preventDefault());
 
     const iniciar = () => {
-      if (movil.matches) { ponerCopias(); ir(items[0], false); marcar(); }
+      if (activo()) { ponerCopias(); ir(items[0], false); marcar(); }
       else quitarCopias();
     };
     iniciar();
