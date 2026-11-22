@@ -92,6 +92,30 @@ export const SPEAKERS: Speaker[] = [
     charla: 'Por qué SDD no debería aplicarse a proyectos personales',
     resumen: 'Cuándo usar SDD con spec-kit y cuándo conviene usar specs de forma más ágil e iterativa, sin invertir de más en tokens.',
   },
+  {
+    nombres: ['Evelyn Cusi López'],
+    foto: '/assets/speakers/evelyn.webp',
+    org: 'Cocha AI',
+    rol: 'Senior AI Engineer y Data Scientist, cofundadora de Cocha AI',
+    charla: '¿Cómo dar el salto al mundo de los datos y la IA?',
+    resumen: 'No existe un único camino para trabajar en datos e inteligencia artificial: las diferentes especialidades, cómo aprovechar lo que ya sabes y qué primeros pasos dar para construir tu propia ruta.',
+  },
+  {
+    nombres: ['Tom Schrijvers'],
+    foto: '/assets/speakers/tom.webp',
+    org: 'KU Leuven',
+    rol: 'Profesor e investigador en lenguajes de programación, KU Leuven',
+    charla: 'De profesor a investigador',
+    resumen: 'Una reflexión sobre cómo se conectan la docencia y la investigación en la universidad, y cómo las preguntas del aula pueden inspirar nuevas ideas y oportunidades de crecimiento académico.',
+  },
+  {
+    nombres: ['Ricardo Ramírez Caero'],
+    foto: '/assets/speakers/ricardo.webp',
+    org: 'AWS Student Builder Group UMSS',
+    rol: 'Leader del AWS Student Builder Group UMSS, desarrollador full stack',
+    charla: 'AWS en Cochabamba: comunidad, aprendizaje y oportunidades en la nube',
+    resumen: 'Cómo la comunidad de AWS en Cochabamba impulsa el talento cloud en Bolivia: los User Groups, los Student Builder Groups, los eventos locales y cómo aprender, hacer networking y crecer en tu carrera desde cero.',
+  },
 ];
 
 /** Comunidades tecnológicas a cargo de las actividades para colegios (14:30 a 16:00, en paralelo).
