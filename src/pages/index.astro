@@ -727,7 +727,7 @@ print(aliados)</pre>
   // carruseles (speakers y comunidades en el celular; speakers también en escritorio): infinitos, con arrastre
   // de mouse y puntos. Para el bucle se clona la lista antes y después; al quedar quieto sobre una copia,
   // se salta sin animación a la tarjeta original equivalente. En el celular la tarjeta activa va al centro;
-  // en escritorio entran varias y la activa es la primera de la izquierda.
+  // en escritorio la activa es la primera principal de la izquierda (con media tarjeta asomando antes).
   const movil = matchMedia('(max-width: 720px)');
   document.querySelectorAll<HTMLElement>('[data-carousel]').forEach((track) => {
     const items = [...track.children] as HTMLElement[];
@@ -748,10 +748,11 @@ print(aliados)</pre>
     const all = () => [...track.children] as HTMLElement[];
     const instant = 'instant' as ScrollBehavior;
 
-    // distancia para dejar una tarjeta en su lugar: al centro en el celular, al borde izquierdo en escritorio
+    // distancia para dejar una tarjeta en su lugar: al centro en el celular; en escritorio, a la izquierda
+    // dejando su scroll-margin (media tarjeta + separación)
     const centro = (el: HTMLElement) => {
       const r = el.getBoundingClientRect(), t = track.getBoundingClientRect();
-      if (!movil.matches) return r.left - t.left - (parseFloat(getComputedStyle(track).scrollPaddingLeft) || 0);
+      if (!movil.matches) return r.left - t.left - (parseFloat(getComputedStyle(el).scrollMarginLeft) || 0);
       return r.left + r.width / 2 - (t.left + t.width / 2);
     };
     const ir = (el: HTMLElement, smooth = true) => track.scrollTo({ left: track.scrollLeft + centro(el), behavior: smooth && !reduced ? 'smooth' : instant });

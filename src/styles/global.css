@@ -1009,8 +1009,9 @@ button.speaker .speaker__info { display: flex; flex-direction: column; flex: 1; 
   .nav__wa { width: 36px; }
 }
 
-/* speakers en escritorio: carrusel infinito que muestra todas las tarjetas que entran (4, o 3 en pantallas medianas),
-   alineadas al borde izquierdo, con flechas y puntos debajo; el número de columnas sale del ancho del carrusel */
+/* speakers en escritorio: carrusel infinito con 3 tarjetas principales (2 en pantallas medianas) y media tarjeta
+   asomando a cada lado, con flechas y puntos debajo. --cols cuenta las principales + 1 (las dos medias);
+   el ancho sale del ancho del carrusel: cols tarjetas + cols separaciones = 100cqi */
 @media (min-width: 721px) {
   .speakers > * { min-width: 0; }
   .speakers__grid.carousel {
@@ -1019,14 +1020,21 @@ button.speaker .speaker__info { display: flex; flex-direction: column; flex: 1; 
     overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory;
     /* aire para el levantado del hover, el foco y la sombra de las tarjetas (llega ~60px abajo),
        sin correr las tarjetas del borde del contenido */
-    padding: 8px 4px 64px; margin: -8px -4px -64px; scroll-padding-inline: 4px;
+    padding: 8px 0 64px; margin: -8px 0 -64px;
+    /* las medias tarjetas se desvanecen hacia el borde en vez de cortarse en seco */
+    mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
     scrollbar-width: none; cursor: grab; user-select: none; -webkit-user-select: none;
   }
   .speakers__grid.carousel::-webkit-scrollbar { display: none; }
   .speakers__grid.carousel.is-dragging { cursor: grabbing; scroll-snap-type: none; }
   .speakers__grid.carousel.is-dragging * { pointer-events: none; }
   .speakers__grid.carousel img { -webkit-user-drag: none; }
-  .speakers__grid.carousel > li { display: flex; flex: 0 0 calc((100cqi - (var(--cols) - 1) * var(--g)) / var(--cols)); min-width: 0; scroll-snap-align: start; }
+  .speakers__grid.carousel > li {
+    --w: calc((100cqi - var(--cols) * var(--g)) / var(--cols));
+    display: flex; flex: 0 0 var(--w); min-width: 0;
+    /* la primera principal se detiene después de media tarjeta y una separación */
+    scroll-snap-align: start; scroll-margin-inline-start: calc(var(--w) / 2 + var(--g));
+  }
   @container (max-width: 1031px) { .speakers__grid.carousel > li { --cols: 3; } }
   @container (max-width: 767px) { .speakers__grid.carousel > li { --cols: 2; } }
 
