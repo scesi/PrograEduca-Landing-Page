@@ -520,13 +520,15 @@ p, dd, li { text-wrap: pretty; }
   .nav.is-open .nav__menu { opacity: 1; transition: opacity 150ms ease, visibility 0s !important; }
 }
 
-/* pósters: arte del call for posters con el botón debajo */
-.posters__media { display: grid; justify-items: center; gap: 20px; }
-.posters__stage { width: 100%; max-width: 520px; }
+/* pósters: texto con el botón a un lado, video de la guía rápida al otro (todo entra en una pantalla) */
+.posters__media { display: grid; justify-items: center; }
+/* el video se lleva más ancho que el texto (en celular van apilados) */
+@media (min-width: 901px) { .posters.split { grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: clamp(32px, 4vw, 64px); } }
+.posters__stage { width: 100%; }
+.posters__cta { display: grid; justify-items: start; gap: 4px; margin-top: 8px; }
 .posters__window { margin: 0; }
-.posters__window img { display: block; width: 100%; height: auto; padding: 12px; border-radius: calc(var(--radius) + 2px); }
-.posters__cta { display: grid; justify-items: center; gap: 4px; text-align: center; max-width: 520px; }
-.posters__cta .form-note { margin-top: 8px; }
+.posters__window video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; padding: 12px; border-radius: calc(var(--radius) + 2px); background: var(--bg); object-fit: contain; }
+.posters__cta[hidden] { display: none; } /* el display de arriba le ganaba al atributo hidden */
 
 /* tarjetas de speakers */
 .speakers__grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); align-items: stretch; }

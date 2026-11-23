@@ -405,24 +405,29 @@ print(aprender())</pre>
   </section>
 
   <section class="section section--deep" id="posters" aria-labelledby="posters-h">
-    <div class="wrap split split--flip">
-      <div class="stack">
+    <div class="wrap split posters">
+      <div class="stack posters__text">
         <h2 id="posters-h" class="h2">Presenta tu <span class="mint">póster</span></h2>
         <p class="lead">La <strong>feria de pósters científicos</strong> va de <strong>12:00 a 13:30</strong>, después de las charlas. Muestra tu investigación o proyecto de forma visual.</p>
+        <p class="lead">¿Vas a armar tu póster? Mira la <strong>guía rápida</strong>: qué partes lleva, consejos de diseño y con qué hacerlo.</p>
+        <div class="posters__cta" data-hasta="2026-11-27T00:00:00-04:00">
+          <a class="btn btn--primary" href={FORMS.posters} target="_blank" rel="noopener">Postular mi póster <Fragment set:html={arrow} /></a>
+        </div>
       </div>
       <div class="posters__media">
-        <div class="glass-stage posters__stage"><span class="orb orb--gold" aria-hidden="true" style="--s: 240px; right: -70px; top: -60px"></span><span class="orb orb--mint" aria-hidden="true" style="--s: 220px; left: -70px; bottom: -40px"></span>
+        <div class="glass-stage posters__stage"><span class="orb orb--gold" aria-hidden="true" style="--s: 220px; left: 52%; top: -80px"></span><span class="orb orb--mint" aria-hidden="true" style="--s: 220px; right: -70px; bottom: -40px"></span>
         <figure class="console glass posters__window">
-          <div class="console__bar" aria-hidden="true"><i style="--c: var(--mint)"></i><i style="--c: var(--gold)"></i><i style="--c: #4d6e64"></i><span>call_for_posters.png</span></div>
-          <img src="/assets/img/call-for-posters.webp" width="1080" height="1080" loading="lazy" decoding="async"
-            alt="Call for posters, PrograEduca 2026: ¿Desarrollaste algo interesante? ¡Compártelo y dale visibilidad! Postula hasta el 21 de noviembre.">
+          <div class="console__bar" aria-hidden="true"><i style="--c: var(--mint)"></i><i style="--c: var(--gold)"></i><i style="--c: #4d6e64"></i><span>guia_poster.mp4</span></div>
+          <video src="/assets/video/guia-poster.mp4" poster="/assets/video/guia-poster.webp" width="1920" height="1080"
+            controls playsinline preload="none" data-volumen="0.1" aria-label="Guía rápida: cómo hacer tu póster científico" aria-describedby="guia-poster-txt"></video>
+          <figcaption id="guia-poster-txt" class="sr-only">Video sin narración, con música y efectos de sonido. Un póster es un resumen visual de tu proyecto: debe entenderse en 2 o 3 minutos.
+            Sus 7 partes: título claro y corto con autores e institución; introducción (qué problema abordas y por qué importa); objetivo; metodología (un esquema ayuda);
+            resultados o avances con gráficos, tablas o imágenes; conclusiones (3 o 4 ideas) y próximos pasos; contacto con un correo o un código QR.
+            Consejos: 30 % de texto y 70 % de gráficos y fotos; título grande y cuerpo de 24 pt como mínimo; 2 o 3 colores con buen contraste;
+            orden de lectura de arriba abajo y de izquierda a derecha; cada gráfico o figura con un título corto.
+            Herramientas: Canva, PowerPoint o Google Slides. Envíalo en PDF.</figcaption>
         </figure>
         </div>
-        <div class="posters__cta" data-hasta="2026-11-22T00:00:00-04:00">
-          <a class="btn btn--primary" href={FORMS.posters} target="_blank" rel="noopener">Postular mi póster <Fragment set:html={arrow} /></a>
-          <p class="form-note">Postula hasta el 21 de noviembre.</p>
-        </div>
-        <p class="form-note posters__closed" data-cerrado hidden>Las postulaciones de pósters cerraron el 21 de noviembre. Te esperamos en la feria.</p>
       </div>
     </div>
   </section>
@@ -712,6 +717,9 @@ print(aliados)</pre>
   }
 
   // pósters: pasada la fecha límite, el botón se reemplaza por el aviso de cierre (?fase=post también lo muestra)
+  // videos que arrancan con el volumen bajo (el usuario lo sube con los controles)
+  document.querySelectorAll<HTMLVideoElement>('video[data-volumen]').forEach((v) => { v.volume = Number(v.dataset.volumen); });
+
   document.querySelectorAll<HTMLElement>('[data-hasta]').forEach((el) => {
     const forzado = new URLSearchParams(location.search).get('fase') === 'post';
     if (forzado || Date.now() >= new Date(el.dataset.hasta!).getTime()) {
