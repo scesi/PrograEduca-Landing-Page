@@ -7,7 +7,7 @@ import '@fontsource/jetbrains-mono/latin-400.css';
 import '@fontsource/jetbrains-mono/latin-500.css';
 import outfit700 from '@fontsource/outfit/files/outfit-latin-700-normal.woff2?url';
 import '../styles/global.css';
-import { FORMS, SPEAKERS, COMUNIDADES, CONTACTO, WHATSAPP_GRUPO, LUGAR_MAPA_EMBED, INICIO_EVENTO } from '../config';
+import { FORMS, SPEAKERS, SALAS, COMUNIDADES, CONTACTO, WHATSAPP_GRUPO, LUGAR_MAPA_EMBED, INICIO_EVENTO } from '../config';
 
 const titulo = 'PrograEduca 2026';
 const descripcion =
@@ -317,9 +317,9 @@ print(aprender())</pre>
                   )}
                 </span>
                 <span class="speaker__info">
-                  <span class="speaker__hora">{sp.hora}</span>
+                  <span class="speaker__hora">{sp.hora} <span class="speaker__sala">· {SALAS[sp.sala].corto}</span></span>
                   <span class="speaker__name">{sp.corto ?? sp.nombres[0]}</span>
-                  <span class="speaker__rol">{sp.org}</span>
+                  {sp.org && <span class="speaker__rol">{sp.org}</span>}
                   <span class="speaker__talk">{sp.charla}</span>
                   <span class="speaker__more" aria-hidden="true">Ver resumen <svg width="14" height="14" viewBox="0 0 16 16"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                 </span>
@@ -337,11 +337,11 @@ print(aprender())</pre>
               </button>
             </div>
             <div class="speaker-dialog__body">
-              <p class="speaker__hora">27 de noviembre · {sp.hora}</p>
-              <p class="speaker__rol">{sp.rol}</p>
+              <p class="speaker__hora">27 de noviembre · {sp.hora} · {SALAS[sp.sala].largo}</p>
+              {sp.rol && <p class="speaker__rol">{sp.rol}</p>}
               <h3 id={`speaker-${i}-t`} class="speaker-dialog__talk">{sp.charla}</h3>
               <p class="speaker-dialog__names">{sp.nombres.join(', ')}</p>
-              <p class="speaker-dialog__summary">{sp.resumen}</p>
+              {sp.resumen && <p class="speaker-dialog__summary">{sp.resumen}</p>}
             </div>
           </dialog>
         ))}

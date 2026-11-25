@@ -30,14 +30,24 @@ export const LUGAR_MAPA_EMBED =
 /** Inicio del evento (hora de Bolivia, UTC-4) para la cuenta regresiva. */
 export const INICIO_EVENTO = '2026-11-27T09:20:00-04:00';
 
-/** Speakers confirmados, en el orden del cronograma (hoja "Cronograma Evento": dos salas en paralelo,
- *  en cada horario primero la Sala 1). La foto va en public/assets/speakers/ (cuadrada, mínimo 600×600);
+/** Salas del cronograma (hoja "Cronograma Evento"): `corto` va en la tarjeta, `largo` en el resumen. */
+export const SALAS = {
+  s1: { corto: 'Sala 1', largo: 'Sala 1 (MEMI, lado izquierdo)' },
+  s2: { corto: 'Sala 2', largo: 'Sala 2 (MEMI, lado derecho)' },
+  aud: { corto: 'Auditorio', largo: 'Auditorio de Posgrado' },
+} as const;
+export type Sala = keyof typeof SALAS;
+
+/** Speakers confirmados, en el orden del cronograma (hoja "Cronograma Evento": tres salas en paralelo,
+ *  en cada horario primero la Sala 1, después la Sala 2 y el Auditorio de Posgrado).
+ *  Rol, organización y resumen son opcionales: si faltan, la tarjeta no muestra esa línea. La foto va en public/assets/speakers/ (cuadrada, mínimo 600×600);
  *  mientras `foto` esté vacía, la tarjeta muestra las iniciales. No publicar emails ni teléfonos. */
-export type Speaker = { hora: string; nombres: string[]; corto?: string; org: string; rol: string; charla: string; resumen: string; foto?: string;
+export type Speaker = { hora: string; sala: Sala; nombres: string[]; corto?: string; org?: string; rol?: string; charla: string; resumen?: string; foto?: string;
   /** Para charlas de varias personas: una foto por nombre, en el mismo orden. */ fotos?: string[] };
 export const SPEAKERS: Speaker[] = [
   {
     hora: '9:30 – 10:00',
+    sala: 's1',
     nombres: ['Sara Quispe Choque', 'Nicole Geraldine Rodas Cornejo', 'Mateo Alejandro Merino Vidal', 'Israel Gonzalo Orosco Zeballos'],
     corto: 'Sara, Nicole, Mateo e Israel',
     fotos: ['/assets/speakers/sara.webp', '/assets/speakers/nicole.webp', '/assets/speakers/mateo.webp', '/assets/speakers/israel.webp'],
@@ -48,6 +58,7 @@ export const SPEAKERS: Speaker[] = [
   },
   {
     hora: '9:30 – 10:00',
+    sala: 's2',
     nombres: ['Juan Pablo Taya F.'],
     foto: '/assets/speakers/juanpablo.webp',
     org: 'Docente de posgrado',
@@ -57,6 +68,7 @@ export const SPEAKERS: Speaker[] = [
   },
   {
     hora: '10:00 – 10:30',
+    sala: 's1',
     nombres: ['Adrian Rafael Camara Reque'],
     foto: '/assets/speakers/adrian.webp',
     org: 'UMSS',
@@ -66,6 +78,7 @@ export const SPEAKERS: Speaker[] = [
   },
   {
     hora: '10:00 – 10:30',
+    sala: 's2',
     nombres: ['Mairon Henry Fernandez Orellana'],
     foto: '/assets/speakers/mairon.webp',
     org: 'UMSS',
@@ -75,6 +88,7 @@ export const SPEAKERS: Speaker[] = [
   },
   {
     hora: '10:30 – 11:00',
+    sala: 's1',
     nombres: ['Evelyn Cusi López'],
     foto: '/assets/speakers/evelyn.webp',
     org: 'Cocha AI',
@@ -84,6 +98,7 @@ export const SPEAKERS: Speaker[] = [
   },
   {
     hora: '10:30 – 11:00',
+    sala: 's2',
     nombres: ['Tom Schrijvers'],
     foto: '/assets/speakers/tom.webp',
     org: 'KU Leuven',
@@ -92,7 +107,14 @@ export const SPEAKERS: Speaker[] = [
     resumen: 'Una reflexión sobre cómo se conectan la docencia y la investigación en la universidad, y cómo las preguntas del aula pueden inspirar nuevas ideas y oportunidades de crecimiento académico.',
   },
   {
+    hora: '10:30 – 11:00',
+    sala: 'aud',
+    nombres: ['Abad Melani Rodriguez Gonzales'],
+    charla: 'De estudiante a profesional: cómo la IA transformó mi forma de aprender',
+  },
+  {
     hora: '11:00 – 11:30',
+    sala: 's1',
     nombres: ['Tania Fernanda Ugarte Guzmán'],
     foto: '/assets/speakers/tania.webp',
     org: 'KU Leuven',
@@ -102,6 +124,7 @@ export const SPEAKERS: Speaker[] = [
   },
   {
     hora: '11:00 – 11:30',
+    sala: 's2',
     nombres: ['Irvin Cossio Chavalier'],
     foto: '/assets/speakers/irvin.webp',
     org: 'GDG Cochabamba',
@@ -110,7 +133,14 @@ export const SPEAKERS: Speaker[] = [
     resumen: 'Cuándo usar SDD con spec-kit y cuándo conviene usar specs de forma más ágil e iterativa, sin invertir de más en tokens.',
   },
   {
+    hora: '11:00 – 11:30',
+    sala: 'aud',
+    nombres: ['Jairo Andree Maida Rojas'],
+    charla: 'Aprovechando el apoyo financiero de Coursera para iniciar en Machine Learning y Data',
+  },
+  {
     hora: '11:30 – 12:00',
+    sala: 's1',
     nombres: ['Claudia Ureña Hinojosa'],
     foto: '/assets/speakers/claudia.webp',
     org: 'Docente',
@@ -120,12 +150,21 @@ export const SPEAKERS: Speaker[] = [
   },
   {
     hora: '11:30 – 12:00',
+    sala: 's2',
     nombres: ['Ricardo Ramírez Caero'],
     foto: '/assets/speakers/ricardo.webp',
     org: 'AWS Student Builder Group UMSS',
     rol: 'Leader del AWS Student Builder Group UMSS, desarrollador full stack',
     charla: 'AWS en Cochabamba: comunidad, aprendizaje y oportunidades en la nube',
     resumen: 'Cómo la comunidad de AWS en Cochabamba impulsa el talento cloud en Bolivia: los User Groups, los Student Builder Groups, los eventos locales y cómo aprender, hacer networking y crecer en tu carrera desde cero.',
+  },
+  {
+    hora: '11:30 – 12:00',
+    sala: 'aud',
+    nombres: ['CochaBlock'],
+    foto: '/assets/comunidades/cochablock.webp',
+    org: 'Comunidad tecnológica',
+    charla: 'Charla CochaBlock',
   },
 ];
 
