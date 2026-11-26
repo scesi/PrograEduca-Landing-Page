@@ -107,12 +107,6 @@ export const SPEAKERS: Speaker[] = [
     resumen: 'Una reflexión sobre cómo se conectan la docencia y la investigación en la universidad, y cómo las preguntas del aula pueden inspirar nuevas ideas y oportunidades de crecimiento académico.',
   },
   {
-    hora: '10:30 – 11:00',
-    sala: 'aud',
-    nombres: ['Abad Melani Rodriguez Gonzales'],
-    charla: 'De estudiante a profesional: cómo la IA transformó mi forma de aprender',
-  },
-  {
     hora: '11:00 – 11:30',
     sala: 's1',
     nombres: ['Tania Fernanda Ugarte Guzmán'],
@@ -133,12 +127,6 @@ export const SPEAKERS: Speaker[] = [
     resumen: 'Cuándo usar SDD con spec-kit y cuándo conviene usar specs de forma más ágil e iterativa, sin invertir de más en tokens.',
   },
   {
-    hora: '11:00 – 11:30',
-    sala: 'aud',
-    nombres: ['Jairo Andree Maida Rojas'],
-    charla: 'Aprovechando el apoyo financiero de Coursera para iniciar en Machine Learning y Data',
-  },
-  {
     hora: '11:30 – 12:00',
     sala: 's1',
     nombres: ['Claudia Ureña Hinojosa'],
@@ -157,14 +145,6 @@ export const SPEAKERS: Speaker[] = [
     rol: 'Leader del AWS Student Builder Group UMSS, desarrollador full stack',
     charla: 'AWS en Cochabamba: comunidad, aprendizaje y oportunidades en la nube',
     resumen: 'Cómo la comunidad de AWS en Cochabamba impulsa el talento cloud en Bolivia: los User Groups, los Student Builder Groups, los eventos locales y cómo aprender, hacer networking y crecer en tu carrera desde cero.',
-  },
-  {
-    hora: '11:30 – 12:00',
-    sala: 'aud',
-    nombres: ['CochaBlock'],
-    foto: '/assets/comunidades/cochablock.webp',
-    org: 'Comunidad tecnológica',
-    charla: 'Charla CochaBlock',
   },
 ];
 
